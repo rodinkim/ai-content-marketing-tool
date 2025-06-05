@@ -1,0 +1,438 @@
+2025-06-05 09:24:55,151 - INFO - root - Flask ��: Bedrock Ŭ���̾�Ʈ �ʱ�ȭ ����!
+2025-06-05 09:24:55,262 - INFO - faiss.loader - Loading faiss with AVX2 support.
+2025-06-05 09:24:55,297 - INFO - faiss.loader - Successfully loaded faiss with AVX2 support.
+2025-06-05 09:24:55,304 - INFO - faiss - Failed to load GPU Faiss: name 'GpuIndexIVFFlat' is not defined. Will not load constructor refs for GPU indexes. This is only an error if you're trying to use GPU Faiss.
+2025-06-05 09:24:56,940 - INFO - root - Flask ��: RAG �ý��� �ʱ�ȭ ����!
+2025-06-05 09:24:57,007 - WARNING - werkzeug -  * Debugger is active!
+2025-06-05 09:24:57,013 - INFO - werkzeug -  * Debugger PIN: 135-042-859
+2025-06-05 09:26:21,729 - INFO - werkzeug -  * Detected change in 'C:\\Users\\�����OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\app.py', reloading
+2025-06-05 09:26:23,856 - INFO - root - Flask 앱: Bedrock 클라이언트 초기화 성공!
+2025-06-05 09:26:23,989 - INFO - faiss.loader - Loading faiss with AVX2 support.
+2025-06-05 09:26:24,030 - INFO - faiss.loader - Successfully loaded faiss with AVX2 support.
+2025-06-05 09:26:24,042 - INFO - faiss - Failed to load GPU Faiss: name 'GpuIndexIVFFlat' is not defined. Will not load constructor refs for GPU indexes. This is only an error if you're trying to use GPU Faiss.
+2025-06-05 09:26:26,397 - INFO - root - Flask 앱: RAG 시스템 초기화 성공!
+2025-06-05 09:26:26,471 - WARNING - werkzeug -  * Debugger is active!
+2025-06-05 09:26:26,478 - INFO - werkzeug -  * Debugger PIN: 135-042-859
+2025-06-05 09:27:41,246 - INFO - werkzeug - 127.0.0.1 - - [05/Jun/2025 09:27:41] "GET /history HTTP/1.1" 200 -
+2025-06-05 09:27:41,388 - INFO - werkzeug - 127.0.0.1 - - [05/Jun/2025 09:27:41] "GET /history-api HTTP/1.1" 200 -
+2025-06-05 09:27:42,480 - INFO - werkzeug - 127.0.0.1 - - [05/Jun/2025 09:27:42] "GET / HTTP/1.1" 200 -
+2025-06-05 09:39:23,675 - INFO - werkzeug -  * Detected change in 'C:\\Users\\김오성OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\rag_system.py', reloading
+2025-06-05 09:39:25,628 - INFO - root - Flask 앱: Bedrock 클라이언트 초기화 성공!
+2025-06-05 09:39:25,746 - INFO - faiss.loader - Loading faiss with AVX2 support.
+2025-06-05 09:39:25,770 - INFO - faiss.loader - Successfully loaded faiss with AVX2 support.
+2025-06-05 09:39:25,776 - INFO - faiss - Failed to load GPU Faiss: name 'GpuIndexIVFFlat' is not defined. Will not load constructor refs for GPU indexes. This is only an error if you're trying to use GPU Faiss.
+2025-06-05 09:39:25,917 - INFO - root - Flask 앱: RAG 시스템 초기화 성공!
+2025-06-05 09:39:25,940 - WARNING - werkzeug -  * Debugger is active!
+2025-06-05 09:39:25,943 - INFO - werkzeug -  * Debugger PIN: 135-042-859
+2025-06-05 09:40:29,453 - INFO - werkzeug -  * Detected change in 'C:\\Users\\김오성OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\app.py', reloading
+2025-06-05 09:40:31,289 - INFO - root - Flask 앱: Bedrock 클라이언트 초기화 성공!
+2025-06-05 09:40:31,422 - INFO - faiss.loader - Loading faiss with AVX2 support.
+2025-06-05 09:40:31,456 - INFO - faiss.loader - Successfully loaded faiss with AVX2 support.
+2025-06-05 09:40:31,465 - INFO - faiss - Failed to load GPU Faiss: name 'GpuIndexIVFFlat' is not defined. Will not load constructor refs for GPU indexes. This is only an error if you're trying to use GPU Faiss.
+2025-06-05 09:40:31,632 - INFO - root - Flask 앱: RAG 시스템 초기화 성공!
+2025-06-05 09:40:31,680 - WARNING - werkzeug -  * Debugger is active!
+2025-06-05 09:40:31,684 - INFO - werkzeug -  * Debugger PIN: 135-042-859
+2025-06-05 09:42:52,817 - INFO - werkzeug -  * Detected change in 'C:\\Users\\김오성OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\app.py', reloading
+2025-06-05 09:42:54,515 - INFO - __main__ - Flask 앱: Bedrock 클라이언트 초기화 성공!
+2025-06-05 09:42:54,603 - INFO - faiss.loader - Loading faiss with AVX2 support.
+2025-06-05 09:42:54,629 - INFO - faiss.loader - Successfully loaded faiss with AVX2 support.
+2025-06-05 09:42:54,634 - INFO - faiss - Failed to load GPU Faiss: name 'GpuIndexIVFFlat' is not defined. Will not load constructor refs for GPU indexes. This is only an error if you're trying to use GPU Faiss.
+2025-06-05 09:42:54,779 - INFO - rag_system - Loading knowledge base from: knowledge_base
+2025-06-05 09:42:54,781 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_AI_Lookbook_쇼핑엔티.txt' processed into 2 chunks.
+2025-06-05 09:42:55,327 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사_무배당발_배송서비스_강화.txt' processed into 2 chunks.
+2025-06-05 09:42:55,498 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사스탠다드_쿨스탠다드_마케팅.txt' processed into 2 chunks.
+2025-06-05 09:42:55,668 - INFO - rag_system - File 'knowledge_base\IT\IT_AWS_Serverless_MCP_Server_개요.txt.txt' processed into 3 chunks.
+2025-06-05 09:42:55,927 - INFO - rag_system - File 'knowledge_base\IT\IT_OpenAI_Sora_Bing_무료제공.txt' processed into 2 chunks.
+2025-06-05 09:42:56,101 - INFO - rag_system - File 'knowledge_base\IT\IT_한국_AI_100조투자_계획.txt' processed into 2 chunks.
+2025-06-05 09:42:56,277 - INFO - rag_system - Knowledge base loaded and indexed. Total chunks: 13, Embedding dimension: 1024
+2025-06-05 09:42:56,278 - INFO - rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-05 09:42:56,347 - WARNING - werkzeug -  * Debugger is active!
+2025-06-05 09:42:56,355 - INFO - werkzeug -  * Debugger PIN: 135-042-859
+2025-06-05 09:57:48,952 - INFO - werkzeug -  * Detected change in 'C:\\Users\\김오성OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\app.py', reloading
+2025-06-05 09:57:51,015 - INFO - __main__ - Flask 앱: Bedrock 클라이언트 초기화 성공!
+2025-06-05 09:57:51,070 - INFO - faiss.loader - Loading faiss with AVX2 support.
+2025-06-05 09:57:51,195 - INFO - faiss.loader - Successfully loaded faiss with AVX2 support.
+2025-06-05 09:57:51,198 - INFO - faiss - Failed to load GPU Faiss: name 'GpuIndexIVFFlat' is not defined. Will not load constructor refs for GPU indexes. This is only an error if you're trying to use GPU Faiss.
+2025-06-05 09:57:51,452 - INFO - rag_system - Loading knowledge base from: knowledge_base
+2025-06-05 09:57:51,454 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_AI_Lookbook_쇼핑엔티.txt' processed into 2 chunks.
+2025-06-05 09:57:52,008 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사_무배당발_배송서비스_강화.txt' processed into 2 chunks.
+2025-06-05 09:57:52,182 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사스탠다드_쿨스탠다드_마케팅.txt' processed into 2 chunks.
+2025-06-05 09:57:52,351 - INFO - rag_system - File 'knowledge_base\IT\IT_AWS_Serverless_MCP_Server_개요.txt.txt' processed into 3 chunks.
+2025-06-05 09:57:52,589 - INFO - rag_system - File 'knowledge_base\IT\IT_OpenAI_Sora_Bing_무료제공.txt' processed into 2 chunks.
+2025-06-05 09:57:52,745 - INFO - rag_system - File 'knowledge_base\IT\IT_한국_AI_100조투자_계획.txt' processed into 2 chunks.
+2025-06-05 09:57:52,902 - INFO - rag_system - Knowledge base loaded and indexed. Total chunks: 13, Embedding dimension: 1024
+2025-06-05 09:57:52,902 - INFO - rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-05 09:57:52,938 - WARNING - werkzeug -  * Debugger is active!
+2025-06-05 09:57:52,941 - INFO - werkzeug -  * Debugger PIN: 135-042-859
+2025-06-05 09:59:34,257 - INFO - werkzeug -  * Detected change in 'C:\\Users\\김오성OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\rag_system.py', reloading
+2025-06-05 09:59:35,088 - INFO - __main__ - Flask 앱: Bedrock 클라이언트 초기화 성공!
+2025-06-05 09:59:35,176 - INFO - faiss.loader - Loading faiss with AVX2 support.
+2025-06-05 09:59:35,195 - INFO - faiss.loader - Successfully loaded faiss with AVX2 support.
+2025-06-05 09:59:35,200 - INFO - faiss - Failed to load GPU Faiss: name 'GpuIndexIVFFlat' is not defined. Will not load constructor refs for GPU indexes. This is only an error if you're trying to use GPU Faiss.
+2025-06-05 09:59:35,297 - INFO - rag_system - Loading knowledge base from: knowledge_base
+2025-06-05 09:59:35,299 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_AI_Lookbook_쇼핑엔티.txt' processed into 2 chunks.
+2025-06-05 09:59:35,933 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사_무배당발_배송서비스_강화.txt' processed into 2 chunks.
+2025-06-05 09:59:36,061 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사스탠다드_쿨스탠다드_마케팅.txt' processed into 2 chunks.
+2025-06-05 09:59:36,198 - INFO - rag_system - File 'knowledge_base\IT\IT_AWS_Serverless_MCP_Server_개요.txt.txt' processed into 3 chunks.
+2025-06-05 09:59:36,411 - INFO - rag_system - File 'knowledge_base\IT\IT_OpenAI_Sora_Bing_무료제공.txt' processed into 2 chunks.
+2025-06-05 09:59:36,539 - INFO - rag_system - File 'knowledge_base\IT\IT_한국_AI_100조투자_계획.txt' processed into 2 chunks.
+2025-06-05 09:59:36,684 - INFO - rag_system - Knowledge base loaded and indexed. Total chunks: 13, Embedding dimension: 1024
+2025-06-05 09:59:36,684 - INFO - rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-05 09:59:36,705 - WARNING - werkzeug -  * Debugger is active!
+2025-06-05 09:59:36,707 - INFO - werkzeug -  * Debugger PIN: 135-042-859
+2025-06-05 10:03:50,807 - INFO - werkzeug -  * Detected change in 'C:\\Users\\김오성OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\app.py', reloading
+2025-06-05 10:08:07,263 - INFO - __main__ - Flask 앱: Bedrock 클라이언트 초기화 성공!
+2025-06-05 10:08:07,321 - INFO - faiss.loader - Loading faiss with AVX2 support.
+2025-06-05 10:08:07,340 - INFO - faiss.loader - Successfully loaded faiss with AVX2 support.
+2025-06-05 10:08:07,345 - INFO - faiss - Failed to load GPU Faiss: name 'GpuIndexIVFFlat' is not defined. Will not load constructor refs for GPU indexes. This is only an error if you're trying to use GPU Faiss.
+2025-06-05 10:08:07,441 - INFO - rag_system - Loading knowledge base from: knowledge_base
+2025-06-05 10:08:07,443 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_AI_Lookbook_쇼핑엔티.txt' processed into 2 chunks.
+2025-06-05 10:08:07,895 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사_무배당발_배송서비스_강화.txt' processed into 2 chunks.
+2025-06-05 10:08:08,047 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사스탠다드_쿨스탠다드_마케팅.txt' processed into 2 chunks.
+2025-06-05 10:08:08,209 - INFO - rag_system - File 'knowledge_base\IT\IT_AWS_Serverless_MCP_Server_개요.txt.txt' processed into 3 chunks.
+2025-06-05 10:08:08,445 - INFO - rag_system - File 'knowledge_base\IT\IT_OpenAI_Sora_Bing_무료제공.txt' processed into 2 chunks.
+2025-06-05 10:08:08,896 - INFO - rag_system - File 'knowledge_base\IT\IT_한국_AI_100조투자_계획.txt' processed into 2 chunks.
+2025-06-05 10:08:09,089 - INFO - rag_system - Knowledge base loaded and indexed. Total chunks: 13, Embedding dimension: 1024
+2025-06-05 10:08:09,090 - INFO - rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-05 10:08:09,109 - INFO - werkzeug - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-06-05 10:08:09,110 - INFO - werkzeug - [33mPress CTRL+C to quit[0m
+2025-06-05 10:08:09,110 - INFO - werkzeug -  * Restarting with stat
+2025-06-05 10:08:09,713 - INFO - __main__ - Flask 앱: Bedrock 클라이언트 초기화 성공!
+2025-06-05 10:08:09,765 - INFO - faiss.loader - Loading faiss with AVX2 support.
+2025-06-05 10:08:09,783 - INFO - faiss.loader - Successfully loaded faiss with AVX2 support.
+2025-06-05 10:08:09,787 - INFO - faiss - Failed to load GPU Faiss: name 'GpuIndexIVFFlat' is not defined. Will not load constructor refs for GPU indexes. This is only an error if you're trying to use GPU Faiss.
+2025-06-05 10:08:09,878 - INFO - rag_system - Loading knowledge base from: knowledge_base
+2025-06-05 10:08:09,880 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_AI_Lookbook_쇼핑엔티.txt' processed into 2 chunks.
+2025-06-05 10:08:10,259 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사_무배당발_배송서비스_강화.txt' processed into 2 chunks.
+2025-06-05 10:08:10,406 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사스탠다드_쿨스탠다드_마케팅.txt' processed into 2 chunks.
+2025-06-05 10:08:10,564 - INFO - rag_system - File 'knowledge_base\IT\IT_AWS_Serverless_MCP_Server_개요.txt.txt' processed into 3 chunks.
+2025-06-05 10:08:10,790 - INFO - rag_system - File 'knowledge_base\IT\IT_OpenAI_Sora_Bing_무료제공.txt' processed into 2 chunks.
+2025-06-05 10:08:10,926 - INFO - rag_system - File 'knowledge_base\IT\IT_한국_AI_100조투자_계획.txt' processed into 2 chunks.
+2025-06-05 10:08:11,068 - INFO - rag_system - Knowledge base loaded and indexed. Total chunks: 13, Embedding dimension: 1024
+2025-06-05 10:08:11,068 - INFO - rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-05 10:08:11,079 - WARNING - werkzeug -  * Debugger is active!
+2025-06-05 10:08:11,081 - INFO - werkzeug -  * Debugger PIN: 135-042-859
+2025-06-05 10:09:01,917 - INFO - werkzeug - 127.0.0.1 - - [05/Jun/2025 10:09:01] "GET / HTTP/1.1" 200 -
+2025-06-05 10:09:04,411 - INFO - werkzeug - 127.0.0.1 - - [05/Jun/2025 10:09:04] "GET /history HTTP/1.1" 200 -
+2025-06-05 10:09:04,484 - INFO - werkzeug - 127.0.0.1 - - [05/Jun/2025 10:09:04] "GET /history-api HTTP/1.1" 200 -
+2025-06-05 10:10:24,590 - INFO - werkzeug -  * Detected change in 'C:\\Users\\김오성OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\app.py', reloading
+2025-06-05 10:10:24,731 - INFO - werkzeug -  * Restarting with stat
+2025-06-05 10:10:25,416 - INFO - __main__ - Flask 앱: Bedrock 클라이언트 초기화 성공!
+2025-06-05 10:10:25,471 - INFO - faiss.loader - Loading faiss with AVX2 support.
+2025-06-05 10:10:25,491 - INFO - faiss.loader - Successfully loaded faiss with AVX2 support.
+2025-06-05 10:10:25,495 - INFO - faiss - Failed to load GPU Faiss: name 'GpuIndexIVFFlat' is not defined. Will not load constructor refs for GPU indexes. This is only an error if you're trying to use GPU Faiss.
+2025-06-05 10:10:25,587 - INFO - rag_system - Loading knowledge base from: knowledge_base
+2025-06-05 10:10:25,589 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_AI_Lookbook_쇼핑엔티.txt' processed into 2 chunks.
+2025-06-05 10:10:26,029 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사_무배당발_배송서비스_강화.txt' processed into 2 chunks.
+2025-06-05 10:10:26,172 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사스탠다드_쿨스탠다드_마케팅.txt' processed into 2 chunks.
+2025-06-05 10:10:26,310 - INFO - rag_system - File 'knowledge_base\IT\IT_AWS_Serverless_MCP_Server_개요.txt.txt' processed into 3 chunks.
+2025-06-05 10:10:26,513 - INFO - rag_system - File 'knowledge_base\IT\IT_OpenAI_Sora_Bing_무료제공.txt' processed into 2 chunks.
+2025-06-05 10:10:26,679 - INFO - rag_system - File 'knowledge_base\IT\IT_한국_AI_100조투자_계획.txt' processed into 2 chunks.
+2025-06-05 10:10:26,805 - INFO - rag_system - Knowledge base loaded and indexed. Total chunks: 13, Embedding dimension: 1024
+2025-06-05 10:10:26,805 - INFO - rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-05 10:10:26,818 - WARNING - werkzeug -  * Debugger is active!
+2025-06-05 10:10:26,820 - INFO - werkzeug -  * Debugger PIN: 135-042-859
+2025-06-05 10:10:35,395 - INFO - werkzeug - 127.0.0.1 - - [05/Jun/2025 10:10:35] "GET / HTTP/1.1" 200 -
+2025-06-05 10:10:36,110 - INFO - werkzeug - 127.0.0.1 - - [05/Jun/2025 10:10:36] "GET /history HTTP/1.1" 200 -
+2025-06-05 10:10:36,135 - INFO - werkzeug - 127.0.0.1 - - [05/Jun/2025 10:10:36] "GET /history-api HTTP/1.1" 200 -
+2025-06-05 10:11:30,043 - INFO - werkzeug -  * Detected change in 'C:\\Users\\김오성OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\config.py', reloading
+2025-06-05 10:11:30,186 - INFO - werkzeug -  * Restarting with stat
+2025-06-05 10:11:30,815 - INFO - __main__ - Flask 앱: Bedrock 클라이언트 초기화 성공!
+2025-06-05 10:11:30,867 - INFO - faiss.loader - Loading faiss with AVX2 support.
+2025-06-05 10:11:30,884 - INFO - faiss.loader - Successfully loaded faiss with AVX2 support.
+2025-06-05 10:11:30,890 - INFO - faiss - Failed to load GPU Faiss: name 'GpuIndexIVFFlat' is not defined. Will not load constructor refs for GPU indexes. This is only an error if you're trying to use GPU Faiss.
+2025-06-05 10:11:30,983 - INFO - rag_system - Loading knowledge base from: knowledge_base
+2025-06-05 10:11:30,984 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_AI_Lookbook_쇼핑엔티.txt' processed into 2 chunks.
+2025-06-05 10:11:31,378 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사_무배당발_배송서비스_강화.txt' processed into 2 chunks.
+2025-06-05 10:11:31,511 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사스탠다드_쿨스탠다드_마케팅.txt' processed into 2 chunks.
+2025-06-05 10:11:31,656 - INFO - rag_system - File 'knowledge_base\IT\IT_AWS_Serverless_MCP_Server_개요.txt.txt' processed into 3 chunks.
+2025-06-05 10:11:31,872 - INFO - rag_system - File 'knowledge_base\IT\IT_OpenAI_Sora_Bing_무료제공.txt' processed into 2 chunks.
+2025-06-05 10:11:32,001 - INFO - rag_system - File 'knowledge_base\IT\IT_한국_AI_100조투자_계획.txt' processed into 2 chunks.
+2025-06-05 10:11:32,133 - INFO - rag_system - Knowledge base loaded and indexed. Total chunks: 13, Embedding dimension: 1024
+2025-06-05 10:11:32,133 - INFO - rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-05 10:11:32,148 - WARNING - werkzeug -  * Debugger is active!
+2025-06-05 10:11:32,150 - INFO - werkzeug -  * Debugger PIN: 135-042-859
+2025-06-05 10:16:10,089 - INFO - werkzeug -  * Detected change in 'C:\\Users\\김오성OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\rag_system.py', reloading
+2025-06-05 10:16:10,246 - INFO - werkzeug -  * Restarting with stat
+2025-06-05 10:16:10,924 - INFO - __main__ - Flask 앱: Bedrock 클라이언트 초기화 성공!
+2025-06-05 10:16:11,000 - INFO - faiss.loader - Loading faiss with AVX2 support.
+2025-06-05 10:16:11,020 - INFO - faiss.loader - Successfully loaded faiss with AVX2 support.
+2025-06-05 10:16:11,024 - INFO - faiss - Failed to load GPU Faiss: name 'GpuIndexIVFFlat' is not defined. Will not load constructor refs for GPU indexes. This is only an error if you're trying to use GPU Faiss.
+2025-06-05 10:16:11,120 - INFO - rag_system - Loading knowledge base from: knowledge_base
+2025-06-05 10:16:11,121 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_AI_Lookbook_쇼핑엔티.txt' processed into 2 chunks.
+2025-06-05 10:16:11,763 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사_무배당발_배송서비스_강화.txt' processed into 2 chunks.
+2025-06-05 10:16:11,899 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사스탠다드_쿨스탠다드_마케팅.txt' processed into 2 chunks.
+2025-06-05 10:16:12,053 - INFO - rag_system - File 'knowledge_base\IT\IT_AWS_Serverless_MCP_Server_개요.txt.txt' processed into 3 chunks.
+2025-06-05 10:16:12,265 - INFO - rag_system - File 'knowledge_base\IT\IT_OpenAI_Sora_Bing_무료제공.txt' processed into 2 chunks.
+2025-06-05 10:16:12,397 - INFO - rag_system - File 'knowledge_base\IT\IT_한국_AI_100조투자_계획.txt' processed into 2 chunks.
+2025-06-05 10:16:12,523 - INFO - rag_system - Knowledge base loaded and indexed. Total chunks: 13, Embedding dimension: 1024
+2025-06-05 10:16:12,523 - INFO - rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-05 10:16:12,536 - WARNING - werkzeug -  * Debugger is active!
+2025-06-05 10:16:12,537 - INFO - werkzeug -  * Debugger PIN: 135-042-859
+2025-06-05 10:17:39,863 - INFO - werkzeug -  * Detected change in 'C:\\Users\\김오성OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\rag_system.py', reloading
+2025-06-05 10:17:40,010 - INFO - werkzeug -  * Restarting with stat
+2025-06-05 10:17:40,671 - INFO - __main__ - Flask 앱: Bedrock 클라이언트 초기화 성공!
+2025-06-05 10:17:40,747 - INFO - faiss.loader - Loading faiss with AVX2 support.
+2025-06-05 10:17:40,765 - INFO - faiss.loader - Successfully loaded faiss with AVX2 support.
+2025-06-05 10:17:40,769 - INFO - faiss - Failed to load GPU Faiss: name 'GpuIndexIVFFlat' is not defined. Will not load constructor refs for GPU indexes. This is only an error if you're trying to use GPU Faiss.
+2025-06-05 10:17:40,860 - INFO - rag_system - Loading knowledge base from: knowledge_base
+2025-06-05 10:17:40,861 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_AI_Lookbook_쇼핑엔티.txt' processed into 2 chunks.
+2025-06-05 10:17:41,263 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사_무배당발_배송서비스_강화.txt' processed into 2 chunks.
+2025-06-05 10:17:41,421 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사스탠다드_쿨스탠다드_마케팅.txt' processed into 2 chunks.
+2025-06-05 10:17:41,559 - INFO - rag_system - File 'knowledge_base\IT\IT_AWS_Serverless_MCP_Server_개요.txt.txt' processed into 3 chunks.
+2025-06-05 10:17:41,808 - INFO - rag_system - File 'knowledge_base\IT\IT_OpenAI_Sora_Bing_무료제공.txt' processed into 2 chunks.
+2025-06-05 10:17:41,937 - INFO - rag_system - File 'knowledge_base\IT\IT_한국_AI_100조투자_계획.txt' processed into 2 chunks.
+2025-06-05 10:17:42,076 - INFO - rag_system - Knowledge base loaded and indexed. Total chunks: 13, Embedding dimension: 1024
+2025-06-05 10:17:42,076 - INFO - rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-05 10:17:42,088 - WARNING - werkzeug -  * Debugger is active!
+2025-06-05 10:17:42,090 - INFO - werkzeug -  * Debugger PIN: 135-042-859
+2025-06-05 10:19:23,499 - INFO - werkzeug -  * Detected change in 'C:\\Users\\김오성OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\rag_system.py', reloading
+2025-06-05 10:19:23,646 - INFO - werkzeug -  * Restarting with stat
+2025-06-05 10:19:24,264 - INFO - __main__ - Flask 앱: Bedrock 클라이언트 초기화 성공!
+2025-06-05 10:19:24,339 - INFO - faiss.loader - Loading faiss with AVX2 support.
+2025-06-05 10:19:24,356 - INFO - faiss.loader - Successfully loaded faiss with AVX2 support.
+2025-06-05 10:19:24,360 - INFO - faiss - Failed to load GPU Faiss: name 'GpuIndexIVFFlat' is not defined. Will not load constructor refs for GPU indexes. This is only an error if you're trying to use GPU Faiss.
+2025-06-05 10:19:24,451 - INFO - rag_system - Loading knowledge base from: knowledge_base
+2025-06-05 10:19:24,452 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_AI_Lookbook_쇼핑엔티.txt' processed into 2 chunks.
+2025-06-05 10:19:24,859 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사_무배당발_배송서비스_강화.txt' processed into 2 chunks.
+2025-06-05 10:19:24,997 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사스탠다드_쿨스탠다드_마케팅.txt' processed into 2 chunks.
+2025-06-05 10:19:25,123 - INFO - rag_system - File 'knowledge_base\IT\IT_AWS_Serverless_MCP_Server_개요.txt.txt' processed into 3 chunks.
+2025-06-05 10:19:25,304 - INFO - rag_system - File 'knowledge_base\IT\IT_OpenAI_Sora_Bing_무료제공.txt' processed into 2 chunks.
+2025-06-05 10:19:25,431 - INFO - rag_system - File 'knowledge_base\IT\IT_한국_AI_100조투자_계획.txt' processed into 2 chunks.
+2025-06-05 10:19:25,566 - INFO - rag_system - Knowledge base loaded and indexed. Total chunks: 13, Embedding dimension: 1024
+2025-06-05 10:19:25,567 - INFO - rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-05 10:19:25,579 - WARNING - werkzeug -  * Debugger is active!
+2025-06-05 10:19:25,581 - INFO - werkzeug -  * Debugger PIN: 135-042-859
+2025-06-05 10:25:54,100 - INFO - werkzeug -  * Detected change in 'C:\\Users\\김오성OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\services\\ai_service.py', reloading
+2025-06-05 10:25:54,250 - INFO - werkzeug -  * Restarting with stat
+2025-06-05 10:25:54,937 - INFO - __main__ - Flask 앱: Bedrock 클라이언트 초기화 성공!
+2025-06-05 10:25:54,990 - INFO - faiss.loader - Loading faiss with AVX2 support.
+2025-06-05 10:25:55,008 - INFO - faiss.loader - Successfully loaded faiss with AVX2 support.
+2025-06-05 10:25:55,014 - INFO - faiss - Failed to load GPU Faiss: name 'GpuIndexIVFFlat' is not defined. Will not load constructor refs for GPU indexes. This is only an error if you're trying to use GPU Faiss.
+2025-06-05 10:25:55,107 - INFO - rag_system - Loading knowledge base from: knowledge_base
+2025-06-05 10:25:55,109 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_AI_Lookbook_쇼핑엔티.txt' processed into 2 chunks.
+2025-06-05 10:25:55,674 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사_무배당발_배송서비스_강화.txt' processed into 2 chunks.
+2025-06-05 10:25:55,834 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사스탠다드_쿨스탠다드_마케팅.txt' processed into 2 chunks.
+2025-06-05 10:25:55,977 - INFO - rag_system - File 'knowledge_base\IT\IT_AWS_Serverless_MCP_Server_개요.txt.txt' processed into 3 chunks.
+2025-06-05 10:25:56,186 - INFO - rag_system - File 'knowledge_base\IT\IT_OpenAI_Sora_Bing_무료제공.txt' processed into 2 chunks.
+2025-06-05 10:25:56,311 - INFO - rag_system - File 'knowledge_base\IT\IT_한국_AI_100조투자_계획.txt' processed into 2 chunks.
+2025-06-05 10:25:56,455 - INFO - rag_system - Knowledge base loaded and indexed. Total chunks: 13, Embedding dimension: 1024
+2025-06-05 10:25:56,456 - INFO - rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-05 10:25:56,467 - INFO - services.ai_service - AIContentGenerator initialized with Bedrock client and RAG system.
+2025-06-05 10:25:56,468 - INFO - services.ai_service - AIContentGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-05 10:25:56,479 - WARNING - werkzeug -  * Debugger is active!
+2025-06-05 10:25:56,480 - INFO - werkzeug -  * Debugger PIN: 135-042-859
+2025-06-05 10:30:57,591 - INFO - werkzeug -  * Detected change in 'C:\\Users\\김오성OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\services\\ai_service.py', reloading
+2025-06-05 10:30:57,742 - INFO - werkzeug -  * Restarting with stat
+2025-06-05 10:30:58,351 - INFO - __main__ - Flask 앱: Bedrock 클라이언트 초기화 성공!
+2025-06-05 10:30:58,405 - INFO - faiss.loader - Loading faiss with AVX2 support.
+2025-06-05 10:30:58,422 - INFO - faiss.loader - Successfully loaded faiss with AVX2 support.
+2025-06-05 10:30:58,427 - INFO - faiss - Failed to load GPU Faiss: name 'GpuIndexIVFFlat' is not defined. Will not load constructor refs for GPU indexes. This is only an error if you're trying to use GPU Faiss.
+2025-06-05 10:30:58,519 - INFO - rag_system - Loading knowledge base from: knowledge_base
+2025-06-05 10:30:58,521 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_AI_Lookbook_쇼핑엔티.txt' processed into 2 chunks.
+2025-06-05 10:30:59,184 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사_무배당발_배송서비스_강화.txt' processed into 2 chunks.
+2025-06-05 10:30:59,374 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사스탠다드_쿨스탠다드_마케팅.txt' processed into 2 chunks.
+2025-06-05 10:30:59,615 - INFO - rag_system - File 'knowledge_base\IT\IT_AWS_Serverless_MCP_Server_개요.txt.txt' processed into 3 chunks.
+2025-06-05 10:30:59,869 - INFO - rag_system - File 'knowledge_base\IT\IT_OpenAI_Sora_Bing_무료제공.txt' processed into 2 chunks.
+2025-06-05 10:31:00,162 - INFO - rag_system - File 'knowledge_base\IT\IT_한국_AI_100조투자_계획.txt' processed into 2 chunks.
+2025-06-05 10:31:00,345 - INFO - rag_system - Knowledge base loaded and indexed. Total chunks: 13, Embedding dimension: 1024
+2025-06-05 10:31:00,345 - INFO - rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-05 10:31:00,366 - INFO - services.ai_service - AIContentGenerator initialized with Bedrock client and RAG system.
+2025-06-05 10:31:00,366 - INFO - services.ai_service - AIContentGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-05 10:31:00,377 - WARNING - werkzeug -  * Debugger is active!
+2025-06-05 10:31:00,380 - INFO - werkzeug -  * Debugger PIN: 135-042-859
+2025-06-05 10:33:26,996 - INFO - werkzeug -  * Detected change in 'C:\\Users\\김오성OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\app.py', reloading
+2025-06-05 10:33:27,148 - INFO - werkzeug -  * Restarting with stat
+2025-06-05 10:33:27,933 - INFO - __main__ - Flask 앱: Bedrock 클라이언트 초기화 성공!
+2025-06-05 10:33:27,990 - INFO - faiss.loader - Loading faiss with AVX2 support.
+2025-06-05 10:33:28,009 - INFO - faiss.loader - Successfully loaded faiss with AVX2 support.
+2025-06-05 10:33:28,014 - INFO - faiss - Failed to load GPU Faiss: name 'GpuIndexIVFFlat' is not defined. Will not load constructor refs for GPU indexes. This is only an error if you're trying to use GPU Faiss.
+2025-06-05 10:33:28,113 - INFO - rag_system - Loading knowledge base from: knowledge_base
+2025-06-05 10:33:28,114 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_AI_Lookbook_쇼핑엔티.txt' processed into 2 chunks.
+2025-06-05 10:33:28,569 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사_무배당발_배송서비스_강화.txt' processed into 2 chunks.
+2025-06-05 10:33:28,722 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사스탠다드_쿨스탠다드_마케팅.txt' processed into 2 chunks.
+2025-06-05 10:33:28,877 - INFO - rag_system - File 'knowledge_base\IT\IT_AWS_Serverless_MCP_Server_개요.txt.txt' processed into 3 chunks.
+2025-06-05 10:33:29,115 - INFO - rag_system - File 'knowledge_base\IT\IT_OpenAI_Sora_Bing_무료제공.txt' processed into 2 chunks.
+2025-06-05 10:33:29,250 - INFO - rag_system - File 'knowledge_base\IT\IT_한국_AI_100조투자_계획.txt' processed into 2 chunks.
+2025-06-05 10:33:29,385 - INFO - rag_system - Knowledge base loaded and indexed. Total chunks: 13, Embedding dimension: 1024
+2025-06-05 10:33:29,385 - INFO - rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-05 10:33:29,386 - INFO - services.ai_service - AIContentGenerator initialized with Bedrock client and RAG system.
+2025-06-05 10:33:29,387 - INFO - services.ai_service - AIContentGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-05 10:33:29,397 - WARNING - werkzeug -  * Debugger is active!
+2025-06-05 10:33:29,399 - INFO - werkzeug -  * Debugger PIN: 135-042-859
+2025-06-05 10:34:50,968 - INFO - werkzeug - 127.0.0.1 - - [05/Jun/2025 10:34:50] "GET / HTTP/1.1" 200 -
+2025-06-05 10:35:11,676 - INFO - werkzeug - 127.0.0.1 - - [05/Jun/2025 10:35:11] "[35m[1mPOST /generate_content HTTP/1.1[0m" 500 -
+2025-06-05 10:37:02,132 - INFO - werkzeug -  * Detected change in 'C:\\Users\\김오성OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\routes.py', reloading
+2025-06-05 10:37:02,282 - INFO - werkzeug -  * Restarting with stat
+2025-06-05 10:37:02,953 - INFO - __main__ - Flask 앱: Bedrock 클라이언트 초기화 성공!
+2025-06-05 10:37:03,034 - INFO - faiss.loader - Loading faiss with AVX2 support.
+2025-06-05 10:37:03,055 - INFO - faiss.loader - Successfully loaded faiss with AVX2 support.
+2025-06-05 10:37:03,059 - INFO - faiss - Failed to load GPU Faiss: name 'GpuIndexIVFFlat' is not defined. Will not load constructor refs for GPU indexes. This is only an error if you're trying to use GPU Faiss.
+2025-06-05 10:37:03,157 - INFO - rag_system - Loading knowledge base from: knowledge_base
+2025-06-05 10:37:03,159 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_AI_Lookbook_쇼핑엔티.txt' processed into 2 chunks.
+2025-06-05 10:37:03,627 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사_무배당발_배송서비스_강화.txt' processed into 2 chunks.
+2025-06-05 10:37:03,768 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사스탠다드_쿨스탠다드_마케팅.txt' processed into 2 chunks.
+2025-06-05 10:37:03,906 - INFO - rag_system - File 'knowledge_base\IT\IT_AWS_Serverless_MCP_Server_개요.txt.txt' processed into 3 chunks.
+2025-06-05 10:37:04,119 - INFO - rag_system - File 'knowledge_base\IT\IT_OpenAI_Sora_Bing_무료제공.txt' processed into 2 chunks.
+2025-06-05 10:37:04,250 - INFO - rag_system - File 'knowledge_base\IT\IT_한국_AI_100조투자_계획.txt' processed into 2 chunks.
+2025-06-05 10:37:04,385 - INFO - rag_system - Knowledge base loaded and indexed. Total chunks: 13, Embedding dimension: 1024
+2025-06-05 10:37:04,386 - INFO - rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-05 10:37:04,389 - INFO - services.ai_service - AIContentGenerator initialized with Bedrock client and RAG system.
+2025-06-05 10:37:04,389 - INFO - services.ai_service - AIContentGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-05 10:37:04,413 - WARNING - werkzeug -  * Debugger is active!
+2025-06-05 10:37:04,416 - INFO - werkzeug -  * Debugger PIN: 135-042-859
+2025-06-05 10:37:10,462 - INFO - services.ai_service - RAG: Retrieved document for query '서울 여행지 추천...': ��을 제공하여 구매를 유도합니다.
+* **오프라인 확장:** 한남 플래그십 스토어에서 팝업 스토어 및 이벤트를 진행하고, 다른 오프라인 매장에서도 쿨스탠다드 디스플레이를 확대하여...
+2025-06-05 10:37:10,462 - INFO - services.ai_service - SEO Keywords to include: 애견동반, 카페
+2025-06-05 10:37:32,234 - INFO - routes - Content successfully saved to DB: ID 6, Topic '서울 여행지 추천' by User ID 1
+2025-06-05 10:37:32,235 - INFO - werkzeug - 127.0.0.1 - - [05/Jun/2025 10:37:32] "POST /generate_content HTTP/1.1" 200 -
+2025-06-05 10:45:30,529 - INFO - werkzeug -  * Detected change in 'C:\\Users\\김오성OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\config.py', reloading
+2025-06-05 10:45:30,665 - INFO - werkzeug -  * Restarting with stat
+2025-06-05 10:45:31,298 - INFO - __main__ - Flask 앱: Bedrock 클라이언트 초기화 성공!
+2025-06-05 10:45:31,352 - INFO - faiss.loader - Loading faiss with AVX2 support.
+2025-06-05 10:45:31,370 - INFO - faiss.loader - Successfully loaded faiss with AVX2 support.
+2025-06-05 10:45:31,374 - INFO - faiss - Failed to load GPU Faiss: name 'GpuIndexIVFFlat' is not defined. Will not load constructor refs for GPU indexes. This is only an error if you're trying to use GPU Faiss.
+2025-06-05 10:45:31,466 - INFO - rag_system - Loading knowledge base from: knowledge_base
+2025-06-05 10:45:31,468 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_AI_Lookbook_쇼핑엔티.txt' processed into 2 chunks.
+2025-06-05 10:45:32,112 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사_무배당발_배송서비스_강화.txt' processed into 2 chunks.
+2025-06-05 10:45:32,295 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사스탠다드_쿨스탠다드_마케팅.txt' processed into 2 chunks.
+2025-06-05 10:45:32,475 - INFO - rag_system - File 'knowledge_base\IT\IT_AWS_Serverless_MCP_Server_개요.txt.txt' processed into 3 chunks.
+2025-06-05 10:45:32,774 - INFO - rag_system - File 'knowledge_base\IT\IT_OpenAI_Sora_Bing_무료제공.txt' processed into 2 chunks.
+2025-06-05 10:45:32,914 - INFO - rag_system - File 'knowledge_base\IT\IT_한국_AI_100조투자_계획.txt' processed into 2 chunks.
+2025-06-05 10:45:33,072 - INFO - rag_system - Knowledge base loaded and indexed. Total chunks: 13, Embedding dimension: 1024
+2025-06-05 10:45:33,072 - INFO - rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-05 10:45:33,073 - INFO - services.ai_service - AIContentGenerator initialized with Bedrock client and RAG system.
+2025-06-05 10:45:33,073 - INFO - services.ai_service - AIContentGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-05 10:45:33,083 - WARNING - werkzeug -  * Debugger is active!
+2025-06-05 10:45:33,086 - INFO - werkzeug -  * Debugger PIN: 135-042-859
+2025-06-05 10:45:54,157 - INFO - werkzeug -  * Detected change in 'C:\\Users\\김오성OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\config.py', reloading
+2025-06-05 10:45:54,314 - INFO - werkzeug -  * Restarting with stat
+2025-06-05 10:45:54,975 - INFO - __main__ - Flask 앱: Bedrock 클라이언트 초기화 성공!
+2025-06-05 10:45:55,023 - INFO - faiss.loader - Loading faiss with AVX2 support.
+2025-06-05 10:45:55,040 - INFO - faiss.loader - Successfully loaded faiss with AVX2 support.
+2025-06-05 10:45:55,044 - INFO - faiss - Failed to load GPU Faiss: name 'GpuIndexIVFFlat' is not defined. Will not load constructor refs for GPU indexes. This is only an error if you're trying to use GPU Faiss.
+2025-06-05 10:45:55,132 - INFO - rag_system - Loading knowledge base from: knowledge_base
+2025-06-05 10:45:55,134 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_AI_Lookbook_쇼핑엔티.txt' processed into 2 chunks.
+2025-06-05 10:45:55,530 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사_무배당발_배송서비스_강화.txt' processed into 2 chunks.
+2025-06-05 10:45:55,681 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사스탠다드_쿨스탠다드_마케팅.txt' processed into 2 chunks.
+2025-06-05 10:45:55,819 - INFO - rag_system - File 'knowledge_base\IT\IT_AWS_Serverless_MCP_Server_개요.txt.txt' processed into 3 chunks.
+2025-06-05 10:45:56,026 - INFO - rag_system - File 'knowledge_base\IT\IT_OpenAI_Sora_Bing_무료제공.txt' processed into 2 chunks.
+2025-06-05 10:45:56,159 - INFO - rag_system - File 'knowledge_base\IT\IT_한국_AI_100조투자_계획.txt' processed into 2 chunks.
+2025-06-05 10:45:56,304 - INFO - rag_system - Knowledge base loaded and indexed. Total chunks: 13, Embedding dimension: 1024
+2025-06-05 10:45:56,305 - INFO - rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-05 10:45:56,307 - INFO - services.ai_service - AIContentGenerator initialized with Bedrock client and RAG system.
+2025-06-05 10:45:56,307 - INFO - services.ai_service - AIContentGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-05 10:45:56,328 - WARNING - werkzeug -  * Debugger is active!
+2025-06-05 10:45:56,330 - INFO - werkzeug -  * Debugger PIN: 135-042-859
+2025-06-05 10:46:45,491 - INFO - werkzeug -  * Detected change in 'C:\\Users\\김오성OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\app.py', reloading
+2025-06-05 10:46:45,621 - INFO - werkzeug -  * Restarting with stat
+2025-06-05 10:46:46,272 - INFO - __main__ - Flask 앱: Bedrock 클라이언트 초기화 성공!
+2025-06-05 10:46:46,321 - INFO - faiss.loader - Loading faiss with AVX2 support.
+2025-06-05 10:46:46,338 - INFO - faiss.loader - Successfully loaded faiss with AVX2 support.
+2025-06-05 10:46:46,342 - INFO - faiss - Failed to load GPU Faiss: name 'GpuIndexIVFFlat' is not defined. Will not load constructor refs for GPU indexes. This is only an error if you're trying to use GPU Faiss.
+2025-06-05 10:46:46,431 - INFO - rag_system - Loading knowledge base from: knowledge_base
+2025-06-05 10:46:46,433 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_AI_Lookbook_쇼핑엔티.txt' processed into 2 chunks.
+2025-06-05 10:46:46,983 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사_무배당발_배송서비스_강화.txt' processed into 2 chunks.
+2025-06-05 10:46:47,132 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사스탠다드_쿨스탠다드_마케팅.txt' processed into 2 chunks.
+2025-06-05 10:46:47,271 - INFO - rag_system - File 'knowledge_base\IT\IT_AWS_Serverless_MCP_Server_개요.txt.txt' processed into 3 chunks.
+2025-06-05 10:46:47,505 - INFO - rag_system - File 'knowledge_base\IT\IT_OpenAI_Sora_Bing_무료제공.txt' processed into 2 chunks.
+2025-06-05 10:46:47,643 - INFO - rag_system - File 'knowledge_base\IT\IT_한국_AI_100조투자_계획.txt' processed into 2 chunks.
+2025-06-05 10:46:47,848 - INFO - rag_system - Knowledge base loaded and indexed. Total chunks: 13, Embedding dimension: 1024
+2025-06-05 10:46:47,848 - INFO - rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-05 10:46:47,850 - INFO - services.ai_service - AIContentGenerator initialized with Bedrock client and RAG system.
+2025-06-05 10:46:47,850 - INFO - services.ai_service - AIContentGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-05 10:46:47,861 - WARNING - werkzeug -  * Debugger is active!
+2025-06-05 10:46:47,863 - INFO - werkzeug -  * Debugger PIN: 135-042-859
+2025-06-05 10:47:06,786 - INFO - services.ai_service - RAG: Retrieved document for query '서울 여행지 추천...': ��을 제공하여 구매를 유도합니다.
+* **오프라인 확장:** 한남 플래그십 스토어에서 팝업 스토어 및 이벤트를 진행하고, 다른 오프라인 매장에서도 쿨스탠다드 디스플레이를 확대하여...
+2025-06-05 10:47:06,786 - INFO - services.ai_service - SEO Keywords to include: 여름
+2025-06-05 10:47:28,401 - INFO - routes - Content successfully saved to DB: ID 7, Topic '서울 여행지 추천' by User ID 1
+2025-06-05 10:47:28,402 - INFO - werkzeug - 127.0.0.1 - - [05/Jun/2025 10:47:28] "POST /generate_content HTTP/1.1" 200 -
+2025-06-05 10:49:14,409 - INFO - werkzeug -  * Detected change in 'C:\\Users\\김오성OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\services\\ai_service.py', reloading
+2025-06-05 10:49:14,558 - INFO - werkzeug -  * Restarting with stat
+2025-06-05 10:49:15,195 - INFO - __main__ - Flask 앱: Bedrock 클라이언트 초기화 성공!
+2025-06-05 10:49:15,247 - INFO - faiss.loader - Loading faiss with AVX2 support.
+2025-06-05 10:49:15,265 - INFO - faiss.loader - Successfully loaded faiss with AVX2 support.
+2025-06-05 10:49:15,269 - INFO - faiss - Failed to load GPU Faiss: name 'GpuIndexIVFFlat' is not defined. Will not load constructor refs for GPU indexes. This is only an error if you're trying to use GPU Faiss.
+2025-06-05 10:49:15,361 - INFO - rag_system - Loading knowledge base from: knowledge_base
+2025-06-05 10:49:15,363 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_AI_Lookbook_쇼핑엔티.txt' processed into 2 chunks.
+2025-06-05 10:49:15,804 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사_무배당발_배송서비스_강화.txt' processed into 2 chunks.
+2025-06-05 10:49:15,937 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사스탠다드_쿨스탠다드_마케팅.txt' processed into 2 chunks.
+2025-06-05 10:49:16,087 - INFO - rag_system - File 'knowledge_base\IT\IT_AWS_Serverless_MCP_Server_개요.txt.txt' processed into 3 chunks.
+2025-06-05 10:49:16,315 - INFO - rag_system - File 'knowledge_base\IT\IT_OpenAI_Sora_Bing_무료제공.txt' processed into 2 chunks.
+2025-06-05 10:49:16,445 - INFO - rag_system - File 'knowledge_base\IT\IT_한국_AI_100조투자_계획.txt' processed into 2 chunks.
+2025-06-05 10:49:16,574 - INFO - rag_system - Knowledge base loaded and indexed. Total chunks: 13, Embedding dimension: 1024
+2025-06-05 10:49:16,574 - INFO - rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-05 10:49:16,596 - INFO - services.ai_service - AIContentGenerator initialized with Bedrock client and RAG system.
+2025-06-05 10:49:16,596 - INFO - services.ai_service - AIContentGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-05 10:49:16,607 - WARNING - werkzeug -  * Debugger is active!
+2025-06-05 10:49:16,609 - INFO - werkzeug -  * Debugger PIN: 135-042-859
+2025-06-05 10:51:54,216 - INFO - werkzeug -  * Detected change in 'C:\\Users\\김오성OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\rag_system.py', reloading
+2025-06-05 10:51:54,357 - INFO - werkzeug -  * Restarting with stat
+2025-06-05 10:51:54,996 - INFO - __main__ - Flask 앱: Bedrock 클라이언트 초기화 성공!
+2025-06-05 10:51:55,061 - INFO - faiss.loader - Loading faiss with AVX2 support.
+2025-06-05 10:51:55,079 - INFO - faiss.loader - Successfully loaded faiss with AVX2 support.
+2025-06-05 10:51:55,084 - INFO - faiss - Failed to load GPU Faiss: name 'GpuIndexIVFFlat' is not defined. Will not load constructor refs for GPU indexes. This is only an error if you're trying to use GPU Faiss.
+2025-06-05 10:51:55,176 - INFO - rag_system - Loading knowledge base from: knowledge_base
+2025-06-05 10:51:55,178 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_AI_Lookbook_쇼핑엔티.txt' processed into 2 chunks.
+2025-06-05 10:51:55,623 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사_무배당발_배송서비스_강화.txt' processed into 2 chunks.
+2025-06-05 10:51:55,753 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사스탠다드_쿨스탠다드_마케팅.txt' processed into 2 chunks.
+2025-06-05 10:51:55,894 - INFO - rag_system - File 'knowledge_base\IT\IT_AWS_Serverless_MCP_Server_개요.txt.txt' processed into 3 chunks.
+2025-06-05 10:51:56,102 - INFO - rag_system - File 'knowledge_base\IT\IT_OpenAI_Sora_Bing_무료제공.txt' processed into 2 chunks.
+2025-06-05 10:51:56,235 - INFO - rag_system - File 'knowledge_base\IT\IT_한국_AI_100조투자_계획.txt' processed into 2 chunks.
+2025-06-05 10:51:56,372 - INFO - rag_system - Knowledge base loaded and indexed. Total chunks: 13, Embedding dimension: 1024
+2025-06-05 10:51:56,372 - INFO - rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-05 10:51:56,373 - INFO - services.ai_service - AIContentGenerator initialized with Bedrock client and RAG system.
+2025-06-05 10:51:56,373 - INFO - services.ai_service - AIContentGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-05 10:51:56,385 - WARNING - werkzeug -  * Debugger is active!
+2025-06-05 10:51:56,387 - INFO - werkzeug -  * Debugger PIN: 135-042-859
+2025-06-05 10:55:59,382 - INFO - werkzeug -  * Detected change in 'C:\\Users\\김오성OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\services\\ai_service.py', reloading
+2025-06-05 10:55:59,519 - INFO - werkzeug -  * Restarting with stat
+2025-06-05 10:56:00,145 - INFO - __main__ - Flask 앱: Bedrock 클라이언트 초기화 성공!
+2025-06-05 10:56:00,196 - INFO - faiss.loader - Loading faiss with AVX2 support.
+2025-06-05 10:56:00,215 - INFO - faiss.loader - Successfully loaded faiss with AVX2 support.
+2025-06-05 10:56:00,219 - INFO - faiss - Failed to load GPU Faiss: name 'GpuIndexIVFFlat' is not defined. Will not load constructor refs for GPU indexes. This is only an error if you're trying to use GPU Faiss.
+2025-06-05 10:56:00,311 - INFO - rag_system - Loading knowledge base from: knowledge_base
+2025-06-05 10:56:00,313 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_AI_Lookbook_쇼핑엔티.txt' processed into 2 chunks.
+2025-06-05 10:56:00,805 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사_무배당발_배송서비스_강화.txt' processed into 2 chunks.
+2025-06-05 10:56:00,947 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사스탠다드_쿨스탠다드_마케팅.txt' processed into 2 chunks.
+2025-06-05 10:56:01,101 - INFO - rag_system - File 'knowledge_base\IT\IT_AWS_Serverless_MCP_Server_개요.txt.txt' processed into 3 chunks.
+2025-06-05 10:56:01,339 - INFO - rag_system - File 'knowledge_base\IT\IT_OpenAI_Sora_Bing_무료제공.txt' processed into 2 chunks.
+2025-06-05 10:56:01,541 - INFO - rag_system - File 'knowledge_base\IT\IT_한국_AI_100조투자_계획.txt' processed into 2 chunks.
+2025-06-05 10:56:01,679 - INFO - rag_system - Knowledge base loaded and indexed. Total chunks: 13, Embedding dimension: 1024
+2025-06-05 10:56:01,679 - INFO - rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-05 10:56:01,700 - INFO - services.ai_service - AIContentGenerator initialized with Bedrock client and RAG system.
+2025-06-05 10:56:01,701 - INFO - services.ai_service - Prompt template loaded from: C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\services\..\templates\prompts\claude_marketing_prompt.md
+2025-06-05 10:56:01,701 - INFO - services.ai_service - AIContentGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-05 10:56:01,711 - WARNING - werkzeug -  * Debugger is active!
+2025-06-05 10:56:01,713 - INFO - werkzeug -  * Debugger PIN: 135-042-859
+2025-06-05 10:58:37,246 - INFO - werkzeug -  * Detected change in 'C:\\Users\\김오성OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\services\\ai_service.py', reloading
+2025-06-05 10:58:37,384 - INFO - werkzeug -  * Restarting with stat
+2025-06-05 10:58:38,061 - INFO - __main__ - Flask 앱: Bedrock 클라이언트 초기화 성공!
+2025-06-05 10:58:38,117 - INFO - faiss.loader - Loading faiss with AVX2 support.
+2025-06-05 10:58:38,136 - INFO - faiss.loader - Successfully loaded faiss with AVX2 support.
+2025-06-05 10:58:38,140 - INFO - faiss - Failed to load GPU Faiss: name 'GpuIndexIVFFlat' is not defined. Will not load constructor refs for GPU indexes. This is only an error if you're trying to use GPU Faiss.
+2025-06-05 10:58:38,232 - INFO - rag_system - Loading knowledge base from: knowledge_base
+2025-06-05 10:58:38,234 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_AI_Lookbook_쇼핑엔티.txt' processed into 2 chunks.
+2025-06-05 10:58:38,820 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사_무배당발_배송서비스_강화.txt' processed into 2 chunks.
+2025-06-05 10:58:38,982 - INFO - rag_system - File 'knowledge_base\Fashion\Fashion_무신사스탠다드_쿨스탠다드_마케팅.txt' processed into 2 chunks.
+2025-06-05 10:58:39,135 - INFO - rag_system - File 'knowledge_base\IT\IT_AWS_Serverless_MCP_Server_개요.txt.txt' processed into 3 chunks.
+2025-06-05 10:58:39,353 - INFO - rag_system - File 'knowledge_base\IT\IT_OpenAI_Sora_Bing_무료제공.txt' processed into 2 chunks.
+2025-06-05 10:58:39,486 - INFO - rag_system - File 'knowledge_base\IT\IT_한국_AI_100조투자_계획.txt' processed into 2 chunks.
+2025-06-05 10:58:39,633 - INFO - rag_system - Knowledge base loaded and indexed. Total chunks: 13, Embedding dimension: 1024
+2025-06-05 10:58:39,633 - INFO - rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-05 10:58:39,656 - INFO - services.ai_service - AIContentGenerator initialized with Bedrock client and RAG system.
+2025-06-05 10:58:39,656 - INFO - services.ai_service - Prompt template loaded from: C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\services\..\templates\prompts\claude_marketing_prompt.md
+2025-06-05 10:58:39,656 - INFO - services.ai_service - AIContentGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-05 10:58:39,670 - WARNING - werkzeug -  * Debugger is active!
+2025-06-05 10:58:39,672 - INFO - werkzeug -  * Debugger PIN: 135-042-859
+2025-06-05 10:58:41,300 - INFO - werkzeug - 127.0.0.1 - - [05/Jun/2025 10:58:41] "GET / HTTP/1.1" 200 -
+2025-06-05 10:58:45,590 - INFO - werkzeug - 127.0.0.1 - - [05/Jun/2025 10:58:45] "GET /history HTTP/1.1" 200 -
+2025-06-05 10:58:45,615 - INFO - werkzeug - 127.0.0.1 - - [05/Jun/2025 10:58:45] "GET /history-api HTTP/1.1" 200 -
+2025-06-05 10:59:34,312 - INFO - services.ai_service - RAG: Retrieved document for query '맛집 추천...': **무신사 스탠다드, '쿨스탠다드' 컬렉션 모델로 추성훈 발탁 및 마케팅 전략**
+
+모던 베이식 캐주얼웨어 브랜드 무신사 스탠다드가 기능성 여름 의류 라인 '쿨스탠다드'의 모델로 ...
+2025-06-05 10:59:34,312 - INFO - services.ai_service - SEO Keywords to include: 스시
+2025-06-05 10:59:55,105 - INFO - routes - Content successfully saved to DB: ID 8, Topic '맛집 추천' by User ID 1
+2025-06-05 10:59:55,106 - INFO - werkzeug - 127.0.0.1 - - [05/Jun/2025 10:59:55] "POST /generate_content HTTP/1.1" 200 -

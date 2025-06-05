@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내 콘텐츠 기록 - AI 콘텐츠 생성기</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --background-light: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-dark: #212529;
+            --text-muted: #6c757d;
+            --border-color: #dee2e6;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --info-color: #17a2b8;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-light);
+            color: var(--text-dark);
+            padding-top: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-wrapper {
+            max-width: 960px;
+            margin: auto;
+            padding: 40px;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            flex-grow: 1;
+        }
+
+        .navbar {
+            background-color: var(--card-bg) !important;
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-color) !important;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: var(--text-dark) !important;
+            margin-left: 15px;
+            transition: color 0.2s ease-in-out;
+        }
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+        }
+
+        .nav-link.btn {
+            border-radius: 8px;
+            padding: 8px 18px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        .nav-link.btn-primary { background-color: var(--primary-color); border-color: var(--primary-color); }
+        .nav-link.btn-primary:hover { background-color: #0056b3; border-color: #0056b3; }
+        .nav-link.btn-danger { background-color: var(--danger-color); border-color: var(--danger-color); }
+        .nav-link.btn-danger:hover { background-color: #b30000; border-color: #b30000; }
+
+        h2 {
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        /* History List Styling (index.html에서 가져옴) */
+        .history-item {
+            cursor: pointer;
+            padding: 12px 20px;
+            margin-bottom: 8px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease-in-out;
+        }
+        .history-item:hover {
+            background-color: var(--background-light);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        .history-item-content {
+            font-size: 1em;
+            color: var(--text-dark);
+            flex-grow: 1;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            font-weight: 500;
+        }
+        .history-item-delete {
+            margin-left: 15px;
+            color: var(--danger-color);
+            font-weight: 700;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: color 0.2s ease-in-out;
+        }
+        .history-item-delete:hover {
+            color: #a71d2a;
+        }
+        .text-info {
+            color: var(--info-color) !important;
+        }
+        .text-danger {
+            color: var(--danger-color) !important;
+        }
+        .text-muted {
+            color: var(--text-muted) !important;
+        }
+        .alert-success { background-color: var(--success-color); color: white; border-color: var(--success-color); }
+        .alert-danger { background-color: var(--danger-color); color: white; border-color: var(--danger-color); }
+        .alert-info { background-color: var(--info-color); color: white; border-color: var(--info-color); }
+    </style>
+</head>
+<body>
+    <div class="main-wrapper">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{{ url_for('main.index') }}">AI 콘텐츠</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        {% if current_user.is_authenticated %}
+                            <li class="nav-item d-flex align-items-center me-2">
+                                <span class="nav-link text-muted pe-0">환영합니다,</span>
+                                <span class="nav-link fw-bold text-dark ps-1">{{ current_user.username }}님!</span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('main.get_history') }}">내 기록</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-danger text-white" href="{{ url_for('main.logout') }}">로그아웃</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('main.register') }}">회원가입</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-primary text-white" href="{{ url_for('main.login') }}">로그인</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <h2 class="mb-4 text-center">내 콘텐츠 기록</h2>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} mt-3">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div id="historyList" class="list-group">
+            <p class="text-muted text-center" id="noHistoryMessage">아직 생성된 콘텐츠가 없습니다.</p>
+            {% if history_items %}
+                {% for item in history_items %}
+                    <div class="list-group-item history-item d-flex justify-content-between align-items-center" data-id="{{ item.id }}">
+                        <span class="history-item-content">
+                            {{ item.timestamp.strftime('%Y-%m-%d %H:%M') }} | {{ item.topic }} ({{ item.content_type }}, {{ item.industry }})
+                        </span>
+                        <span class="history-item-actions">
+                            <button class="btn btn-sm btn-outline-info me-2 view-detail-btn" data-bs-toggle="modal" data-bs-target="#contentDetailModal" data-content-id="{{ item.id }}">상세 보기</button>
+                            <span class="history-item-delete" data-id="{{ item.id }}">x</span>
+                        </span>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <button class="btn btn-danger mt-3" id="clearHistoryBtn" style="display: none;">기록 전체 삭제</button>
+
+        <div class="modal fade" id="contentDetailModal" tabindex="-1" aria-labelledby="contentDetailModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="contentDetailModalLabel">콘텐츠 상세 정보</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h6>주제: <span id="modalTopic"></span></h6>
+                        <p>업종: <span id="modalIndustry"></span> | 종류: <span id="modalContentType"></span> | 톤앤매너: <span id="modalTone"></span> | 길이: <span id="modalLength"></span></p>
+                        <p>SEO 키워드: <span id="modalSeoKeywords"></span></p>
+                        <p id="modalEmailSubjectArea">이메일 제목: <span id="modalEmailSubject"></span></p>
+                        <hr>
+                        <div id="modalGeneratedContent" style="white-space: pre-wrap;"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                        <button type="button" class="btn btn-primary" id="modalCopyBtn">클립보드에 복사</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <script>
+        // DOM 요소 캐싱
+        const historyListDiv = document.getElementById('historyList');
+        const noHistoryMessage = document.getElementById('noHistoryMessage');
+        const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+        const contentDetailModal = new bootstrap.Modal(document.getElementById('contentDetailModal')); // Bootstrap Modal 객체
+
+        // 모달 내 요소 캐싱
+        const modalTopic = document.getElementById('modalTopic');
+        const modalIndustry = document.getElementById('modalIndustry');
+        const modalContentType = document.getElementById('modalContentType');
+        const modalTone = document.getElementById('modalTone');
+        const modalLength = document.getElementById('modalLength');
+        const modalSeoKeywords = document.getElementById('modalSeoKeywords');
+        const modalEmailSubjectArea = document.getElementById('modalEmailSubjectArea');
+        const modalEmailSubject = document.getElementById('modalEmailSubject');
+        const modalGeneratedContent = document.getElementById('modalGeneratedContent');
+        const modalCopyBtn = document.getElementById('modalCopyBtn');
+        // Removed modalEditAndRegenerateBtn
+
+        // 히스토리 데이터를 저장할 배열 (모달에서 사용)
+        let allHistoryItems = [];
+
+        // 기록을 불러와 렌더링하는 함수 (GET /history API 호출)
+        async function fetchAndRenderHistory() {
+            try {
+                const response = await fetch('/history-api');
+                if (!response.ok) {
+                    if (response.status === 401 || response.redirected) {
+                        historyListDiv.innerHTML = '<p class="text-info text-center">로그인하시면 나의 콘텐츠 기록을 볼 수 있습니다.</p>';
+                        noHistoryMessage.style.display = 'none';
+                        clearHistoryBtn.style.display = 'none';
+                        return;
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                allHistoryItems = await response.json(); // API 응답을 변수에 저장
+
+                historyListDiv.innerHTML = ''; // 기존 목록 비우기
+
+                if (allHistoryItems.length === 0) {
+                    noHistoryMessage.style.display = 'block';
+                    clearHistoryBtn.style.display = 'none';
+                } else {
+                    noHistoryMessage.style.display = 'none';
+                    clearHistoryBtn.style.display = 'block';
+
+                    allHistoryItems.forEach((item) => { 
+                        const historyItem = document.createElement('div');
+                        historyItem.className = 'list-group-item history-item d-flex justify-content-between align-items-center';
+                        historyItem.setAttribute('data-id', item.id); 
+
+                        const previewText = document.createElement('span');
+                        previewText.className = 'history-item-content';
+                        const date = new Date(item.timestamp);
+                        const formattedDate = date.toLocaleString('ko-KR', {
+                            year: 'numeric', month: '2-digit', day: '2-digit',
+                            hour: '2-digit', minute: '2-digit'
+                        });
+                        previewText.textContent = `${formattedDate} | ${item.topic} (${item.content_type}, ${item.industry})`;
+
+                        const actionsSpan = document.createElement('span');
+                        actionsSpan.className = 'history-item-actions';
+
+                        const viewDetailButton = document.createElement('button');
+                        viewDetailButton.className = 'btn btn-sm btn-outline-info me-2 view-detail-btn';
+                        viewDetailButton.textContent = '상세 보기';
+                        viewDetailButton.setAttribute('data-bs-toggle', 'modal');
+                        viewDetailButton.setAttribute('data-bs-target', '#contentDetailModal');
+                        viewDetailButton.setAttribute('data-content-id', item.id);
+                        viewDetailButton.onclick = (e) => {
+                            e.stopPropagation();
+                            showContentDetail(item.id);
+                        };
+
+                        const deleteButton = document.createElement('span');
+                        deleteButton.className = 'history-item-delete';
+                        deleteButton.textContent = 'x';
+                        deleteButton.setAttribute('data-id', item.id);
+                        deleteButton.onclick = async (e) => {
+                            e.stopPropagation(); 
+                            if (confirm("이 기록을 삭제하시겠습니까?")) {
+                                try {
+                                    const deleteResponse = await fetch(`/history/${item.id}`, { 
+                                        method: 'DELETE'
+                                    });
+                                    if (!deleteResponse.ok) {
+                                        if (deleteResponse.status === 401 || deleteResponse.status === 404) {
+                                            alert('권한이 없거나 기록을 찾을 수 없습니다.');
+                                        }
+                                        throw new Error(`HTTP error! status: ${deleteResponse.status}`);
+                                    }
+                                    await fetchAndRenderHistory(); 
+                                } catch (error) {
+                                    console.error('Error deleting history item:', error);
+                                    alert('기록 삭제 중 오류가 발생했습니다.');
+                                }
+                            }
+                        };
+                        
+                        actionsSpan.appendChild(viewDetailButton);
+                        actionsSpan.appendChild(deleteButton);
+                        historyItem.appendChild(previewText);
+                        historyItem.appendChild(actionsSpan);
+
+                        historyListDiv.appendChild(historyItem);
+                    });
+                }
+            } catch (error) {
+                console.error('Error fetching history:', error);
+                historyListDiv.innerHTML = '<p class="text-danger text-center">기록을 불러오는 데 실패했습니다.</p>';
+                noHistoryMessage.style.display = 'none';
+                clearHistoryBtn.style.display = 'none';
+            }
+        }
+
+        // 콘텐츠 상세 보기 모달 표시 함수
+        function showContentDetail(contentId) {
+            const item = allHistoryItems.find(i => i.id === contentId);
+            if (!item) return;
+
+            modalTopic.textContent = item.topic || 'N/A';
+            modalIndustry.textContent = item.industry || 'N/A';
+            modalContentType.textContent = item.content_type || 'N/A';
+            modalTone.textContent = item.tone || 'N/A';
+            modalLength.textContent = item.length || 'N/A';
+            modalSeoKeywords.textContent = item.seo_keywords || 'N/A';
+
+            if (item.content_type === '이메일 뉴스레터' && item.email_subject) {
+                modalEmailSubjectArea.style.display = 'block';
+                modalEmailSubject.textContent = item.email_subject;
+            } else {
+                modalEmailSubjectArea.style.display = 'none';
+                modalEmailSubject.textContent = '';
+            }
+
+            modalGeneratedContent.innerHTML = marked.parse(item.content);
+            
+            // 모달의 "클립보드에 복사" 버튼
+            modalCopyBtn.onclick = () => {
+                navigator.clipboard.writeText(item.content)
+                    .then(() => alert('콘텐츠가 클립보드에 복사되었습니다!'))
+                    .catch(err => console.error('복사 실패:', err));
+            };
+
+            contentDetailModal.show();
+        }
+
+        // 모든 기록 삭제 함수 (API 호출)
+        async function clearAllHistory() {
+            if (confirm("정말로 모든 생성 기록을 삭제하시겠습니까? (현재 사용자의 기록만)")) {
+                try {
+                    const allItems = Array.from(historyListDiv.querySelectorAll('.history-item'));
+                    for (const itemElement of allItems) {
+                        const idToDelete = itemElement.getAttribute('data-id');
+                        const deleteResponse = await fetch(`/history/${idToDelete}`, { method: 'DELETE' });
+                        if (!deleteResponse.ok && deleteResponse.status !== 401 && deleteResponse.status !== 404) {
+                            throw new Error(`HTTP error! status: ${deleteResponse.status}`);
+                        }
+                    }
+                    await fetchAndRenderHistory(); 
+                    alert('모든 기록이 삭제되었습니다.');
+                } catch (error) {
+                    console.error('Error clearing all history:', error);
+                    alert('모든 기록 삭제 중 오류가 발생했습니다.');
+                }
+            }
+        }
+
+        // 페이지 로드 시 히스토리 로드 및 렌더링
+        window.addEventListener('load', fetchAndRenderHistory);
+    </script>
+</body>
+</html>
