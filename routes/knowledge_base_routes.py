@@ -1,24 +1,21 @@
 # ai-content-marketing-tool/routes/knowledge_base_routes.py
-from flask import request, jsonify, Blueprint, current_app, render_template 
+
+from flask import request, jsonify, Blueprint, current_app, render_template
 from flask_login import login_required
+import numpy as np
 import os
 import logging
-import requests 
-from bs4 import BeautifulSoup 
-import re 
-import shutil 
-import numpy as np 
 
-# services/ 디렉토리로 옮겨진 모듈들을 임포트합니다.
-from services.rag_system import get_rag_system, init_rag_system 
-from services.ai_service import get_ai_content_generator 
-from services.web_content_extractor import extract_text_from_url
-from services.web_utils import sanitize_filename 
-from services.crawler_tasks import perform_marketing_crawl_task
+# services/ 디렉토리 내의 모듈들의 임포트 경로를 수정합니다.
+from services.ai_rag.rag_system import get_rag_system, init_rag_system
+from services.ai_rag.ai_service import get_ai_content_generator
+from services.web_crawling.web_content_extractor import extract_text_from_url
+from services.web_crawling.web_utils import sanitize_filename
+from services.web_crawling.crawler_tasks import perform_marketing_crawl_task
 
 logger = logging.getLogger(__name__)
 
-knowledge_base_bp = Blueprint('knowledge_base_routes', __name__) 
+knowledge_base_bp = Blueprint('knowledge_base_routes', __name__)
 
 
 # --- API 라우트 구현 ---
@@ -50,45 +47,6 @@ def list_knowledge_base_files():
     except Exception as e:
         logger.error(f"지식 베이스 파일 목록 조회 오류: {e}", exc_info=True)
         return jsonify({"error": "지식 베이스 파일 목록을 가져오는 중 오류가 발생했습니다."}), 500
-
-@knowledge_base_bp.route('/upload', methods=['POST'])
-@login_required
-def upload_knowledge_base_file():
-    """새로운 텍스트 파일을 지식 베이스 디렉토리에 업로드하고, RAG 시스템을 재로드합니다."""
-    KNOWLEDGE_BASE_DIR = os.path.join(current_app.root_path, 'knowledge_base')
-    os.makedirs(KNOWLEDGE_BASE_DIR, exist_ok=True) # 디렉토리 없으면 생성
-
-    if 'file' not in request.files:
-        return jsonify({"error": "파일이 없습니다."}), 400
-    
-    file = request.files['file']
-    if file.filename == '':
-        return jsonify({"error": "선택된 파일이 없습니다."}), 400
-    
-    if not file.filename.lower().endswith('.txt'):
-        return jsonify({"error": "TXT 파일만 업로드할 수 있습니다."}), 400
-    
-    secure_filename = os.path.basename(file.filename)
-    filepath = os.path.join(KNOWLEDGE_BASE_DIR, secure_filename)
-
-    try:
-        counter = 1
-        original_filepath = filepath
-        while os.path.exists(filepath):
-            name, ext = os.path.splitext(original_filepath)
-            filepath = f"{name}_{counter}{ext}"
-            counter += 1
-
-        file.save(filepath)
-        logger.info(f"File '{secure_filename}' uploaded to {filepath}.")
-        
-        bedrock_runtime_client = current_app.extensions['rag_bedrock_runtime']
-        init_rag_system(bedrock_runtime_client) 
-        
-        return jsonify({"message": f"파일 '{secure_filename}'이 업로드되고 지식 베이스가 업데이트되었습니다."}), 200
-    except Exception as e:
-        logger.error(f"지식 베이스 파일 업로드 및 RAG 재로드 오류: {e}", exc_info=True)
-        return jsonify({"error": f"파일 업로드 및 지식 베이스 업데이트 중 오류가 발생했습니다: {e}"}), 500
 
 @knowledge_base_bp.route('/delete/<path:filename>', methods=['DELETE'])
 @login_required
@@ -128,7 +86,7 @@ def clear_all_knowledge_base_files():
         if os.path.exists(KNOWLEDGE_BASE_DIR):
             for root, dirs, files in os.walk(KNOWLEDGE_BASE_DIR, topdown=False):
                 for file in files:
-                    if file.endswith(".txt"): 
+                    if file.endswith(".txt"):
                         filepath = os.path.join(root, file)
                         os.remove(filepath)
                         deleted_count += 1
@@ -155,7 +113,7 @@ def add_knowledge_base_from_url():
     가장 가까운 업종 디렉토리를 찾아 저장합니다. 이후 RAG 시스템을 재로드합니다.
     """
     KNOWLEDGE_BASE_DIR = os.path.join(current_app.root_path, 'knowledge_base')
-    os.makedirs(KNOWLEDGE_BASE_DIR, exist_ok=True) 
+    os.makedirs(KNOWLEDGE_BASE_DIR, exist_ok=True)
 
     data = request.json
     url = data.get('url')
@@ -166,24 +124,23 @@ def add_knowledge_base_from_url():
     logger.info(f"URL로부터 지식 베이스 추가 시도: {url}")
     try:
         # 1. URL에서 기사 내용 추출
-        article_content_data = extract_text_from_url(url) 
+        article_content_data = extract_text_from_url(url)
         if not article_content_data:
             return jsonify({"error": "URL에서 콘텐츠를 추출할 수 없습니다. 유효한 URL인지 확인해주세요."}), 400
         
-        article_title = article_content_data['title'] # 제목 추출
-        article_content_str = article_content_data['content'] # content가 문자열임을 명확히 함
+        article_title = article_content_data['title']
+        article_content_str = article_content_data['content']
         
-        base_filename = sanitize_filename(article_title, url) # <--- sanitize_filename에 title, url 전달
+        base_filename = sanitize_filename(article_title, url)
         
         # 2. AIContentGenerator 인스턴스 가져오기 (업종 임베딩 비교용)
         ai_generator = get_ai_content_generator()
         if ai_generator is None:
             logger.error("AIContentGenerator 인스턴스를 가져올 수 없습니다. 업종 분류 기능이 작동하지 않습니다.")
-            # AI 서비스 초기화 실패 시 기본 디렉토리에 저장
-            closest_industry_folder = "" 
+            closest_industry_folder = "" # AI 서비스 초기화 실패 시 기본 디렉토리에 저장
         else:
             # 3. 추출된 콘텐츠의 임베딩 생성
-            content_embedding = ai_generator.rag_system.get_embedding(article_content_str) 
+            content_embedding = ai_generator.rag_system.get_embedding(article_content_str)
             if content_embedding is None:
                 logger.warning(f"콘텐츠 임베딩 생성 실패: {url}. 업종 분류 대신 기본 디렉토리에 저장합니다.")
                 closest_industry_folder = ""
@@ -192,40 +149,44 @@ def add_knowledge_base_from_url():
                 closest_industry = ""
                 max_similarity = -1.0
                 
-                for industry_name, industry_emb in ai_generator.industry_embeddings.items():
-                    if industry_emb is not None:
-                        similarity = np.dot(content_embedding, industry_emb) / \
-                                     (np.linalg.norm(content_embedding) * np.linalg.norm(industry_emb))
-                        
-                        if similarity > max_similarity:
-                            max_similarity = similarity
-                            closest_industry = industry_name
-                
-                # 유사도 임계값 설정 (선택 사항): 너무 낮으면 분류하지 않음
-                if max_similarity < 0.5: # 예시 임계값, 필요에 따라 조정
-                    logger.info(f"업종 분류 유사도 낮음 ({max_similarity:.2f}) for URL: {url}. 기본 디렉토리에 저장합니다.")
-                    closest_industry_folder = ""
+
+                if hasattr(ai_generator, 'embedding_manager') and ai_generator.embedding_manager.industry_embeddings:
+                    for industry_name, industry_emb in ai_generator.embedding_manager.industry_embeddings.items():
+                        if industry_emb is not None:
+                            similarity = np.dot(content_embedding, industry_emb) / \
+                                         (np.linalg.norm(content_embedding) * np.linalg.norm(industry_emb))
+                            
+                            if similarity > max_similarity:
+                                max_similarity = similarity
+                                closest_industry = industry_name
+                    
+                    if max_similarity < 0.5:
+                        logger.info(f"업종 분류 유사도 낮음 ({max_similarity:.2f}) for URL: {url}. 기본 디렉토리에 저장합니다.")
+                        closest_industry_folder = ""
+                    else:
+                        closest_industry_folder = closest_industry
+                        logger.info(f"URL '{url}'의 콘텐츠가 '{closest_industry}' 업종으로 분류되었습니다 (유사도: {max_similarity:.2f}).")
                 else:
-                    closest_industry_folder = closest_industry
-                    logger.info(f"URL '{url}'의 콘텐츠가 '{closest_industry}' 업종으로 분류되었습니다 (유사도: {max_similarity:.2f}).")
+                    logger.warning("AIContentGenerator의 embedding_manager가 초기화되지 않았거나 업종 임베딩이 없습니다. 기본 디렉토리에 저장합니다.")
+                    closest_industry_folder = ""
 
 
         # 5. 파일 저장 경로 결정 및 저장
         target_dir = os.path.join(KNOWLEDGE_BASE_DIR, closest_industry_folder)
-        os.makedirs(target_dir, exist_ok=True) 
+        os.makedirs(target_dir, exist_ok=True)
 
         final_filename = base_filename
         filepath = os.path.join(target_dir, final_filename)
 
         counter = 1
         while os.path.exists(filepath):
-            name, ext = os.path.splitext(base_filename) 
+            name, ext = os.path.splitext(base_filename)
             final_filename = f"{name}_{counter}{ext}"
             filepath = os.path.join(target_dir, final_filename)
             counter += 1
 
         with open(filepath, 'w', encoding='utf-8') as f:
-            f.write(article_content_str) 
+            f.write(article_content_str)
         
         logger.info(f"URL '{url}'의 콘텐츠가 '{closest_industry_folder}/{final_filename}'으로 저장되었습니다.")
 
@@ -247,9 +208,7 @@ def crawl_marketing_news_manual():
     """
     logger.info("API 요청으로 수동 뉴스 크롤링 작업 트리거됨.")
     
-    # perform_marketing_crawl_task 함수는 인자를 받지 않도록 변경되었으므로,
-    # news_list_url 인자 없이 바로 호출합니다.
-    result = perform_marketing_crawl_task() 
+    result = perform_marketing_crawl_task()
     
     if "error" in result:
         return jsonify(result), 500

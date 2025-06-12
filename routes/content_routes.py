@@ -1,10 +1,10 @@
 # ai-content-marketing-tool/routes/content_routes.py
 
 from flask import render_template, request, jsonify, Blueprint, flash
-from services.ai_service import get_ai_content_generator # <-- import 경로 변경: services/ai_service
-from models import Content # 절대 임포트
+from services.ai_rag.ai_service import get_ai_content_generator
+from models import Content 
 from flask_login import login_required, current_user
-from extensions import db # 절대 임포트
+from extensions import db
 import logging
 
 logger = logging.getLogger(__name__)

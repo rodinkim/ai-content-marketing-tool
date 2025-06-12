@@ -1,8 +1,6 @@
-# ai-content-marketing-tool/__init__.py
-
 from flask import Flask
-# services.app_factory_utils 모듈에서 필요한 함수들을 임포트합니다.
-from services.app_factory_utils import (
+# services.app_core 모듈에서 필요한 함수들을 임포트합니다.
+from services.app_core.app_factory_utils import ( # <-- 경로 변경
     configure_logging,
     load_app_config,
     init_app_extensions,

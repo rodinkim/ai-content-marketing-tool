@@ -110,21 +110,6 @@
             </form>
         </div>
 
-        {# 파일 업로드 섹션 #}
-        <h4 class="section-header">파일 업로드 (.txt 파일만)</h4>
-        <div class="card p-3 mb-4">
-            <form id="uploadFileForm" enctype="multipart/form-data">
-                <div class="mb-3">
-                    <label for="fileInput" class="form-label">지식 베이스 파일 선택:</label>
-                    <input type="file" class="form-control" id="fileInput" name="file" accept=".txt" required>
-                    <small class="form-text text-muted">최대 5MB의 .txt 파일만 업로드할 수 있습니다.</small>
-                </div>
-                <button type="submit" class="btn btn-primary w-100" id="uploadFileBtn">
-                    파일 업로드
-                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
-                </button>
-            </form>
-        </div>
 
         {# 지식 베이스 파일 목록 섹션 #}
         <h4 class="section-header">현재 지식 베이스 파일 목록</h4>
@@ -142,7 +127,7 @@
     <script>
         // Flask URL을 JavaScript 변수로 정의 (knowledge_base_manager.js 로드 전에 정의)
         const flaskKnowledgeBaseFilesUrl = "{{ url_for('knowledge_base_routes.list_knowledge_base_files') }}";
-        const flaskUploadFileUrl = "{{ url_for('knowledge_base_routes.upload_knowledge_base_file') }}";
+        
         // filename 파라미터가 비어있으면 해당 부분을 생략합니다.
         const flaskDeleteFileUrlBase = "{{ url_for('knowledge_base_routes.delete_knowledge_base_file', filename='') }}"; 
         const flaskAddUrlUrl = "{{ url_for('knowledge_base_routes.add_knowledge_base_from_url') }}";

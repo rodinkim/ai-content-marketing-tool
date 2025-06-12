@@ -10,11 +10,6 @@ const urlInput = document.getElementById('urlInput');
 const addUrlBtn = document.getElementById('addUrlBtn');
 const addUrlSpinner = addUrlBtn.querySelector('.spinner-border');
 
-const uploadFileForm = document.getElementById('uploadFileForm');
-const fileInput = document.getElementById('fileInput');
-const uploadFileBtn = document.getElementById('uploadFileBtn');
-const uploadFileSpinner = uploadFileBtn.querySelector('.spinner-border');
-
 // --- 파일 목록을 불러와 렌더링하는 함수 ---
 async function fetchAndRenderFiles() {
     try {
@@ -124,38 +119,6 @@ addUrlForm.addEventListener('submit', async (event) => {
         addUrlBtn.disabled = false;
         addUrlSpinner.style.display = 'none';
         urlInput.disabled = false;
-    }
-});
-
-// --- 파일 업로드 폼 제출 핸들러 ---
-uploadFileForm.addEventListener('submit', async (event) => {
-    event.preventDefault();
-    uploadFileBtn.disabled = true;
-    uploadFileSpinner.style.display = 'inline-block';
-    fileInput.disabled = true;
-
-    const formData = new FormData(uploadFileForm);
-
-    try {
-        const response = await fetch(flaskUploadFileUrl, { 
-            method: 'POST',
-            body: formData 
-        });
-        const result = await response.json();
-        if (response.ok) {
-            alert(result.message);
-            fileInput.value = ''; 
-            fetchAndRenderFiles(); 
-        } else {
-            alert(`파일 업로드 실패: ${result.error || response.statusText}`);
-        }
-    } catch (error) {
-        console.error('Error uploading file:', error);
-        alert('파일 업로드 중 오류가 발생했습니다.');
-    } finally {
-        uploadFileBtn.disabled = false;
-        uploadFileSpinner.style.display = 'none';
-        fileInput.disabled = false;
     }
 });
 
