@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>지식 베이스 관리 - AI 콘텐츠 생성기</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        /* 기존 style.css 외에 이 페이지에 필요한 추가 스타일 */
+        .main-wrapper {
+            max-width: 960px;
+            margin: auto;
+            padding: 40px;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            flex-grow: 1;
+        }
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .file-item:last-child {
+            border-bottom: none;
+        }
+        .file-item-name {
+            flex-grow: 1;
+            font-weight: 500;
+        }
+        .file-item-actions button {
+            margin-left: 10px;
+        }
+        .section-header {
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-wrapper">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{{ url_for('auth_routes.index') }}">AI 콘텐츠</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        {% if current_user.is_authenticated %}
+                            <li class="nav-item d-flex align-items-center me-2">
+                                <span class="nav-link text-muted pe-0">환영합니다,</span>
+                                <span class="nav-link fw-bold text-dark ps-1">{{ current_user.username }}님!</span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('content_routes.get_history_page') }}">내 기록</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('knowledge_base_routes.manage_knowledge_base') }}">지식 베이스</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-danger text-white" href="{{ url_for('auth_routes.logout') }}">로그아웃</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('auth_routes.register') }}">회원가입</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-primary text-white" href="{{ url_for('auth_routes.login') }}">로그인</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <h2 class="mb-4 text-center">지식 베이스 관리</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} mt-3">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {# URL에서 콘텐츠 추가 섹션 #}
+        <h4 class="section-header">URL에서 지식 추가</h4>
+        <div class="card p-3 mb-4">
+            <form id="addUrlForm">
+                <div class="mb-3">
+                    <label for="urlInput" class="form-label">기사 URL 입력:</label>
+                    <input type="url" class="form-control" id="urlInput" name="url" placeholder="예: https://news.example.com/article-title" required>
+                    <small class="form-text text-muted">기사 본문이 잘 추출되는 URL을 입력해주세요.</small>
+                </div>
+                <button type="submit" class="btn btn-primary w-100" id="addUrlBtn">
+                    URL에서 지식 추가
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
+                </button>
+            </form>
+        </div>
+
+        {# 파일 업로드 섹션 #}
+        <h4 class="section-header">파일 업로드 (.txt 파일만)</h4>
+        <div class="card p-3 mb-4">
+            <form id="uploadFileForm" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="fileInput" class="form-label">지식 베이스 파일 선택:</label>
+                    <input type="file" class="form-control" id="fileInput" name="file" accept=".txt" required>
+                    <small class="form-text text-muted">최대 5MB의 .txt 파일만 업로드할 수 있습니다.</small>
+                </div>
+                <button type="submit" class="btn btn-primary w-100" id="uploadFileBtn">
+                    파일 업로드
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
+                </button>
+            </form>
+        </div>
+
+        {# 지식 베이스 파일 목록 섹션 #}
+        <h4 class="section-header">현재 지식 베이스 파일 목록</h4>
+        <div class="card p-3">
+            <div id="fileList">
+                <p class="text-muted text-center" id="noFilesMessage">지식 베이스에 파일이 없습니다.</p>
+                {# 파일 목록은 JavaScript로 동적으로 로드됩니다. #}
+            </div>
+            <button class="btn btn-danger mt-3" id="clearAllKbBtn" style="display: none;">모든 지식 베이스 파일 삭제</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    {# 지식 베이스 관리 기능을 위한 JavaScript 파일 #}
+    <script>
+        // Flask URL을 JavaScript 변수로 정의 (knowledge_base_manager.js 로드 전에 정의)
+        const flaskKnowledgeBaseFilesUrl = "{{ url_for('knowledge_base_routes.list_knowledge_base_files') }}";
+        const flaskUploadFileUrl = "{{ url_for('knowledge_base_routes.upload_knowledge_base_file') }}";
+        // filename 파라미터가 비어있으면 해당 부분을 생략합니다.
+        const flaskDeleteFileUrlBase = "{{ url_for('knowledge_base_routes.delete_knowledge_base_file', filename='') }}"; 
+        const flaskAddUrlUrl = "{{ url_for('knowledge_base_routes.add_knowledge_base_from_url') }}";
+        const flaskClearAllKbUrl = "{{ url_for('knowledge_base_routes.clear_all_knowledge_base_files') }}"; 
+        
+        // 로그인/로그아웃/회원가입/인덱스 URL (네비게이션 바에서 사용)
+        const flaskAuthIndexUrl = "{{ url_for('auth_routes.index') }}";
+        const flaskContentHistoryUrl = "{{ url_for('content_routes.get_history_page') }}";
+        const flaskAuthLogoutUrl = "{{ url_for('auth_routes.logout') }}";
+        const flaskAuthRegisterUrl = "{{ url_for('auth_routes.register') }}";
+        const flaskAuthLoginUrl = "{{ url_for('auth_routes.login') }}";
+        const flaskKnowledgeBaseManageUrl = "{{ url_for('knowledge_base_routes.manage_knowledge_base') }}";
+    </script>
+    <script src="{{ url_for('static', filename='js/knowledge_base_manager.js') }}"></script>
+</body>
+</html>
