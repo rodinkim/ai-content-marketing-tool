@@ -1,0 +1,20 @@
+{
+    "IT": [
+        "https://www.itworld.co.kr/artificial-intelligence/"
+    ],
+    "Fashion": [
+        "https://fashionbiz.co.kr/search/%EC%97%AC%EC%84%B1%EB%B3%B5?type=3&tagId=1"
+    ],
+    "Food": [
+        "https://www.10000recipe.com/ranking/home_new.html"
+    ],
+    "Healthcare": [ 
+        "https://news.hidoc.co.kr/news/articleList.html?sc_section_code=S1N1&view_type=sm"
+    ],
+    "Travel": [
+        "https://www.tlnews.co.kr/news/articleList.html?sc_sub_section_code=S2N38&view_type=sm"
+    ],
+    "Beauty": [
+        "https://www.beautynury.com/news/lists/cat/10/page/"
+    ]
+}
