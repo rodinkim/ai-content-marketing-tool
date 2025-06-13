@@ -1,6 +1,6 @@
 # services/web_crawling/extractors/hidoc.py (최종 수정안)
-
-from .base_extractor import BaseExtractor, BeautifulSoup, re, logger, requests, extract # requests 임포트 추가
+import re 
+from .base_extractor import BaseExtractor, BeautifulSoup, logger, requests, extract # requests 임포트 추가
 
 class HidocExtractor(BaseExtractor):
     """news.hidoc.co.kr 웹사이트에서 콘텐츠를 추출하는 클래스."""

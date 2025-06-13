@@ -1,11 +1,10 @@
-# services/web_crawling/web_content_extractor.py (최종 수정)
+# services/web_crawling/web_content_extractor.py
 
 import logging
 from urllib.parse import urlparse
 
-# 새로 만든 Extractor 클래스들을 임포트합니다.
-# 이 파일은 이제 각 도메인에 맞는 추출기를 선택하고 호출하는 중앙 게이트웨이 역할을 합니다.
-from .extractors.base_extractor import BaseExtractor # BaseExtractor는 일반적인 추출기로도 사용될 수 있음
+# 이 파일은 각 도메인에 맞는 추출기를 선택하고 호출하는 중앙 게이트웨이 역할을 합니다.
+from .extractors.base_extractor import BaseExtractor
 from .extractors.itworld import ITWorldExtractor
 from .extractors.fashionbiz import FashionbizExtractor
 from .extractors.ten_thousand_recipe import TenThousandRecipeExtractor
@@ -18,26 +17,24 @@ logger = logging.getLogger(__name__)
 # 각 도메인에 매핑되는 Extractor 클래스의 인스턴스를 정의합니다.
 # 여기에 새로운 웹사이트 Extractor를 추가할 때마다 맵을 업데이트합니다.
 _EXTRACTORS = {
-    "itworld.co.kr": ITWorldExtractor(), # 'www.' 제거
+    "itworld.co.kr": ITWorldExtractor(), 
     "fashionbiz.co.kr": FashionbizExtractor(),
-    "10000recipe.com": TenThousandRecipeExtractor(), # 'www.' 제거
-    "news.hidoc.co.kr": HidocExtractor(), # 서브도메인 포함
-    "tlnews.co.kr": TLNewsExtractor(), # 'www.' 제거
-    "beautynury.com": BeautynuryExtractor(), # 'www.' 제거
+    "10000recipe.com": TenThousandRecipeExtractor(), 
+    "news.hidoc.co.kr": HidocExtractor(), 
+    "tlnews.co.kr": TLNewsExtractor(), 
+    "beautynury.com": BeautynuryExtractor(), 
 }
 
 def get_specific_extractor(url: str) -> BaseExtractor | None:
     """주어진 URL에 해당하는 웹사이트 추출기 인스턴스를 반환합니다."""
     parsed_url = urlparse(url)
-    domain = parsed_url.netloc # 예: "www.itworld.co.kr", "fashionbiz.co.kr"
+    domain = parsed_url.netloc 
 
     # 딕셔너리 키와 일치시키기 위한 정규화된 도메인 리스트를 만듭니다.
     possible_domains = [domain]
     if domain.startswith("www."):
-        possible_domains.append(domain[4:]) # "www.itworld.co.kr" -> "itworld.co.kr" 추가
+        possible_domains.append(domain[4:]) 
     elif not domain.startswith("www.") and "." in domain:
-        # "itworld.co.kr" -> "www.itworld.co.kr" 을 추가할 필요가 있을 수도 있습니다.
-        # 하지만 일반적으로 www.를 제거한 형태를 키로 쓰는 것이 좋습니다.
         possible_domains.append("www." + domain)
     
     # _EXTRACTORS 딕셔너리의 키를 미리 소문자로 변환하여 비교합니다.

@@ -1,6 +1,6 @@
 # services/web_crawling/extractors/tlnews.py
-
-from .base_extractor import BaseExtractor, BeautifulSoup, re, logger, extract 
+import re
+from .base_extractor import BaseExtractor, BeautifulSoup, logger, extract 
 
 class TLNewsExtractor(BaseExtractor):
     """tlnews.co.kr 웹사이트에서 콘텐츠를 추출하는 클래스."""

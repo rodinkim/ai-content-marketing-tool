@@ -1,6 +1,6 @@
 # services/web_crawling/extractors/ten_thousand_recipe.py
-
-from .base_extractor import BaseExtractor, requests, BeautifulSoup, re, logger
+import re 
+from .base_extractor import BaseExtractor, requests, BeautifulSoup, logger
 
 class TenThousandRecipeExtractor(BaseExtractor):
     """10000recipe.com 웹사이트에서 레시피 콘텐츠를 추출하는 클래스."""
