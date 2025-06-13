@@ -107,8 +107,8 @@ def schedule_app_tasks(app: Flask):
         func=lambda: app.app_context().push() or perform_marketing_crawl_task() or app.app_context().pop(),
         trigger='cron',
         day_of_week='fri',
-        hour=11,
-        minute=21,
+        hour=16,
+        minute=38,
         timezone='Asia/Seoul',
         misfire_grace_time=3600
     )

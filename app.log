@@ -1925,3 +1925,295 @@ AttributeError: 'FashionbizExtractor' object has no attribute 'CUSTOM_TITLE_SELE
 2025-06-13 13:24:32,359 - INFO - werkzeug - 127.0.0.1 - - [13/Jun/2025 13:24:32] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
 2025-06-13 13:24:32,359 - INFO - werkzeug - 127.0.0.1 - - [13/Jun/2025 13:24:32] "[36mGET /static/js/knowledge_base_manager.js HTTP/1.1[0m" 304 -
 2025-06-13 13:24:32,380 - INFO - werkzeug - 127.0.0.1 - - [13/Jun/2025 13:24:32] "GET /knowledge_base/files HTTP/1.1" 200 -
+2025-06-13 16:37:10,985 - INFO - services.app_core.app_factory_utils - Configuration loaded successfully.
+2025-06-13 16:37:11,020 - INFO - services.app_core.app_factory_utils - Flask extensions initialized.
+2025-06-13 16:37:11,234 - INFO - services.app_core.app_factory_utils - Bedrock client initialized successfully!
+2025-06-13 16:37:11,674 - INFO - faiss.loader - Loading faiss with AVX2 support.
+2025-06-13 16:37:11,715 - INFO - faiss.loader - Successfully loaded faiss with AVX2 support.
+2025-06-13 16:37:11,726 - INFO - faiss - Failed to load GPU Faiss: name 'GpuIndexIVFFlat' is not defined. Will not load constructor refs for GPU indexes. This is only an error if you're trying to use GPU Faiss.
+2025-06-13 16:37:11,733 - INFO - services.ai_rag.rag_system - Loading knowledge base from: C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base
+2025-06-13 16:37:11,740 - INFO - services.ai_rag.document_loader - File 'C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base\앤니즈_2025_핫썸머_컬렉션_Coastal_Cool_공개.txt' processed into 3 chunks.
+2025-06-13 16:37:11,743 - INFO - services.ai_rag.document_loader - File 'C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base\예산_5000만5억원_팝업스토어_어디까지_할_수_있나.txt' processed into 6 chunks.
+2025-06-13 16:37:11,746 - INFO - services.ai_rag.document_loader - File 'C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base\패션_브랜드_자라_내부에서는_어떤_비밀스러운_일이_펼쳐지고_있을까_-_BBC_News_코리.txt' processed into 8 chunks.
+2025-06-13 16:37:11,750 - INFO - services.ai_rag.document_loader - File 'C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base\Beauty\데이셀코스메틱_메디_랩_멜라좀_화이트_라인_출시.txt' processed into 3 chunks.
+2025-06-13 16:37:11,752 - INFO - services.ai_rag.document_loader - File 'C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base\Beauty\토니모리_언커먼_크루_1기_서포터즈_공식_발대식.txt' processed into 3 chunks.
+2025-06-13 16:37:11,754 - INFO - services.ai_rag.document_loader - File 'C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base\Fashion\로맨틱스RAWmantics_성수_연무장길서_팝업_개최.txt' processed into 2 chunks.
+2025-06-13 16:37:11,761 - INFO - services.ai_rag.document_loader - File 'C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base\Fashion\잉크_한국_브랜드_최초_17일_루이자비아로마에서_팝업_연다.txt' processed into 3 chunks.
+2025-06-13 16:37:11,767 - INFO - services.ai_rag.document_loader - File 'C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base\Food\백종원_골뱅이무침_만드는_법_술안주로_좋은_골뱅이소면무침.txt' processed into 3 chunks.
+2025-06-13 16:37:11,770 - INFO - services.ai_rag.document_loader - File 'C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base\Food\엄마의_레시피_소고기_미역국_끓이는_법.txt' processed into 3 chunks.
+2025-06-13 16:37:11,778 - INFO - services.ai_rag.document_loader - File 'C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base\Healthcare\암세포_만드는_수면습관_있다고잘_자야_암도_예방.txt' processed into 7 chunks.
+2025-06-13 16:37:11,785 - INFO - services.ai_rag.document_loader - File 'C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base\Healthcare\에어컨_바람에_으슬으슬_냉방병_아닌_이_감염병_예방법은.txt' processed into 7 chunks.
+2025-06-13 16:37:11,792 - INFO - services.ai_rag.document_loader - File 'C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base\IT\에이전트_AI로_더욱_구체화되는_윈도우_AI_플랫폼.txt' processed into 18 chunks.
+2025-06-13 16:37:11,801 - INFO - services.ai_rag.document_loader - File 'C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base\IT\퍼플렉시티_아이디어_실현형_생성형_AI_플랫폼_랩스_출시.txt' processed into 7 chunks.
+2025-06-13 16:37:11,803 - INFO - services.ai_rag.document_loader - File 'C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base\Travel\청산도_슬로걷기_축제_한_달간의_여정_시작.txt' processed into 2 chunks.
+2025-06-13 16:37:11,807 - INFO - services.ai_rag.document_loader - File 'C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base\Travel\코레일관광_부산역_출판_술례열차_첫_운행.txt' processed into 2 chunks.
+2025-06-13 16:37:11,807 - INFO - services.ai_rag.document_loader - Finished loading documents. Total chunks generated: 77
+2025-06-13 16:37:18,375 - INFO - services.ai_rag.faiss_indexer - FAISS index built. Total indexed chunks: 77, Embedding dimension: 1024
+2025-06-13 16:37:18,375 - INFO - services.ai_rag.rag_system - Knowledge base loaded and indexed. Total chunks: 77, Embedding dimension: 1024
+2025-06-13 16:37:18,376 - INFO - services.ai_rag.rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-13 16:37:18,377 - INFO - services.ai_rag.prompt_manager - Prompt template loaded from: C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\templates\prompts\claude_marketing_prompt.md
+2025-06-13 16:37:18,378 - INFO - services.ai_rag.embedding_generator - Precomputing industry embeddings...
+2025-06-13 16:37:18,799 - INFO - services.ai_rag.embedding_generator - Finished precomputing 6 industry embeddings.
+2025-06-13 16:37:18,800 - INFO - services.ai_rag.ai_service - AIContentGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-13 16:37:18,801 - INFO - services.app_core.app_factory_utils - RAG system and AI services initialized.
+2025-06-13 16:37:20,484 - INFO - services.app_core.app_factory_utils - Blueprints registered.
+2025-06-13 16:37:20,484 - INFO - apscheduler.scheduler - Scheduler started
+2025-06-13 16:37:20,485 - INFO - services.app_core.app_factory_utils - Scheduler started.
+2025-06-13 16:37:20,486 - INFO - apscheduler.scheduler - Added job "scheduled_marketing_crawl" to job store "default"
+2025-06-13 16:37:20,486 - INFO - services.app_core.app_factory_utils - Scheduler: Weekly marketing news crawling job registered.
+2025-06-13 16:37:20,487 - INFO - __init__ - Flask application initialized successfully!
+2025-06-13 16:37:20,523 - INFO - werkzeug - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.130.106:5000
+2025-06-13 16:37:20,524 - INFO - werkzeug - [33mPress CTRL+C to quit[0m
+2025-06-13 16:37:20,527 - INFO - werkzeug -  * Restarting with stat
+2025-06-13 16:37:22,346 - INFO - services.app_core.app_factory_utils - Configuration loaded successfully.
+2025-06-13 16:37:22,386 - INFO - services.app_core.app_factory_utils - Flask extensions initialized.
+2025-06-13 16:37:22,590 - INFO - services.app_core.app_factory_utils - Bedrock client initialized successfully!
+2025-06-13 16:37:23,013 - INFO - faiss.loader - Loading faiss with AVX2 support.
+2025-06-13 16:37:23,045 - INFO - faiss.loader - Successfully loaded faiss with AVX2 support.
+2025-06-13 16:37:23,058 - INFO - faiss - Failed to load GPU Faiss: name 'GpuIndexIVFFlat' is not defined. Will not load constructor refs for GPU indexes. This is only an error if you're trying to use GPU Faiss.
+2025-06-13 16:37:23,062 - INFO - services.ai_rag.rag_system - Loading knowledge base from: C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base
+2025-06-13 16:37:23,070 - INFO - services.ai_rag.document_loader - File 'C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base\앤니즈_2025_핫썸머_컬렉션_Coastal_Cool_공개.txt' processed into 3 chunks.
+2025-06-13 16:37:23,074 - INFO - services.ai_rag.document_loader - File 'C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base\예산_5000만5억원_팝업스토어_어디까지_할_수_있나.txt' processed into 6 chunks.
+2025-06-13 16:37:23,078 - INFO - services.ai_rag.document_loader - File 'C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base\패션_브랜드_자라_내부에서는_어떤_비밀스러운_일이_펼쳐지고_있을까_-_BBC_News_코리.txt' processed into 8 chunks.
+2025-06-13 16:37:23,079 - INFO - services.ai_rag.document_loader - File 'C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base\Beauty\데이셀코스메틱_메디_랩_멜라좀_화이트_라인_출시.txt' processed into 3 chunks.
+2025-06-13 16:37:23,086 - INFO - services.ai_rag.document_loader - File 'C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base\Beauty\토니모리_언커먼_크루_1기_서포터즈_공식_발대식.txt' processed into 3 chunks.
+2025-06-13 16:37:23,089 - INFO - services.ai_rag.document_loader - File 'C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base\Fashion\로맨틱스RAWmantics_성수_연무장길서_팝업_개최.txt' processed into 2 chunks.
+2025-06-13 16:37:23,095 - INFO - services.ai_rag.document_loader - File 'C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base\Fashion\잉크_한국_브랜드_최초_17일_루이자비아로마에서_팝업_연다.txt' processed into 3 chunks.
+2025-06-13 16:37:23,100 - INFO - services.ai_rag.document_loader - File 'C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base\Food\백종원_골뱅이무침_만드는_법_술안주로_좋은_골뱅이소면무침.txt' processed into 3 chunks.
+2025-06-13 16:37:23,102 - INFO - services.ai_rag.document_loader - File 'C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base\Food\엄마의_레시피_소고기_미역국_끓이는_법.txt' processed into 3 chunks.
+2025-06-13 16:37:23,106 - INFO - services.ai_rag.document_loader - File 'C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base\Healthcare\암세포_만드는_수면습관_있다고잘_자야_암도_예방.txt' processed into 7 chunks.
+2025-06-13 16:37:23,111 - INFO - services.ai_rag.document_loader - File 'C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base\Healthcare\에어컨_바람에_으슬으슬_냉방병_아닌_이_감염병_예방법은.txt' processed into 7 chunks.
+2025-06-13 16:37:23,120 - INFO - services.ai_rag.document_loader - File 'C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base\IT\에이전트_AI로_더욱_구체화되는_윈도우_AI_플랫폼.txt' processed into 18 chunks.
+2025-06-13 16:37:23,124 - INFO - services.ai_rag.document_loader - File 'C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base\IT\퍼플렉시티_아이디어_실현형_생성형_AI_플랫폼_랩스_출시.txt' processed into 7 chunks.
+2025-06-13 16:37:23,126 - INFO - services.ai_rag.document_loader - File 'C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base\Travel\청산도_슬로걷기_축제_한_달간의_여정_시작.txt' processed into 2 chunks.
+2025-06-13 16:37:23,128 - INFO - services.ai_rag.document_loader - File 'C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base\Travel\코레일관광_부산역_출판_술례열차_첫_운행.txt' processed into 2 chunks.
+2025-06-13 16:37:23,128 - INFO - services.ai_rag.document_loader - Finished loading documents. Total chunks generated: 77
+2025-06-13 16:37:29,548 - INFO - services.ai_rag.faiss_indexer - FAISS index built. Total indexed chunks: 77, Embedding dimension: 1024
+2025-06-13 16:37:29,548 - INFO - services.ai_rag.rag_system - Knowledge base loaded and indexed. Total chunks: 77, Embedding dimension: 1024
+2025-06-13 16:37:29,549 - INFO - services.ai_rag.rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-13 16:37:29,549 - INFO - services.ai_rag.prompt_manager - Prompt template loaded from: C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\templates\prompts\claude_marketing_prompt.md
+2025-06-13 16:37:29,550 - INFO - services.ai_rag.embedding_generator - Precomputing industry embeddings...
+2025-06-13 16:37:29,943 - INFO - services.ai_rag.embedding_generator - Finished precomputing 6 industry embeddings.
+2025-06-13 16:37:29,951 - INFO - services.ai_rag.ai_service - AIContentGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-06-13 16:37:29,951 - INFO - services.app_core.app_factory_utils - RAG system and AI services initialized.
+2025-06-13 16:37:31,568 - INFO - services.app_core.app_factory_utils - Blueprints registered.
+2025-06-13 16:37:31,569 - INFO - apscheduler.scheduler - Scheduler started
+2025-06-13 16:37:31,570 - INFO - services.app_core.app_factory_utils - Scheduler started.
+2025-06-13 16:37:31,572 - INFO - apscheduler.scheduler - Added job "scheduled_marketing_crawl" to job store "default"
+2025-06-13 16:37:31,573 - INFO - services.app_core.app_factory_utils - Scheduler: Weekly marketing news crawling job registered.
+2025-06-13 16:37:31,574 - INFO - __init__ - Flask application initialized successfully!
+2025-06-13 16:37:31,594 - WARNING - werkzeug -  * Debugger is active!
+2025-06-13 16:37:31,610 - INFO - werkzeug -  * Debugger PIN: 244-528-256
+2025-06-13 16:38:00,018 - INFO - apscheduler.executors.default - Running job "scheduled_marketing_crawl (trigger: cron[day_of_week='fri', hour='16', minute='38'], next run at: 2025-06-13 16:38:00 KST)" (scheduled at 2025-06-13 16:38:00+09:00)
+2025-06-13 16:38:00,018 - INFO - apscheduler.executors.default - Running job "scheduled_marketing_crawl (trigger: cron[day_of_week='fri', hour='16', minute='38'], next run at: 2025-06-13 16:38:00 KST)" (scheduled at 2025-06-13 16:38:00+09:00)
+2025-06-13 16:38:00,024 - INFO - services.web_crawling.crawler_tasks - --- 뉴스 크롤링 작업 시작 (스케줄러 호출) ---
+2025-06-13 16:38:00,024 - INFO - services.web_crawling.crawler_tasks - --- 뉴스 크롤링 작업 시작 (스케줄러 호출) ---
+2025-06-13 16:38:00,049 - INFO - services.web_crawling.crawler_tasks - 'C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base\crawler_urls.json'에서 6개의 카테고리 크롤링 컨피그 로드됨.
+2025-06-13 16:38:00,053 - INFO - services.web_crawling.crawler_tasks - 뉴스 목록 페이지 크롤링 시작: https://www.itworld.co.kr/artificial-intelligence/ (대상 카테고리: IT, Extractor: ITWorldExtractor)
+2025-06-13 16:38:00,056 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://www.itworld.co.kr/artificial-intelligence/ using requests...
+2025-06-13 16:38:00,067 - INFO - services.web_crawling.crawler_tasks - 'C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base\crawler_urls.json'에서 6개의 카테고리 크롤링 컨피그 로드됨.
+2025-06-13 16:38:00,070 - INFO - services.web_crawling.crawler_tasks - 뉴스 목록 페이지 크롤링 시작: https://www.itworld.co.kr/artificial-intelligence/ (대상 카테고리: IT, Extractor: ITWorldExtractor)
+2025-06-13 16:38:00,075 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://www.itworld.co.kr/artificial-intelligence/ using requests...
+2025-06-13 16:38:01,339 - INFO - services.web_crawling.extractors.base_extractor - Successfully extracted 12 URLs from https://www.itworld.co.kr/artificial-intelligence/ (ITWorld)
+2025-06-13 16:38:01,340 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://www.itworld.co.kr/article/3999856/%ed%8d%bc%ed%94%8c%eb%a0%89%ec%8b%9c%ed%8b%b0-%ec%95%84%ec%9d%b4%eb%94%94%ec%96%b4-%ec%8b%a4%ed%98%84%ed%98%95-%ec%83%9d%ec%84%b1%ed%98%95-ai-%ed%94%8c%eb%9e%ab%ed%8f%bc-%eb%9e%a9%ec%8a%a4.html using requests...
+2025-06-13 16:38:01,341 - INFO - services.web_crawling.extractors.base_extractor - Successfully extracted 12 URLs from https://www.itworld.co.kr/artificial-intelligence/ (ITWorld)
+2025-06-13 16:38:01,341 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://www.itworld.co.kr/article/3998655/%ec%97%90%ec%9d%b4%ec%a0%84%ed%8a%b8-ai%eb%a1%9c-%eb%8d%94%ec%9a%b1-%ea%b5%ac%ec%b2%b4%ed%99%94%eb%90%98%eb%8a%94-%ec%9c%88%eb%8f%84%ec%9a%b0-ai-%ed%94%8c%eb%9e%ab%ed%8f%bc.html using requests...
+2025-06-13 16:38:02,355 - INFO - services.web_crawling.extractors.base_extractor - ITWorld 기사 제목 추출: 퍼플렉시티, ‘아이디어 실현형’ 생성형 AI 플랫폼 ‘랩스’ 출시
+2025-06-13 16:38:02,356 - INFO - services.web_crawling.extractors.base_extractor - ITWorld 기사 작성자 추출: Taryn Plumb
+2025-06-13 16:38:02,357 - INFO - services.web_crawling.extractors.base_extractor - ITWorld 기사 날짜 추출: 2025.06.13
+2025-06-13 16:38:02,374 - INFO - services.web_crawling.crawler_tasks - URL 'https://www.itworld.co.kr/article/3999856/%ed%8d%bc%ed%94%8c%eb%a0%89%ec%8b%9c%ed%8b%b0-%ec%95%84%ec%9d%b4%eb%94%94%ec%96%b4-%ec%8b%a4%ed%98%84%ed%98%95-%ec%83%9d%ec%84%b1%ed%98%95-ai-%ed%94%8c%eb%9e%ab%ed%8f%bc-%eb%9e%a9%ec%8a%a4.html'의 콘텐츠가 'IT/퍼플렉시티_아이디어_실현형_생성형_AI_플랫폼_랩스_출시_1.txt'으로 저장되었습니다.
+2025-06-13 16:38:02,375 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://www.itworld.co.kr/article/4001343/%ec%a7%80%eb%82%9c%ed%95%b4-%ea%b5%ad%eb%82%b4-%ec%84%9c%eb%b2%84%ec%8b%9c%ec%9e%a5-%ec%a0%84%eb%85%84-%eb%8c%80%eb%b9%84-72-7-%ec%84%b1%ec%9e%a5-%ed%95%9c%ea%b5%adidc.html using requests...
+2025-06-13 16:38:02,582 - INFO - services.web_crawling.extractors.base_extractor - ITWorld 기사 제목 추출: 에이전트 AI로 더욱 구체화되는 윈도우 AI 플랫폼
+2025-06-13 16:38:02,584 - INFO - services.web_crawling.extractors.base_extractor - ITWorld 기사 작성자 추출: Simon Bisson
+2025-06-13 16:38:02,586 - INFO - services.web_crawling.extractors.base_extractor - ITWorld 기사 날짜 추출: 2025.06.12
+2025-06-13 16:38:02,598 - INFO - services.web_crawling.crawler_tasks - URL 'https://www.itworld.co.kr/article/3998655/%ec%97%90%ec%9d%b4%ec%a0%84%ed%8a%b8-ai%eb%a1%9c-%eb%8d%94%ec%9a%b1-%ea%b5%ac%ec%b2%b4%ed%99%94%eb%90%98%eb%8a%94-%ec%9c%88%eb%8f%84%ec%9a%b0-ai-%ed%94%8c%eb%9e%ab%ed%8f%bc.html'의 콘텐츠가 'IT/에이전트_AI로_더욱_구체화되는_윈도우_AI_플랫폼_1.txt'으로 저장되었습니다.
+2025-06-13 16:38:02,599 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://www.itworld.co.kr/article/4001483/%ec%a0%95%ed%99%95%ec%84%b1-%ed%9d%94%eb%93%a4%eb%a6%ac%eb%8a%94-llm-%ed%95%b4%eb%8b%b5%ec%9d%80-slm-ai-%ec%8b%a0%eb%a2%b0-%ea%b2%a9%ec%b0%a8-%ec%8b%ac%ed%99%94.html using requests...
+2025-06-13 16:38:03,946 - INFO - services.web_crawling.extractors.base_extractor - ITWorld 기사 제목 추출: “지난해 국내 서버시장, 전년 대비 72.7% 성장” 한국IDC
+2025-06-13 16:38:03,958 - INFO - services.web_crawling.extractors.base_extractor - ITWorld 기사 작성자 추출: ITWorld 편집부
+2025-06-13 16:38:03,976 - INFO - services.web_crawling.extractors.base_extractor - ITWorld 기사 날짜 추출: 2025.06.13
+2025-06-13 16:38:03,994 - INFO - services.web_crawling.crawler_tasks - URL 'https://www.itworld.co.kr/article/4001343/%ec%a7%80%eb%82%9c%ed%95%b4-%ea%b5%ad%eb%82%b4-%ec%84%9c%eb%b2%84%ec%8b%9c%ec%9e%a5-%ec%a0%84%eb%85%84-%eb%8c%80%eb%b9%84-72-7-%ec%84%b1%ec%9e%a5-%ed%95%9c%ea%b5%adidc.html'의 콘텐츠가 'IT/지난해_국내_서버시장_전년_대비_727_성장_한국IDC.txt'으로 저장되었습니다.
+2025-06-13 16:38:03,998 - INFO - services.web_crawling.crawler_tasks - 뉴스 목록 페이지 크롤링 시작: https://fashionbiz.co.kr/search/%EC%97%AC%EC%84%B1%EB%B3%B5?type=3&tagId=1 (대상 카테고리: Fashion, Extractor: FashionbizExtractor)
+2025-06-13 16:38:04,000 - INFO - services.web_crawling.driver_manager - Initializing new ChromeDriver instance. Headless: True
+2025-06-13 16:38:04,181 - INFO - services.web_crawling.extractors.base_extractor - ITWorld 기사 제목 추출: 정확성 흔들리는 LLM, 해답은 SLM? AI 신뢰 격차 심화
+2025-06-13 16:38:04,183 - INFO - services.web_crawling.extractors.base_extractor - ITWorld 기사 작성자 추출: Lucas Mearian
+2025-06-13 16:38:04,184 - INFO - services.web_crawling.extractors.base_extractor - ITWorld 기사 날짜 추출: 2025.06.13
+2025-06-13 16:38:04,188 - INFO - services.web_crawling.crawler_tasks - URL 'https://www.itworld.co.kr/article/4001483/%ec%a0%95%ed%99%95%ec%84%b1-%ed%9d%94%eb%93%a4%eb%a6%ac%eb%8a%94-llm-%ed%95%b4%eb%8b%b5%ec%9d%80-slm-ai-%ec%8b%a0%eb%a2%b0-%ea%b2%a9%ec%b0%a8-%ec%8b%ac%ed%99%94.html'의 콘텐츠가 'IT/정확성_흔들리는_LLM_해답은_SLM_AI_신뢰_격차_심화.txt'으로 저장되었습니다.
+2025-06-13 16:38:04,188 - INFO - services.web_crawling.crawler_tasks - 뉴스 목록 페이지 크롤링 시작: https://fashionbiz.co.kr/search/%EC%97%AC%EC%84%B1%EB%B3%B5?type=3&tagId=1 (대상 카테고리: Fashion, Extractor: FashionbizExtractor)
+2025-06-13 16:38:04,189 - INFO - services.web_crawling.driver_manager - Initializing new ChromeDriver instance. Headless: True
+2025-06-13 16:38:05,361 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://fashionbiz.co.kr/search/%EC%97%AC%EC%84%B1%EB%B3%B5?type=3&tagId=1 using Selenium...
+2025-06-13 16:38:05,553 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://fashionbiz.co.kr/search/%EC%97%AC%EC%84%B1%EB%B3%B5?type=3&tagId=1 using Selenium...
+2025-06-13 16:38:14,315 - INFO - services.web_crawling.extractors.base_extractor - Successfully extracted 20 URLs from https://fashionbiz.co.kr/search/%EC%97%AC%EC%84%B1%EB%B3%B5?type=3&tagId=1 (Fashionbiz, Selenium)
+2025-06-13 16:38:14,318 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://fashionbiz.co.kr/article/216874 using requests...
+2025-06-13 16:38:14,331 - INFO - services.web_crawling.extractors.base_extractor - Successfully extracted 20 URLs from https://fashionbiz.co.kr/search/%EC%97%AC%EC%84%B1%EB%B3%B5?type=3&tagId=1 (Fashionbiz, Selenium)
+2025-06-13 16:38:14,336 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://fashionbiz.co.kr/article/216902 using requests...
+2025-06-13 16:38:14,812 - INFO - services.web_crawling.extractors.base_extractor - Successfully extracted text using Trafilatura for https://fashionbiz.co.kr/article/216874.
+2025-06-13 16:38:14,825 - INFO - services.web_crawling.crawler_tasks - URL 'https://fashionbiz.co.kr/article/216874'의 콘텐츠가 'Fashion/여성복_모어서울_40대_타깃_핫_브랜드_등극.txt'으로 저장되었습니다.
+2025-06-13 16:38:14,830 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://fashionbiz.co.kr/article/216911 using requests...
+2025-06-13 16:38:14,937 - INFO - services.web_crawling.extractors.base_extractor - Successfully extracted text using Trafilatura for https://fashionbiz.co.kr/article/216902.
+2025-06-13 16:38:14,944 - INFO - services.web_crawling.crawler_tasks - URL 'https://fashionbiz.co.kr/article/216902'의 콘텐츠가 'Fashion/일상복부터_바캉스룩까지_클리지_SS_화보_공개.txt'으로 저장되었습니다.
+2025-06-13 16:38:14,948 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://fashionbiz.co.kr/article/217011 using requests...
+2025-06-13 16:38:15,368 - INFO - services.web_crawling.extractors.base_extractor - Successfully extracted text using Trafilatura for https://fashionbiz.co.kr/article/216911.
+2025-06-13 16:38:15,370 - INFO - services.web_crawling.crawler_tasks - URL 'https://fashionbiz.co.kr/article/216911'의 콘텐츠가 'Fashion/이런_굿즈_어때_랩LAP_KBO와_공식_협업_에디션_출시.txt'으로 저장되었습니다.
+2025-06-13 16:38:15,371 - INFO - services.web_crawling.crawler_tasks - 뉴스 목록 페이지 크롤링 시작: https://www.10000recipe.com/ranking/home_new.html (대상 카테고리: Food, Extractor: TenThousandRecipeExtractor)
+2025-06-13 16:38:15,372 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://www.10000recipe.com/ranking/home_new.html using requests...
+2025-06-13 16:38:15,838 - INFO - services.web_crawling.extractors.base_extractor - Successfully extracted text using Trafilatura for https://fashionbiz.co.kr/article/217011.
+2025-06-13 16:38:15,849 - INFO - services.web_crawling.crawler_tasks - URL 'https://fashionbiz.co.kr/article/217011'의 콘텐츠가 'Fashion/치마바지_재열풍_에이블리_큐롯팬츠_등_관련_거래액_67.txt'으로 저장되었습니다.
+2025-06-13 16:38:15,864 - INFO - services.web_crawling.crawler_tasks - 뉴스 목록 페이지 크롤링 시작: https://www.10000recipe.com/ranking/home_new.html (대상 카테고리: Food, Extractor: TenThousandRecipeExtractor)
+2025-06-13 16:38:15,876 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://www.10000recipe.com/ranking/home_new.html using requests...
+2025-06-13 16:38:16,160 - INFO - services.web_crawling.extractors.base_extractor - Successfully extracted 100 URLs from https://www.10000recipe.com/ranking/home_new.html (10000recipe.com)
+2025-06-13 16:38:16,163 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://www.10000recipe.com/recipe/6865946 using requests...
+2025-06-13 16:38:16,410 - INFO - services.web_crawling.extractors.base_extractor - Successfully extracted 100 URLs from https://www.10000recipe.com/ranking/home_new.html (10000recipe.com)
+2025-06-13 16:38:16,411 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://www.10000recipe.com/recipe/6880798 using requests...
+2025-06-13 16:38:17,026 - INFO - services.web_crawling.extractors.base_extractor - 레시피 제목 추출: 토마토 스파게티만들기,토마토 스파게티 만드는 법
+2025-06-13 16:38:17,027 - INFO - services.web_crawling.extractors.base_extractor - 레시피 재료 추출: 13개
+2025-06-13 16:38:17,033 - INFO - services.web_crawling.extractors.base_extractor - 레시피 조리 순서 추출: 13단계
+2025-06-13 16:38:17,035 - INFO - services.web_crawling.crawler_tasks - URL 'https://www.10000recipe.com/recipe/6865946'의 콘텐츠가 'Food/토마토_스파게티만들기토마토_스파게티_만드는_법.txt'으로 저장되었습니다.
+2025-06-13 16:38:17,038 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://www.10000recipe.com/recipe/6868573 using requests...
+2025-06-13 16:38:18,724 - INFO - services.web_crawling.extractors.base_extractor - 레시피 제목 추출: 안동찜닭 황금레시피 찜닭 레시피 중에서 최고!
+2025-06-13 16:38:18,725 - INFO - services.web_crawling.extractors.base_extractor - 레시피 재료 추출: 18개
+2025-06-13 16:38:18,741 - INFO - services.web_crawling.extractors.base_extractor - 레시피 조리 순서 추출: 20단계
+2025-06-13 16:38:18,742 - INFO - services.web_crawling.crawler_tasks - URL 'https://www.10000recipe.com/recipe/6880798'의 콘텐츠가 'Food/안동찜닭_황금레시피_찜닭_레시피_중에서_최고.txt'으로 저장되었습니다.
+2025-06-13 16:38:18,743 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://www.10000recipe.com/recipe/6856975 using requests...
+2025-06-13 16:38:18,768 - INFO - services.web_crawling.extractors.base_extractor - 레시피 제목 추출: 아삭 건강한 깍두기 담그는법~
+2025-06-13 16:38:18,769 - INFO - services.web_crawling.extractors.base_extractor - 레시피 재료 추출: 14개
+2025-06-13 16:38:18,783 - INFO - services.web_crawling.extractors.base_extractor - 레시피 조리 순서 추출: 18단계
+2025-06-13 16:38:18,785 - INFO - services.web_crawling.crawler_tasks - URL 'https://www.10000recipe.com/recipe/6868573'의 콘텐츠가 'Food/아삭_건강한_깍두기_담그는법.txt'으로 저장되었습니다.
+2025-06-13 16:38:18,785 - INFO - services.web_crawling.crawler_tasks - 뉴스 목록 페이지 크롤링 시작: https://news.hidoc.co.kr/news/articleList.html?sc_section_code=S1N1&view_type=sm (대상 카테고리: Healthcare, Extractor: HidocExtractor)
+2025-06-13 16:38:18,786 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://news.hidoc.co.kr/news/articleList.html?sc_section_code=S1N1&view_type=sm for HiDoc using direct requests.text strategy...
+2025-06-13 16:38:19,627 - INFO - services.web_crawling.extractors.base_extractor - Successfully extracted 20 URLs from https://news.hidoc.co.kr/news/articleList.html?sc_section_code=S1N1&view_type=sm (HiDoc News)
+2025-06-13 16:38:19,627 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://news.hidoc.co.kr/news/articleView.html?idxno=48418 for HiDoc using direct requests.text strategy...
+2025-06-13 16:38:19,705 - INFO - services.web_crawling.extractors.base_extractor - 레시피 제목 추출: 간단하게 쌈장만드는법/집에서 쌈장만들기⊙
+2025-06-13 16:38:19,707 - INFO - services.web_crawling.extractors.base_extractor - 레시피 재료 추출: 7개
+2025-06-13 16:38:19,713 - INFO - services.web_crawling.extractors.base_extractor - 레시피 조리 순서 추출: 5단계
+2025-06-13 16:38:19,715 - INFO - services.web_crawling.crawler_tasks - URL 'https://www.10000recipe.com/recipe/6856975'의 콘텐츠가 'Food/간단하게_쌈장만드는법집에서_쌈장만들기.txt'으로 저장되었습니다.
+2025-06-13 16:38:19,716 - INFO - services.web_crawling.crawler_tasks - 뉴스 목록 페이지 크롤링 시작: https://news.hidoc.co.kr/news/articleList.html?sc_section_code=S1N1&view_type=sm (대상 카테고리: Healthcare, Extractor: HidocExtractor)
+2025-06-13 16:38:19,717 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://news.hidoc.co.kr/news/articleList.html?sc_section_code=S1N1&view_type=sm for HiDoc using direct requests.text strategy...
+2025-06-13 16:38:19,837 - WARNING - services.web_crawling.extractors.base_extractor - HiDoc: Content for https://news.hidoc.co.kr/news/articleView.html?idxno=48418 contains replacement characters even with direct requests.text. This might indicate a deeper issue.
+2025-06-13 16:38:19,876 - INFO - services.web_crawling.extractors.base_extractor - 하이닥 기사 제목 추출: 갱년기 여성 허리 통증, 디스크 아닌 '이 질환' 유의해야
+2025-06-13 16:38:19,878 - INFO - services.web_crawling.extractors.base_extractor - 하이닥 기사 작성자 추출: 정보금 하이닥 건강의학기자
+2025-06-13 16:38:19,881 - INFO - services.web_crawling.extractors.base_extractor - 하이닥 기사 날짜 추출: 2025.06.10
+2025-06-13 16:38:19,894 - INFO - services.web_crawling.crawler_tasks - URL 'https://news.hidoc.co.kr/news/articleView.html?idxno=48418'의 콘텐츠가 'Healthcare/갱년기_여성_허리_통증_디스크_아닌_이_질환_유의해야.txt'으로 저장되었습니다.
+2025-06-13 16:38:19,903 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://news.hidoc.co.kr/news/articleView.html?idxno=48617 for HiDoc using direct requests.text strategy...
+2025-06-13 16:38:19,911 - INFO - services.web_crawling.extractors.base_extractor - Successfully extracted 20 URLs from https://news.hidoc.co.kr/news/articleList.html?sc_section_code=S1N1&view_type=sm (HiDoc News)
+2025-06-13 16:38:19,915 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://news.hidoc.co.kr/news/articleView.html?idxno=48617 for HiDoc using direct requests.text strategy...
+2025-06-13 16:38:20,043 - WARNING - services.web_crawling.extractors.base_extractor - HiDoc: Content for https://news.hidoc.co.kr/news/articleView.html?idxno=48617 contains replacement characters even with direct requests.text. This might indicate a deeper issue.
+2025-06-13 16:38:20,075 - INFO - services.web_crawling.extractors.base_extractor - 하이닥 기사 제목 추출: 아무리 노력해도 빠지지 않는 살… 알고 보니 진짜 원인은 ‘이것’?
+2025-06-13 16:38:20,077 - INFO - services.web_crawling.extractors.base_extractor - 하이닥 기사 작성자 추출: 권태원 하이닥 건강의학기자
+2025-06-13 16:38:20,078 - INFO - services.web_crawling.extractors.base_extractor - 하이닥 기사 날짜 추출: 2025.06.13
+2025-06-13 16:38:20,081 - INFO - services.web_crawling.crawler_tasks - URL 'https://news.hidoc.co.kr/news/articleView.html?idxno=48617'의 콘텐츠가 'Healthcare/아무리_노력해도_빠지지_않는_살_알고_보니_진짜_원인은_이것.txt'으로 저장되었습니다.
+2025-06-13 16:38:20,081 - INFO - services.web_crawling.crawler_tasks - 뉴스 목록 페이지 크롤링 시작: https://www.tlnews.co.kr/news/articleList.html?sc_sub_section_code=S2N38&view_type=sm (대상 카테고리: Travel, Extractor: TLNewsExtractor)
+2025-06-13 16:38:20,082 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://www.tlnews.co.kr/news/articleList.html?sc_sub_section_code=S2N38&view_type=sm using requests...
+2025-06-13 16:38:20,096 - WARNING - services.web_crawling.extractors.base_extractor - HiDoc: Content for https://news.hidoc.co.kr/news/articleView.html?idxno=48617 contains replacement characters even with direct requests.text. This might indicate a deeper issue.
+2025-06-13 16:38:20,128 - INFO - services.web_crawling.extractors.base_extractor - 하이닥 기사 제목 추출: 아무리 노력해도 빠지지 않는 살… 알고 보니 진짜 원인은 ‘이것’?
+2025-06-13 16:38:20,132 - INFO - services.web_crawling.extractors.base_extractor - 하이닥 기사 작성자 추출: 권태원 하이닥 건강의학기자
+2025-06-13 16:38:20,133 - INFO - services.web_crawling.extractors.base_extractor - 하이닥 기사 날짜 추출: 2025.06.13
+2025-06-13 16:38:20,135 - INFO - services.web_crawling.crawler_tasks - URL 'https://news.hidoc.co.kr/news/articleView.html?idxno=48617'의 콘텐츠가 'Healthcare/아무리_노력해도_빠지지_않는_살_알고_보니_진짜_원인은_이것_1.txt'으로 저장되었습니다.
+2025-06-13 16:38:20,136 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://news.hidoc.co.kr/news/articleView.html?idxno=48117 for HiDoc using direct requests.text strategy...
+2025-06-13 16:38:20,423 - WARNING - services.web_crawling.extractors.base_extractor - HiDoc: Content for https://news.hidoc.co.kr/news/articleView.html?idxno=48117 contains replacement characters even with direct requests.text. This might indicate a deeper issue.
+2025-06-13 16:38:20,460 - INFO - services.web_crawling.extractors.base_extractor - 하이닥 기사 제목 추출: 젊은 나이에 백내장? 안경껴도 시야 흐릿하면 ‘이것’ 의심
+2025-06-13 16:38:20,462 - INFO - services.web_crawling.extractors.base_extractor - 하이닥 기사 작성자 추출: 손선아 하이닥 건강의학기자
+2025-06-13 16:38:20,463 - INFO - services.web_crawling.extractors.base_extractor - 하이닥 기사 날짜 추출: 2025.06.09
+2025-06-13 16:38:20,465 - INFO - services.web_crawling.crawler_tasks - URL 'https://news.hidoc.co.kr/news/articleView.html?idxno=48117'의 콘텐츠가 'Healthcare/젊은_나이에_백내장_안경껴도_시야_흐릿하면_이것_의심.txt'으로 저장되었습니다.
+2025-06-13 16:38:20,467 - INFO - services.web_crawling.crawler_tasks - 뉴스 목록 페이지 크롤링 시작: https://www.tlnews.co.kr/news/articleList.html?sc_sub_section_code=S2N38&view_type=sm (대상 카테고리: Travel, Extractor: TLNewsExtractor)
+2025-06-13 16:38:20,467 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://www.tlnews.co.kr/news/articleList.html?sc_sub_section_code=S2N38&view_type=sm using requests...
+2025-06-13 16:38:21,324 - INFO - services.web_crawling.extractors.base_extractor - Successfully extracted 20 URLs from https://www.tlnews.co.kr/news/articleList.html?sc_sub_section_code=S2N38&view_type=sm (TLNews)
+2025-06-13 16:38:21,324 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://www.tlnews.co.kr/news/articleView.html?idxno=14431 using requests...
+2025-06-13 16:38:21,516 - INFO - services.web_crawling.extractors.base_extractor - Successfully extracted 20 URLs from https://www.tlnews.co.kr/news/articleList.html?sc_sub_section_code=S2N38&view_type=sm (TLNews)
+2025-06-13 16:38:21,517 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://www.tlnews.co.kr/news/articleView.html?idxno=14324 using requests...
+2025-06-13 16:38:21,861 - INFO - services.web_crawling.extractors.base_extractor - TLNews 기사 제목 추출: 청산도 슬로걷기 축제, 한 달간의 여정 시작
+2025-06-13 16:38:21,864 - INFO - services.web_crawling.extractors.base_extractor - TLNews 기사 작성자 추출: 오상민 기자
+2025-06-13 16:38:21,866 - INFO - services.web_crawling.extractors.base_extractor - TLNews 기사 날짜 추출: 2025.04.08
+2025-06-13 16:38:21,868 - WARNING - services.web_crawling.extractors.base_extractor - TLNews: BeautifulSoup로 본문 추출 실패, trafilatura로 시도: https://www.tlnews.co.kr/news/articleView.html?idxno=14431
+2025-06-13 16:38:21,924 - INFO - services.web_crawling.crawler_tasks - URL 'https://www.tlnews.co.kr/news/articleView.html?idxno=14431'의 콘텐츠가 'Travel/청산도_슬로걷기_축제_한_달간의_여정_시작_1.txt'으로 저장되었습니다.
+2025-06-13 16:38:21,925 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://www.tlnews.co.kr/news/articleView.html?idxno=14306 using requests...
+2025-06-13 16:38:22,602 - INFO - services.web_crawling.extractors.base_extractor - TLNews 기사 제목 추출: 울진대게축제, 수도권ㆍ경상권 출발 기차여행 패키지 출시
+2025-06-13 16:38:22,631 - INFO - services.web_crawling.extractors.base_extractor - TLNews 기사 작성자 추출: 오상민 기자
+2025-06-13 16:38:22,640 - INFO - services.web_crawling.extractors.base_extractor - TLNews 기사 날짜 추출: 2025.02.06
+2025-06-13 16:38:22,658 - WARNING - services.web_crawling.extractors.base_extractor - TLNews: BeautifulSoup로 본문 추출 실패, trafilatura로 시도: https://www.tlnews.co.kr/news/articleView.html?idxno=14324
+2025-06-13 16:38:22,697 - INFO - services.web_crawling.crawler_tasks - URL 'https://www.tlnews.co.kr/news/articleView.html?idxno=14324'의 콘텐츠가 'Travel/울진대게축제_수도권경상권_출발_기차여행_패키지_출시.txt'으로 저장되었습니다.
+2025-06-13 16:38:22,697 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://www.tlnews.co.kr/news/articleView.html?idxno=14299 using requests...
+2025-06-13 16:38:22,780 - INFO - services.web_crawling.extractors.base_extractor - TLNews 기사 제목 추출: 설 연휴 고속도로 통행료 무료…경기도 한복 인증샷 명소 어디?
+2025-06-13 16:38:22,781 - INFO - services.web_crawling.extractors.base_extractor - TLNews 기사 작성자 추출: 오상민 기자
+2025-06-13 16:38:22,782 - INFO - services.web_crawling.extractors.base_extractor - TLNews 기사 날짜 추출: 2025.01.21
+2025-06-13 16:38:22,783 - WARNING - services.web_crawling.extractors.base_extractor - TLNews: BeautifulSoup로 본문 추출 실패, trafilatura로 시도: https://www.tlnews.co.kr/news/articleView.html?idxno=14306
+2025-06-13 16:38:22,807 - INFO - services.web_crawling.crawler_tasks - URL 'https://www.tlnews.co.kr/news/articleView.html?idxno=14306'의 콘텐츠가 'Travel/설_연휴_고속도로_통행료_무료경기도_한복_인증샷_명소_어디.txt'으로 저장되었습니다.
+2025-06-13 16:38:22,807 - INFO - services.web_crawling.crawler_tasks - 뉴스 목록 페이지 크롤링 시작: https://www.beautynury.com/news/lists/cat/10/page/ (대상 카테고리: Beauty, Extractor: BeautynuryExtractor)
+2025-06-13 16:38:22,808 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://www.beautynury.com/news/lists/cat/10/page/ using requests...
+2025-06-13 16:38:23,198 - INFO - services.web_crawling.extractors.base_extractor - TLNews 기사 제목 추출: 코레일관광개발, 태백산 눈축제 연계 당일 여행 선봬
+2025-06-13 16:38:23,200 - INFO - services.web_crawling.extractors.base_extractor - TLNews 기사 작성자 추출: 오상민 기자
+2025-06-13 16:38:23,201 - INFO - services.web_crawling.extractors.base_extractor - TLNews 기사 날짜 추출: 2025.01.15
+2025-06-13 16:38:23,207 - WARNING - services.web_crawling.extractors.base_extractor - TLNews: BeautifulSoup로 본문 추출 실패, trafilatura로 시도: https://www.tlnews.co.kr/news/articleView.html?idxno=14299
+2025-06-13 16:38:23,265 - INFO - services.web_crawling.crawler_tasks - URL 'https://www.tlnews.co.kr/news/articleView.html?idxno=14299'의 콘텐츠가 'Travel/코레일관광개발_태백산_눈축제_연계_당일_여행_선봬.txt'으로 저장되었습니다.
+2025-06-13 16:38:23,268 - INFO - services.web_crawling.crawler_tasks - 뉴스 목록 페이지 크롤링 시작: https://www.beautynury.com/news/lists/cat/10/page/ (대상 카테고리: Beauty, Extractor: BeautynuryExtractor)
+2025-06-13 16:38:23,269 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://www.beautynury.com/news/lists/cat/10/page/ using requests...
+2025-06-13 16:38:24,663 - INFO - services.web_crawling.extractors.base_extractor - Successfully extracted 15 URLs from https://www.beautynury.com/news/lists/cat/10/page/ (Beautynury)
+2025-06-13 16:38:24,663 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://www.beautynury.com/news/view/108212/cat/10/page/1 using requests...
+2025-06-13 16:38:24,664 - INFO - services.web_crawling.extractors.base_extractor - Successfully extracted 15 URLs from https://www.beautynury.com/news/lists/cat/10/page/ (Beautynury)
+2025-06-13 16:38:24,664 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://www.beautynury.com/news/view/108174/cat/10/page/1 using requests...
+2025-06-13 16:38:26,222 - INFO - services.web_crawling.extractors.base_extractor - Beautynury 기사 제목 추출: 올여름 장마, 스타일리시하게! 25 S/S 레인코트 완벽 대비
+2025-06-13 16:38:26,223 - INFO - services.web_crawling.extractors.base_extractor - Beautynury 기사 작성자 추출: 이광주
+2025-06-13 16:38:26,225 - INFO - services.web_crawling.extractors.base_extractor - Beautynury 기사 날짜 추출: 2025-06-13
+2025-06-13 16:38:26,233 - INFO - services.web_crawling.extractors.base_extractor - Beautynury 기사 제목 추출: [기업분석] 코스메카코리아, 1Q 매출·영업이익·순이익  모두 전년比 하락
+2025-06-13 16:38:26,235 - INFO - services.web_crawling.extractors.base_extractor - Beautynury 기사 작성자 추출: 박수연
+2025-06-13 16:38:26,238 - INFO - services.web_crawling.crawler_tasks - URL 'https://www.beautynury.com/news/view/108212/cat/10/page/1'의 콘텐츠가 'Beauty/올여름_장마_스타일리시하게_25_SS_레인코트_완벽_대비.txt'으로 저장되었습니다.
+2025-06-13 16:38:26,240 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://www.beautynury.com/news/view/108214/cat/10/page/1 using requests...
+2025-06-13 16:38:26,240 - INFO - services.web_crawling.extractors.base_extractor - Beautynury 기사 날짜 추출: 2025-06-13
+2025-06-13 16:38:26,252 - INFO - services.web_crawling.crawler_tasks - URL 'https://www.beautynury.com/news/view/108174/cat/10/page/1'의 콘텐츠가 'Beauty/기업분석_코스메카코리아_1Q_매출영업이익순이익__모두_전년_하락.txt'으로 저장되었습니다.
+2025-06-13 16:38:26,260 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://www.beautynury.com/news/view/108203/cat/10/page/1 using requests...
+2025-06-13 16:38:27,781 - INFO - services.web_crawling.extractors.base_extractor - Beautynury 기사 제목 추출: 경기도,  'K BRAND WEEK 말레이시아 2025' 참가기업 모집
+2025-06-13 16:38:27,799 - INFO - services.web_crawling.extractors.base_extractor - Beautynury 기사 작성자 추출: 김유진
+2025-06-13 16:38:27,801 - INFO - services.web_crawling.extractors.base_extractor - Beautynury 기사 제목 추출: 글로벌 화장품 협업 가속…‘GCC 아시아’ 공식 출범
+2025-06-13 16:38:27,817 - INFO - services.web_crawling.extractors.base_extractor - Beautynury 기사 날짜 추출: 2025-06-13
+2025-06-13 16:38:27,832 - INFO - services.web_crawling.crawler_tasks - URL 'https://www.beautynury.com/news/view/108214/cat/10/page/1'의 콘텐츠가 'Beauty/경기도__K_BRAND_WEEK_말레이시아_2025_참가기업_모집.txt'으로 저장되었습니다.
+2025-06-13 16:38:27,840 - INFO - services.web_crawling.crawler_tasks - RAG 시스템이 크롤링된 새 콘텐츠로 성공적으로 업데이트되었습니다.
+2025-06-13 16:38:27,847 - INFO - services.web_crawling.crawler_tasks - --- 뉴스 크롤링 작업 완료. 12개 기사 크롤링 성공. ---
+2025-06-13 16:38:27,851 - INFO - apscheduler.executors.default - Job "scheduled_marketing_crawl (trigger: cron[day_of_week='fri', hour='16', minute='38'], next run at: 2025-06-20 16:38:00 KST)" executed successfully
+2025-06-13 16:38:27,892 - INFO - services.web_crawling.extractors.base_extractor - Beautynury 기사 작성자 추출: 김유진
+2025-06-13 16:38:27,902 - INFO - services.web_crawling.extractors.base_extractor - Beautynury 기사 날짜 추출: 2025-06-12
+2025-06-13 16:38:27,912 - INFO - services.web_crawling.crawler_tasks - URL 'https://www.beautynury.com/news/view/108203/cat/10/page/1'의 콘텐츠가 'Beauty/글로벌_화장품_협업_가속GCC_아시아_공식_출범.txt'으로 저장되었습니다.
+2025-06-13 16:38:27,924 - INFO - services.web_crawling.crawler_tasks - RAG 시스템이 크롤링된 새 콘텐츠로 성공적으로 업데이트되었습니다.
+2025-06-13 16:38:27,939 - INFO - services.web_crawling.crawler_tasks - --- 뉴스 크롤링 작업 완료. 12개 기사 크롤링 성공. ---
+2025-06-13 16:38:27,948 - INFO - apscheduler.executors.default - Job "scheduled_marketing_crawl (trigger: cron[day_of_week='fri', hour='16', minute='38'], next run at: 2025-06-20 16:38:00 KST)" executed successfully
+2025-06-13 16:38:43,749 - INFO - werkzeug - 127.0.0.1 - - [13/Jun/2025 16:38:43] "GET / HTTP/1.1" 200 -
+2025-06-13 16:38:44,069 - INFO - werkzeug - 127.0.0.1 - - [13/Jun/2025 16:38:44] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-06-13 16:38:44,105 - INFO - werkzeug - 127.0.0.1 - - [13/Jun/2025 16:38:44] "[36mGET /static/js/index.js HTTP/1.1[0m" 304 -
+2025-06-13 16:38:47,119 - INFO - werkzeug - 127.0.0.1 - - [13/Jun/2025 16:38:47] "[32mGET /logout HTTP/1.1[0m" 302 -
+2025-06-13 16:38:47,128 - INFO - werkzeug - 127.0.0.1 - - [13/Jun/2025 16:38:47] "GET / HTTP/1.1" 200 -
+2025-06-13 16:38:47,200 - INFO - werkzeug - 127.0.0.1 - - [13/Jun/2025 16:38:47] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-06-13 16:38:47,225 - INFO - werkzeug - 127.0.0.1 - - [13/Jun/2025 16:38:47] "[36mGET /static/js/index.js HTTP/1.1[0m" 304 -
+2025-06-13 16:38:48,590 - INFO - werkzeug - 127.0.0.1 - - [13/Jun/2025 16:38:48] "GET /login HTTP/1.1" 200 -
+2025-06-13 16:38:55,673 - INFO - werkzeug - 127.0.0.1 - - [13/Jun/2025 16:38:55] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-06-13 16:38:55,684 - INFO - werkzeug - 127.0.0.1 - - [13/Jun/2025 16:38:55] "GET / HTTP/1.1" 200 -
+2025-06-13 16:38:55,736 - INFO - werkzeug - 127.0.0.1 - - [13/Jun/2025 16:38:55] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-06-13 16:38:55,739 - INFO - werkzeug - 127.0.0.1 - - [13/Jun/2025 16:38:55] "[36mGET /static/js/index.js HTTP/1.1[0m" 304 -
+2025-06-13 16:39:25,882 - INFO - services.ai_rag.prompt_manager - LLM Prompt for 'AWS 서버리스 MCP 서버란 무엇인가요?' (블로그 게시글, IT 기술) generated.
+2025-06-13 16:40:03,502 - INFO - routes.content_routes - Content successfully saved to DB: ID 10, Topic 'AWS 서버리스 MCP 서버란 무엇인가요?' by User ID 1
+2025-06-13 16:40:03,506 - INFO - werkzeug - 127.0.0.1 - - [13/Jun/2025 16:40:03] "POST /content/generate_content HTTP/1.1" 200 -
+2025-06-13 16:41:07,064 - INFO - werkzeug - 127.0.0.1 - - [13/Jun/2025 16:41:07] "GET /content/history HTTP/1.1" 200 -
+2025-06-13 16:41:07,129 - INFO - werkzeug - 127.0.0.1 - - [13/Jun/2025 16:41:07] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-06-13 16:41:07,137 - INFO - werkzeug - 127.0.0.1 - - [13/Jun/2025 16:41:07] "[36mGET /static/js/history.js HTTP/1.1[0m" 304 -
+2025-06-13 16:41:07,267 - INFO - werkzeug - 127.0.0.1 - - [13/Jun/2025 16:41:07] "GET /content/history-api HTTP/1.1" 200 -
+2025-06-13 16:41:10,430 - INFO - routes.content_routes - Content ID 3 deleted from DB by User ID 1.
+2025-06-13 16:41:10,432 - INFO - werkzeug - 127.0.0.1 - - [13/Jun/2025 16:41:10] "DELETE /content/history/3 HTTP/1.1" 200 -
+2025-06-13 16:41:10,451 - INFO - werkzeug - 127.0.0.1 - - [13/Jun/2025 16:41:10] "GET /content/history-api HTTP/1.1" 200 -
+2025-06-13 16:41:13,330 - INFO - werkzeug - 127.0.0.1 - - [13/Jun/2025 16:41:13] "GET /knowledge_base/ HTTP/1.1" 200 -
+2025-06-13 16:41:13,378 - INFO - werkzeug - 127.0.0.1 - - [13/Jun/2025 16:41:13] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-06-13 16:41:13,387 - INFO - werkzeug - 127.0.0.1 - - [13/Jun/2025 16:41:13] "[36mGET /static/js/knowledge_base_manager.js HTTP/1.1[0m" 304 -
+2025-06-13 16:41:13,414 - INFO - werkzeug - 127.0.0.1 - - [13/Jun/2025 16:41:13] "GET /knowledge_base/files HTTP/1.1" 200 -
+2025-06-13 16:41:24,452 - INFO - routes.knowledge_base_routes - File '앤니즈_2025_핫썸머_컬렉션_Coastal_Cool_공개.txt' deleted from C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base\앤니즈_2025_핫썸머_컬렉션_Coastal_Cool_공개.txt.
+2025-06-13 16:41:24,454 - INFO - werkzeug - 127.0.0.1 - - [13/Jun/2025 16:41:24] "DELETE /knowledge_base/delete/앤니즈_2025_핫썸머_컬렉션_Coastal_Cool_공개.txt HTTP/1.1" 200 -
+2025-06-13 16:41:25,613 - INFO - werkzeug - 127.0.0.1 - - [13/Jun/2025 16:41:25] "GET /knowledge_base/files HTTP/1.1" 200 -
+2025-06-13 16:41:28,696 - INFO - routes.knowledge_base_routes - URL로부터 지식 베이스 추가 시도: https://fashionbiz.co.kr/article/216849
+2025-06-13 16:41:28,704 - INFO - services.web_crawling.web_content_extractor - Attempting to extract details from https://fashionbiz.co.kr/article/216849 using FashionbizExtractor.
+2025-06-13 16:41:28,707 - INFO - services.web_crawling.extractors.base_extractor - Fetching https://fashionbiz.co.kr/article/216849 using requests...
+2025-06-13 16:41:30,347 - INFO - services.web_crawling.extractors.base_extractor - Successfully extracted text using Trafilatura for https://fashionbiz.co.kr/article/216849.
+2025-06-13 16:41:30,583 - INFO - routes.knowledge_base_routes - 업종 분류 유사도 낮음 (0.09) for URL: https://fashionbiz.co.kr/article/216849. 기본 디렉토리에 저장합니다.
+2025-06-13 16:41:30,588 - INFO - routes.knowledge_base_routes - URL 'https://fashionbiz.co.kr/article/216849'의 콘텐츠가 '/예산_5000만5억원_팝업스토어_어디까지_할_수_있나_1.txt'으로 저장되었습니다.
+2025-06-13 16:41:30,589 - INFO - werkzeug - 127.0.0.1 - - [13/Jun/2025 16:41:30] "POST /knowledge_base/add_from_url HTTP/1.1" 200 -
+2025-06-13 16:41:32,425 - INFO - werkzeug - 127.0.0.1 - - [13/Jun/2025 16:41:32] "GET /knowledge_base/files HTTP/1.1" 200 -
+2025-06-13 16:41:36,171 - INFO - routes.knowledge_base_routes - File '예산_5000만5억원_팝업스토어_어디까지_할_수_있나_1.txt' deleted from C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\knowledge_base\예산_5000만5억원_팝업스토어_어디까지_할_수_있나_1.txt.
+2025-06-13 16:41:36,172 - INFO - werkzeug - 127.0.0.1 - - [13/Jun/2025 16:41:36] "DELETE /knowledge_base/delete/예산_5000만5억원_팝업스토어_어디까지_할_수_있나_1.txt HTTP/1.1" 200 -
+2025-06-13 16:41:37,289 - INFO - werkzeug - 127.0.0.1 - - [13/Jun/2025 16:41:37] "GET /knowledge_base/files HTTP/1.1" 200 -
