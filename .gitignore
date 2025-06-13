@@ -1,4 +1,47 @@
+# Python #
+# 가상환경 폴더. OS나 파이썬 버전에 따라 내용물이 달라집니다.
 venv/
-.env
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+
+# Terraform #
+# 테라폼 상태 파일. 민감한 정보를 포함할 수 있습니다.
+*.tfstate
+*.tfstate.*
+
+# 테라폼이 프로바이더를 다운로드하는 폴더입니다.
+.terraform/
+
+# 테라폼 에러 로그 및 임시 파일
+crash.log
+*.tfvars.json
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# 데이터베이스 #
+# 로컬 SQLite 데이터베이스 파일
+*.db
+*.sqlite
+*.sqlite3
+
+# 로그 파일 #
+# 애플리케이션 로그 파일
+*.log
+
+# 환경변수 및 비밀 키 #
+# API 키, 데이터베이스 암호 등 민감한 정보
+.env
+
+# 운영체제 및 에디터 #
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# VSCode
+.vscode/

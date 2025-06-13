@@ -1,6 +1,6 @@
 # services/web_crawling/extractors/beautynury.py (수정)
-
-from .base_extractor import BaseExtractor, BeautifulSoup, re, logger, extract
+import re 
+from .base_extractor import BaseExtractor, BeautifulSoup, logger, extract
 from ..web_utils import clean_beautynury_title # decode_html_content는 BaseExtractor로 이동했으므로 제거
 
 class BeautynuryExtractor(BaseExtractor):

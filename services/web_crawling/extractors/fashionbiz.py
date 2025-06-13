@@ -1,6 +1,6 @@
 # services/web_crawling/extractors/fashionbiz.py (수정)
-
-from .base_extractor import BaseExtractor, BeautifulSoup, re, logger, WebDriverWait, EC, By
+import re 
+from .base_extractor import BaseExtractor, BeautifulSoup, logger, WebDriverWait, EC, By
 
 class FashionbizExtractor(BaseExtractor):
     """Fashionbiz.co.kr 웹사이트에서 콘텐츠를 추출하는 클래스."""

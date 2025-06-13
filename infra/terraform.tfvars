@@ -1,0 +1,1 @@
+ec2_key_name = "ohsung_key"

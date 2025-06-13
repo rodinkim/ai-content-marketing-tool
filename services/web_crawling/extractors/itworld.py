@@ -1,6 +1,6 @@
 # services/web_crawling/extractors/itworld.py
-
-from .base_extractor import BaseExtractor, requests, BeautifulSoup, re, logger
+import re
+from .base_extractor import BaseExtractor, requests, BeautifulSoup, logger # BaseExtractor에서는 re를 제거
 
 class ITWorldExtractor(BaseExtractor):
     """ITWorld Korea 웹사이트에서 콘텐츠를 추출하는 클래스."""
