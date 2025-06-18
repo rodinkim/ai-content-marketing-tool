@@ -1,4 +1,5 @@
 from flask import Flask
+import os
 # services.app_core 모듈에서 필요한 함수들을 임포트합니다.
 from services.app_core.app_factory_utils import ( # <-- 경로 변경
     configure_logging,
@@ -36,5 +37,5 @@ def create_app():
     schedule_app_tasks(app)
 
     logger.info("Flask application initialized successfully!")
-
+    
     return app

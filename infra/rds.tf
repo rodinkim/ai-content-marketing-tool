@@ -1,7 +1,10 @@
 # RDS용 DB Subnet Group (퍼블릭 또는 프라이빗 서브넷 ID 사용)
 resource "aws_db_subnet_group" "default" {
   name       = "main"
-  subnet_ids = [aws_subnet.public.id] # 또는 private 서브넷 ID들
+  subnet_ids = [
+  aws_subnet.public.id, # ap-northeast-2a
+  aws_subnet.public_c.id  # ap-northeast-2c
+  ]
 
   tags = {
     Name = "Main DB subnet group"
@@ -12,7 +15,7 @@ resource "aws_db_subnet_group" "default" {
 resource "aws_db_instance" "postgres" {
   identifier              = "ai-content-marketing-tool-db"
   engine                  = "postgres"
-  engine_version          = "15.10-R2" # AWS 콘솔에서 지원하는 버전 문자열 사용
+  engine_version          = "15.10" # AWS 콘솔에서 지원하는 버전 문자열 사용
   instance_class          = "db.t3.micro" # 프리티어: db.t3.micro 또는 db.t2.micro
   allocated_storage       = 20            # 프리티어 최대 20GB
   db_name                 = "vectordb"

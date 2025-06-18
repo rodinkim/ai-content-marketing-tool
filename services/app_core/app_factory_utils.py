@@ -29,7 +29,7 @@ def load_app_config(app: Flask):
     try:
         Config.validate()
         app.config.from_object(Config)
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(app.root_path, 'site.db')
+        # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(app.root_path, 'site.db')
         logger.info("Configuration loaded successfully.")
     except ValueError as e:
         logger.error(f"Configuration error: {e}")

@@ -11,6 +11,8 @@ class Config:
     DATABASE_URL = os.getenv("DATABASE_URL")
     SECRET_KEY = os.getenv("SECRET_KEY")
     CLAUDE_MODEL_ID = os.getenv("CLAUDE_MODEL_ID", "anthropic.claude-3-5-sonnet-20240620-v1:0")
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")  # os.environ.get 사용!
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     @classmethod
     def validate(cls):
@@ -18,6 +20,3 @@ class Config:
         missing_vars = [var for var in required_vars if not getattr(cls, var)]
         if missing_vars:
             raise ValueError(f"다음 환경 변수가 설정되지 않았습니다: {', '.join(missing_vars)}")
-
-    SQLALCHEMY_DATABASE_URI = DATABASE_URL
-    SQLALCHEMY_TRACK_MODIFICATIONS = False

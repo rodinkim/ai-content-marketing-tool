@@ -26,12 +26,9 @@ class RAGSystem:
             raise ValueError("Bedrock runtime 클라이언트가 유효하지 않아 RAGSystem을 초기화할 수 없습니다.")
 
         self.knowledge_base_dir = knowledge_base_dir
-        self.faiss_indexer = FaissIndexer() # FaissIndexer 인스턴스를 생성하여 RAGSystem 내에서 관리
-        self.load_and_process_knowledge_base() # 인스턴스 생성 시 지식 베이스 로드 및 처리
+        self.faiss_indexer = FaissIndexer() 
+        self.load_and_process_knowledge_base() 
 
-    # 기존 RAGSystem 클래스에 있던 get_embedding 메서드와 chunk_text 메서드는
-    # 각각 embedding_generator.py와 chunker.py로 분리되었으므로 여기서는 삭제합니다.
-    # 대신, RAGSystem의 get_embedding은 외부 함수를 호출하는 래퍼(wrapper) 역할을 합니다.
     def get_embedding(self, text):
         """EmbeddingGenerator 모듈의 get_embedding 함수를 호출합니다.
         self.bedrock_runtime 클라이언트를 인자로 전달합니다."""
@@ -94,8 +91,6 @@ def init_rag_system(bedrock_runtime_client):
     global _rag_system_instance
     if _rag_system_instance is None:
         try:
-            # Flask의 current_app은 앱 컨텍스트 내에서만 사용 가능하므로,
-            # 이 함수 내에서만 임포트합니다.
             from flask import current_app 
             knowledge_base_path = os.path.join(current_app.root_path, "knowledge_base")
             _rag_system_instance = RAGSystem(bedrock_runtime_client, knowledge_base_dir=knowledge_base_path) 
@@ -104,6 +99,7 @@ def init_rag_system(bedrock_runtime_client):
             logger.critical(f"RAGSystem 인스턴스 초기화 중 치명적인 오류 발생: {e}", exc_info=True)
             _rag_system_instance = None
     return _rag_system_instance
+
 
 def get_rag_system():
     """초기화된 RAGSystem 인스턴스를 반환합니다."""

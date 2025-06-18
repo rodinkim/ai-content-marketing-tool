@@ -1,6 +1,8 @@
 # --- 1. VPC 리소스 생성 ---
 resource "aws_vpc" "main" {
   cidr_block = "10.0.0.0/16"
+  enable_dns_support   = true
+  enable_dns_hostnames = true
 
   tags = {
     Name = "ai-content-marketing-tool-vpc",
@@ -13,17 +15,25 @@ data "aws_availability_zones" "available" {
   state = "available"
 }
 
-# --- 3. Public Subnet 1개 생성 ---
+# --- 3. Public Subnet 2개 생성 (RDS) ---
 resource "aws_subnet" "public" {
-  # count 제거, 단일 리소스 생성
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.0.1.0/24"
-  # 사용 가능한 AZ 중 첫 번째 AZ에 배치
   availability_zone       = data.aws_availability_zones.available.names[0]
   map_public_ip_on_launch = true
 
   tags = {
     Name = "ai-content-marketing-tool-public-subnet"
+  }
+}
+
+resource "aws_subnet" "public_c" {
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = "10.0.2.0/24"
+  availability_zone       = "ap-northeast-2c"
+  map_public_ip_on_launch = true
+  tags = {
+     Name = "ai-content-marketing-tool-public-c-subnet" 
   }
 }
 
@@ -66,6 +76,12 @@ resource "aws_route_table" "public_rt" {
 resource "aws_route_table_association" "public_assoc" {
   # count 제거, 단일 리소스 연결
   subnet_id      = aws_subnet.public.id
+  route_table_id = aws_route_table.public_rt.id
+}
+
+# public_c 서브넷을 퍼블릭 라우팅 테이블에 연결
+resource "aws_route_table_association" "public_c_assoc" {
+  subnet_id      = aws_subnet.public_c.id
   route_table_id = aws_route_table.public_rt.id
 }
 
