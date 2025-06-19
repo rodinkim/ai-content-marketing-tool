@@ -29,7 +29,6 @@ def load_app_config(app: Flask):
     try:
         Config.validate()
         app.config.from_object(Config)
-        # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(app.root_path, 'site.db')
         logger.info("Configuration loaded successfully.")
     except ValueError as e:
         logger.error(f"Configuration error: {e}")
@@ -69,8 +68,8 @@ def init_bedrock_client(app: Flask):
 def init_rag_and_ai_services(app: Flask, bedrock_runtime_client):
     """RAG 시스템 및 AI 서비스들을 초기화합니다."""
     # services.ai_rag 모듈에서 임포트
-    from services.ai_rag.rag_system import init_rag_system # <-- 경로 변경
-    from services.ai_rag.ai_service import init_ai_service # <-- 경로 변경
+    from services.ai_rag.rag_system import init_rag_system 
+    from services.ai_rag.ai_service import init_ai_service 
 
     with app.app_context():
         rag_system = init_rag_system(bedrock_runtime_client)
@@ -92,7 +91,7 @@ def register_app_blueprints(app: Flask):
 def schedule_app_tasks(app: Flask):
     """애플리케이션 스케줄러 작업을 등록합니다."""
     # services.web_crawling 모듈에서 임포트
-    from services.web_crawling.crawler_tasks import perform_marketing_crawl_task # <-- 경로 변경
+    from services.web_crawling.crawler_tasks import perform_marketing_crawl_task
 
     if not scheduler.running:
         scheduler.start()
@@ -106,9 +105,9 @@ def schedule_app_tasks(app: Flask):
         id='scheduled_marketing_crawl',
         func=lambda: app.app_context().push() or perform_marketing_crawl_task() or app.app_context().pop(),
         trigger='cron',
-        day_of_week='fri',
-        hour=16,
-        minute=38,
+        day_of_week='thu',
+        hour=13,
+        minute=7,
         timezone='Asia/Seoul',
         misfire_grace_time=3600
     )

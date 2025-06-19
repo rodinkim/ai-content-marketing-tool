@@ -11,8 +11,9 @@ class Config:
     DATABASE_URL = os.getenv("DATABASE_URL")
     SECRET_KEY = os.getenv("SECRET_KEY")
     CLAUDE_MODEL_ID = os.getenv("CLAUDE_MODEL_ID", "anthropic.claude-3-5-sonnet-20240620-v1:0")
-    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")  # os.environ.get 사용!
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    ADMIN_USERNAME = os.environ.get('ADMIN_USERNAME')
 
     @classmethod
     def validate(cls):

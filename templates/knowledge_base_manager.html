@@ -18,6 +18,38 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             flex-grow: 1;
         }
+        /* 관리자 UI를 위한 추가 스타일 */
+        .admin-content-area {
+            display: flex; /* 사용자 목록과 파일 목록을 가로로 정렬 */
+            gap: 20px; /* 간격 */
+            margin-top: 20px;
+        }
+        .user-list-container, .file-list-container {
+            flex: 1; /* 두 컨테이너가 동일한 너비를 가지도록 */
+            background-color: var(--light-bg); /* 배경색 지정 */
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.05); /* 내부 그림자 */
+            overflow-y: auto; /* 내용이 넘칠 경우 스크롤 */
+            max-height: 500px; /* 최대 높이 설정 */
+        }
+        .user-item {
+            padding: 10px 15px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer; /* 클릭 가능한 항목에 커서 변경 */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .user-item:last-child {
+            border-bottom: none;
+        }
+        .user-item:hover {
+            background-color: var(--hover-bg); /* 호버 효과 */
+        }
+        .user-item-name {
+            font-weight: 500;
+        }
         .file-item {
             display: flex;
             justify-content: space-between;
@@ -110,29 +142,58 @@
             </form>
         </div>
 
-
-        {# 지식 베이스 파일 목록 섹션 #}
-        <h4 class="section-header">현재 지식 베이스 파일 목록</h4>
+        {# 관리자 전용: 모든 사용자 목록 및 파일 #}
+        {% if is_admin %}
+        <h4 class="section-header">모든 사용자 지식 베이스 관리</h4>
+        <div class="admin-content-area">
+            <div class="card p-3 user-list-container">
+                <h5 class="mb-3">사용자 목록</h5>
+                <div id="userList">
+                    <p class="text-muted text-center" id="noUsersMessage">사용자가 없습니다.</p>
+                </div>
+            </div>
+            <div class="card p-3 file-list-container">
+                <h5 class="mb-3" id="adminFileListHeader">선택된 사용자의 파일</h5>
+                <div id="adminFileList">
+                    <p class="text-muted text-center" id="noAdminFilesMessage">사용자를 선택하여 파일을 확인하세요.</p>
+                </div>
+                <button class="btn btn-danger mt-3" id="adminClearUserKbBtn" style="display: none;">선택된 사용자의 모든 파일 삭제</button>
+            </div>
+        </div>
+        {% else %}
+        {# 일반 사용자: 자신의 지식 베이스 파일 목록 #}
+        <h4 class="section-header">나의 지식 베이스 파일 목록</h4>
         <div class="card p-3">
             <div id="fileList">
                 <p class="text-muted text-center" id="noFilesMessage">지식 베이스에 파일이 없습니다.</p>
-                {# 파일 목록은 JavaScript로 동적으로 로드됩니다. #}
             </div>
             <button class="btn btn-danger mt-3" id="clearAllKbBtn" style="display: none;">모든 지식 베이스 파일 삭제</button>
         </div>
+        {% endif %}
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     {# 지식 베이스 관리 기능을 위한 JavaScript 파일 #}
     <script>
-        // Flask URL을 JavaScript 변수로 정의 (knowledge_base_manager.js 로드 전에 정의)
-        const flaskKnowledgeBaseFilesUrl = "{{ url_for('knowledge_base_routes.list_knowledge_base_files') }}";
-        
-        // filename 파라미터가 비어있으면 해당 부분을 생략합니다.
+
+        // 일반 사용자용 API URL
+        const flaskKnowledgeBaseFilesUrl = "{{ url_for('knowledge_base_routes.list_knowledge_base_files') }}"; 
         const flaskDeleteFileUrlBase = "{{ url_for('knowledge_base_routes.delete_knowledge_base_file', filename='') }}"; 
-        const flaskAddUrlUrl = "{{ url_for('knowledge_base_routes.add_knowledge_base_from_url') }}";
         const flaskClearAllKbUrl = "{{ url_for('knowledge_base_routes.clear_all_knowledge_base_files') }}"; 
         
+        // 관리자용 API URL (is_admin 변수 활용)
+        const isAdminUser = {{ is_admin | tojson }};
+        const flaskUsersListUrl = "{{ url_for('knowledge_base_routes.list_all_users_for_admin') }}";
+        
+        // flaskAdminTargetFilesUrlBase의 정의.
+        const flaskAdminTargetFilesUrlBase = "{{ url_for('knowledge_base_routes.list_knowledge_base_files', target_username='DUMMY') }}".replace('DUMMY', ''); 
+        const flaskAdminTargetDeleteUrlBase = "{{ url_for('knowledge_base_routes.delete_knowledge_base_file', target_username='DUMMY', filename='DUMMY_FILE') }}".split('/DUMMY/DUMMY_FILE')[0] + '/';
+        const flaskAdminTargetClearAllUrlBase = "{{ url_for('knowledge_base_routes.clear_all_knowledge_base_files', target_username='DUMMY') }}".replace('DUMMY', '');
+
+        // 공통 API URL
+        const flaskAddUrlUrl = "{{ url_for('knowledge_base_routes.add_knowledge_base_from_url') }}";
+
+
         // 로그인/로그아웃/회원가입/인덱스 URL (네비게이션 바에서 사용)
         const flaskAuthIndexUrl = "{{ url_for('auth_routes.index') }}";
         const flaskContentHistoryUrl = "{{ url_for('content_routes.get_history_page') }}";
