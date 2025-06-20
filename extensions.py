@@ -5,6 +5,7 @@ from flask_migrate import Migrate
 from flask_apscheduler import APScheduler
 
 db = SQLAlchemy()
+
 login_manager = LoginManager()
 migrate = Migrate()
 scheduler = APScheduler()
