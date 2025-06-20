@@ -107,39 +107,33 @@ def _save_article_to_s3_knowledge_base(
     try:
         base_filename = sanitize_filename(article_title, url)
         
-        s3_object_key_prefix = target_category
-        s3_object_key = f"{s3_object_key_prefix}/{base_filename}"
+        final_s3_object_key = f"{target_category}/{base_filename}"
 
-        counter = 1
-        final_s3_object_key = s3_object_key
-        while True:
-            try:
-                s3_client.head_object(Bucket=bucket_name, Key=final_s3_object_key)
-                
-                name, ext = os.path.splitext(base_filename)
-                max_filename_len = 1024 - len(s3_object_key_prefix) - 1 - len(ext) - len(str(counter)) - 1
-                if len(name) > max_filename_len:
-                    name = name[:max_filename_len]
-                final_s3_object_key = f"{s3_object_key_prefix}/{name}_{counter}{ext}"
-                counter += 1
-            # 수정된 부분: boto3.client.exceptions.ClientError 대신 botocore.exceptions.ClientError 사용
-            except ClientError as e: # <-- 수정: boto3.client.exceptions.ClientError 대신 ClientError 사용
-                http_status = e.response.get('ResponseMetadata', {}).get('HTTPStatusCode')
-                if http_status == 404:
-                    break
-                else: 
-                    logger.error(f"S3 HeadObject 알 수 없는 ClientError 발생 (HTTP {http_status}) for '{final_s3_object_key}': {e}", exc_info=True)
-                    raise
-            except Exception as e:
-                logger.error(f"S3 HeadObject 예상치 못한 오류 발생 for '{final_s3_object_key}': {e}", exc_info=True)
+        # S3에 파일 업로드 (중복 파일명 처리 로직 간소화)
+        try:
+            # S3에 해당 키가 존재하는지 확인 (head_object)
+            logger.debug(f"S3 HeadObject 호출 시도: Bucket={bucket_name}, Key={final_s3_object_key}")
+            s3_client.head_object(Bucket=bucket_name, Key=final_s3_object_key)
+            # 객체가 존재하면 (200 OK 응답을 받으면) 덮어씁니다.
+            logger.info(f"S3 객체 '{final_s3_object_key}'이(가) 이미 존재합니다. 새 콘텐츠로 덮어씁니다.")
+        except ClientError as e: # boto3.client.exceptions.ClientError 대신 ClientError 사용
+            http_status = e.response.get('ResponseMetadata', {}).get('HTTPStatusCode')
+            if http_status == 404:
+                # 객체가 없으면 (404 Not Found) 그냥 업로드 진행
+                logger.info(f"S3 객체 '{final_s3_object_key}'을(를) 찾을 수 없습니다 (HTTP 404). 새로운 파일로 업로드 진행합니다.")
+            else: 
+                # 404가 아닌 다른 ClientError는 다시 발생
+                logger.error(f"S3 HeadObject 알 수 없는 ClientError 발생 (HTTP {http_status}) for '{final_s3_object_key}': {e}", exc_info=True)
                 raise
+        except Exception as e:
+            logger.error(f"S3 HeadObject 예상치 못한 오류 발생 for '{final_s3_object_key}': {e}", exc_info=True)
+            raise
 
         s3_client.put_object(Bucket=bucket_name, Key=final_s3_object_key, Body=article_content_str.encode('utf-8'))
         
         logger.info(f"URL '{url}'의 콘텐츠가 S3에 '{bucket_name}/{final_s3_object_key}'으로 저장되었습니다.")
         return True
-    except Exception as e: # <-- 상위 Exception으로 ClientError도 잡히도록 변경
-        # 모든 S3 관련 오류를 여기서 통합 로깅
+    except Exception as e:
         logger.error(f"S3에 개별 기사 저장 중 오류 발생: {url} - {e}", exc_info=True)
         return False
 
@@ -163,13 +157,6 @@ def perform_marketing_crawl_task():
     
     if category_to_urls_map is None:
         return {"message": "크롤링 대상 URL 파일 없음 또는 S3 로드 실패", "crawled_count": 0, "failed_urls": []}
-
-    # 크롤링된 기사를 저장할 S3 사용자 폴더 설정은 더 이상 필요 없습니다.
-    # 각 카테고리 자체가 최상위 폴더가 됩니다.
-    # crawler_target_user_folder = current_app.config.get('CRAWLER_TARGET_USER_FOLDER', 'crawled_news')
-    # if not crawler_target_user_folder:
-    #     crawler_target_user_folder = 'crawled_news' 
-    #     logger.warning("CRAWLER_TARGET_USER_FOLDER 설정이 없습니다. 'crawled_news' 폴더에 저장합니다.")
 
     # 각 카테고리(키)와 해당 URL 목록(값)에 대해 반복
     for target_category, urls_list_for_category in category_to_urls_map.items():

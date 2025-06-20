@@ -2,18 +2,14 @@
 
 from flask import request, jsonify, Blueprint, current_app, render_template
 from flask_login import login_required, current_user 
-import numpy as np
-import os
 import logging
 import re
-import boto3
+import boto3 # <-- s3_client.exceptions.ClientError 때문에 유지
 
 # services/ 디렉토리 내의 모듈들의 임포트 경로를 수정합니다.
-from services.ai_rag.rag_system import get_rag_system, init_rag_system
-from services.ai_rag.ai_service import get_ai_content_generator
+from services.ai_rag.rag_system import init_rag_system
 from services.web_crawling.web_content_extractor import extract_text_from_url
 from services.web_crawling.web_utils import sanitize_filename
-from services.web_crawling.crawler_tasks import perform_marketing_crawl_task
 
 logger = logging.getLogger(__name__)
 
@@ -99,36 +95,32 @@ def list_knowledge_base_files(target_username=None):
     현재 로그인한 사용자의 지식 베이스 파일 목록을 조회합니다.
     관리자 계정일 경우, target_username을 통해 다른 사용자의 지식 베이스를 조회하거나
     (target_username 지정 시), 모든 사용자의 파일을 통합하여 조회할 수 있습니다 (target_username이 None일 때).
+    반환 형식: [{"display_name": "표시용 이름", "s3_key": "실제S3객체키"}, ...]
     """
-    s3_client, bucket_name = get_s3_info() # S3 클라이언트 및 버킷 정보 가져오기
+    s3_client, bucket_name = get_s3_info()
     
     current_user_name = str(current_user.username)
     admin_username = current_app.config.get('ADMIN_USERNAME')
     is_current_user_admin = (current_user_name == admin_username)
 
-    files = [] # 최종 반환될 파일 목록
+    # 이 files 리스트에는 S3 객체 키 (예: 'username/제목_URLHASH.txt')가 들어갑니다.
+    files_from_s3 = [] 
 
-    # 관리자 여부 확인
-    # is_current_user_admin = (current_user_name == admin_username) # <-- 중복 코드 제거 (함수 상단에 이미 선언됨)
-
+    # 관리자 통합 조회 로직
     if is_current_user_admin and not target_username:
-        # 관리자가 특정 사용자 지정 없이 '/files'를 요청했을 때, 모든 사용자의 파일 통합 조회
         logger.info(f"관리자 '{current_user_name}'이(가) 모든 사용자의 지식 베이스 파일을 통합 조회합니다. (S3)")
         try:
             paginator = s3_client.get_paginator('list_objects_v2')
-            # 접두사(Prefix) 없이 모든 객체를 조회합니다.
             pages = paginator.paginate(Bucket=bucket_name) 
 
             for page in pages:
                 if 'Contents' in page:
                     for obj in page['Contents']:
-                        key = obj['Key'] # S3 객체 키 (예: 'user1/file1.txt')
-                        # .txt 파일이고 사용자 폴더 내에 있는 파일만 포함 (최상위 파일이나 빈 폴더 객체 등 제외)
-                        if key.endswith(".txt") and '/' in key: 
-                            files.append(key) # 'username/filename.txt' 형태로 반환
+                        key = obj['Key']
+                        if key.endswith(".txt") and '/' in key: # .txt 파일이고 사용자 폴더 내에 있는 파일만 포함
+                            files_from_s3.append(key) # 'username/filename_URLHASH.txt' 형태
             
-            logger.info(f"관리자 '{current_user_name}'의 통합 지식 베이스 파일 목록 조회: {len(files)}개 파일 발견. (S3)")
-            return jsonify({"files": files}), 200
+            logger.info(f"관리자 '{current_user_name}'의 통합 지식 베이스 파일 목록 조회: {len(files_from_s3)}개 파일 발견. (S3)")
 
         except Exception as e:
             logger.error(f"관리자 통합 지식 베이스 파일 목록 조회 오류 (S3): {e}", exc_info=True)
@@ -138,37 +130,54 @@ def list_knowledge_base_files(target_username=None):
         # 일반 사용자 또는 관리자가 특정 사용자를 지정하여 조회
         actual_username_for_path = target_username if target_username else current_user_name
 
-        # 관리자가 아니면서 다른 사용자를 지정하려고 시도하는 경우 차단
         if not is_current_user_admin and target_username and target_username != current_user_name:
             logger.warning(f"비관리자 계정 '{current_user_name}'이(가) '{target_username}'의 파일 조회를 시도했습니다. (권한 없음)")
             return jsonify({"error": "다른 사용자의 파일을 조회할 권한이 없습니다."}), 403
         
         logger.info(f"사용자 '{current_user_name}'이(가) '{actual_username_for_path}'의 지식 베이스를 조회합니다. (S3)")
 
-        user_folder_name = get_user_folder_name(actual_username_for_path) # <-- 이 함수 호출이 문제였습니다.
-        # S3 객체 키 접두사 (예: 'ohsung/')
+        user_folder_name = get_user_folder_name(actual_username_for_path)
         s3_prefix = f"{user_folder_name}/"
         
         try:
             paginator = s3_client.get_paginator('list_objects_v2')
-            # 해당 접두사로 시작하는 객체만 조회합니다.
             pages = paginator.paginate(Bucket=bucket_name, Prefix=s3_prefix) 
 
             for page in pages:
                 if 'Contents' in page:
                     for obj in page['Contents']:
-                        key = obj['Key'] # 'ohsung/file1.txt'
+                        key = obj['Key']
                         if key.endswith(".txt"):
-                            # 파일명만 반환 ('ohsung/file1.txt' -> 'file1.txt')
-                            file_name_only = key.replace(s3_prefix, '')
-                            if file_name_only: # 빈 파일명 방지 (폴더 자체의 키 등)
-                                files.append(file_name_only)
+                            # 파일 목록에 S3 객체 키 (예: 'username/filename_URLHASH.txt') 그대로 추가
+                            files_from_s3.append(key)
             
-            logger.info(f"사용자 '{user_folder_name}'의 지식 베이스 파일 목록 조회: {len(files)}개 파일 발견. (S3)")
-            return jsonify({"files": files}), 200
+            logger.info(f"사용자 '{user_folder_name}'의 지식 베이스 파일 목록 조회: {len(files_from_s3)}개 파일 발견. (S3)")
         except Exception as e:
             logger.error(f"'{user_folder_name}' 사용자의 지식 베이스 파일 목록 조회 오류 (S3): {e}", exc_info=True)
             return jsonify({"error": "지식 베이스 파일 목록을 가져오는 중 오류가 발생했습니다."}), 500
+
+    # 최종 반환될 데이터 (표시 이름과 실제 S3 키 포함)
+    returned_files_data = [] 
+    for s3_full_key in files_from_s3: 
+        # s3_full_key: 'username/제목_URLHASH.txt' 또는 '업종/제목_URLHASH.txt'
+        
+        # 1. S3 객체 키에서 순수 파일명 (해시 포함) 추출
+        filename_with_hash = s3_full_key.split('/', 1)[1] if '/' in s3_full_key else s3_full_key
+        
+        # 2. 파일명에서 "_URLHASH.txt" 부분 제거하여 표시용 이름 생성
+        # re.sub는 정규식 패턴을 찾아 교체합니다. '[0-9a-fA-F]{8}'는 8자리의 16진수 문자열 (MD5 해시 앞 8자리)
+        display_name = re.sub(r'_[0-9a-fA-F]{8}\.txt$', '.txt', filename_with_hash)
+        
+        # 만약 해시가 없는 파일이거나 정규식 패턴이 맞지 않으면 원본 파일명 유지
+        if display_name == filename_with_hash: 
+             display_name = filename_with_hash # 원본 (해시 포함된) 파일명 유지
+
+        returned_files_data.append({
+            "display_name": display_name,
+            "s3_key": s3_full_key # <-- 실제 S3 키를 함께 반환
+        })
+    
+    return jsonify({"files": returned_files_data}), 200
 
 
 @knowledge_base_bp.route('/delete/<path:filename>', methods=['DELETE'])
@@ -296,12 +305,6 @@ def clear_all_knowledge_base_files(target_username=None):
 @knowledge_base_bp.route('/add_from_url', methods=['POST'])
 @login_required
 def add_knowledge_base_from_url():
-    """
-    주어진 URL에서 기사 내용을 추출하고 S3에 .txt 파일로 저장합니다.
-    파일은 'knowledge_base/<username>/' S3 객체 키 경로에 직접 저장됩니다.
-    이후 RAG 시스템을 재로드합니다.
-    """
-    # S3 클라이언트 및 버킷 정보 가져오기
     s3_client, bucket_name = get_s3_info()
 
     data = request.json
@@ -319,7 +322,6 @@ def add_knowledge_base_from_url():
     logger.info(f"URL로부터 지식 베이스 추가 시도: {url} (대상 사용자 폴더: {user_folder_name}) (S3)")
 
     try:
-        # 1. URL에서 기사 내용 추출
         article_content_data = extract_text_from_url(url)
         if not article_content_data:
             return jsonify({"error": "URL에서 콘텐츠를 추출할 수 없습니다. 유효한 URL인지 확인해주세요."}), 400
@@ -333,58 +335,37 @@ def add_knowledge_base_from_url():
 
         base_filename = sanitize_filename(article_title, url) 
         
-        # S3 객체 키 생성: username/filename.txt
-        s3_object_key = f"{user_folder_name}/{base_filename}"
+        # S3 객체 키 생성
+        final_s3_object_key = f"{user_folder_name}/{base_filename}" 
 
-        # 2. S3에 파일 업로드 (중복 파일명 처리 로직 포함)
-        counter = 1
-        final_s3_object_key = s3_object_key
-        while True:
-            try:
-                # S3에 해당 키가 존재하는지 확인 (head_object로 객체 메타데이터 가져오기 시도)
-                logger.debug(f"S3 HeadObject 호출 시도: Bucket={bucket_name}, Key={final_s3_object_key}")
-                s3_client.head_object(Bucket=bucket_name, Key=final_s3_object_key)
-                
-                # 객체가 존재하면 (200 OK 응답을 받았을 경우) 카운터를 증가시켜 새 키를 생성
-                logger.debug(f"S3 HeadObject 성공: 객체 '{final_s3_object_key}'이(가) 이미 존재합니다. 다른 이름으로 시도합니다.")
-                name, ext = os.path.splitext(base_filename)
-                
-                # S3 키 최대 길이 (1024) 및 폴더명, 확장자, 카운터를 고려한 파일명 길이 제한
-                max_filename_len = 1024 - len(user_folder_name) - 1 - len(ext) - len(str(counter)) - 1
-                if len(name) > max_filename_len:
-                    name = name[:max_filename_len]
-                final_s3_object_key = f"{user_folder_name}/{name}_{counter}{ext}"
-                counter += 1
-            except s3_client.exceptions.ClientError as e:
-                # S3에서 객체를 찾을 수 없을 때 발생하는 경우를 처리
-                http_status = e.response.get('ResponseMetadata', {}).get('HTTPStatusCode')
-                error_code = e.response.get('Error', {}).get('Code')
-                
-                logger.debug(f"S3 HeadObject ClientError 발생: HTTP Status={http_status}, Error Code={error_code}")
-
-                # HTTP 상태 코드가 404이면 객체가 없다는 의미이므로 루프를 빠져나와 업로드 진행
-                if http_status == 404:
-                    logger.info(f"S3 객체 '{final_s3_object_key}'을(를) 찾을 수 없습니다 (HTTP 404). 새로운 파일로 업로드 시도합니다.")
-                    break # 객체가 없으니 이 이름을 사용해도 됨
-                else: 
-                    # 404가 아닌 다른 ClientError (예: 권한 문제, 버킷 없음 등)는 다시 발생
-                    logger.error(f"S3 HeadObject 알 수 없는 ClientError 발생 (HTTP {http_status}): {error_code} - {e}", exc_info=True)
-                    raise
-            except Exception as e:
-                # 예상치 못한 다른 모든 오류는 다시 발생
-                logger.error(f"S3 HeadObject 예상치 못한 오류 발생: {e}", exc_info=True)
+        # S3에 파일 업로드 (중복 파일명 처리 로직 개선)
+        message_prefix = "URL에서 콘텐츠를 가져와 지식 베이스에 추가했습니다." # 기본 메시지 (문장으로 변경)
+        
+        try:
+            logger.debug(f"S3 HeadObject 호출 시도: Bucket={bucket_name}, Key={final_s3_object_key}")
+            s3_client.head_object(Bucket=bucket_name, Key=final_s3_object_key)
+            logger.info(f"S3 객체 '{final_s3_object_key}'이(가) 이미 존재합니다. 새 콘텐츠로 덮어씁니다.")
+            message_prefix = "이미 등록된 URL입니다. 최신 정보로 업데이트했습니다." # <-- 메시지 변경 (문장으로 변경)
+        except s3_client.exceptions.ClientError as e:
+            http_status = e.response.get('ResponseMetadata', {}).get('HTTPStatusCode')
+            if http_status == 404:
+                logger.info(f"S3 객체 '{final_s3_object_key}'을(를) 찾을 수 없습니다 (HTTP 404). 새로운 파일로 업로드 진행합니다.")
+            else: 
+                logger.error(f"S3 HeadObject 알 수 없는 ClientError 발생 (HTTP {http_status}): {e}", exc_info=True)
                 raise
+        except Exception as e:
+            logger.error(f"S3 HeadObject 예상치 못한 오류 발생: {e}", exc_info=True)
+            raise
 
-        # 3. S3에 콘텐츠 업로드
+        # S3에 콘텐츠 업로드
         s3_client.put_object(Bucket=bucket_name, Key=final_s3_object_key, Body=article_content_str.encode('utf-8'))
         logger.info(f"URL '{url}'의 콘텐츠가 S3에 '{bucket_name}/{final_s3_object_key}'으로 업로드되었습니다. (S3)")
 
-        # 4. RAG 시스템 재로드 (이 부분은 S3에서 파일을 읽어와 RAG 시스템을 구축하도록 변경해야 함)
-        # 현재는 init_rag_system이 로컬 파일을 기반으로 하므로, S3 파일 로드 로직이 필요.
         bedrock_runtime_client = current_app.extensions['rag_bedrock_runtime']
-        init_rag_system(bedrock_runtime_client) # 이 함수도 S3 기반으로 수정이 필요합니다.
+        init_rag_system(bedrock_runtime_client)
         
-        return jsonify({"message": f"URL '{url}'에서 콘텐츠를 가져와 지식 베이스에 추가했습니다 ('{final_s3_object_key}'). 지식 베이스가 업데이트되었습니다."}), 200
+        # 최종 반환 메시지 간결화
+        return jsonify({"message": message_prefix}), 200
 
     except Exception as e:
         logger.error(f"URL로부터 지식 베이스 추가 오류 (S3): {e}", exc_info=True)

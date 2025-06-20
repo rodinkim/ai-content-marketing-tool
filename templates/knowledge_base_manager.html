@@ -50,23 +50,42 @@
         .user-item-name {
             font-weight: 500;
         }
+        /* -- 파일명과 버튼 레이아웃 수정 -- */
         .file-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 10px 15px;
             border-bottom: 1px solid var(--border-color);
+            /* 파일명과 버튼이 서로 공간을 침범하지 않도록 설정 */
+            /* word-break: break-all; - 긴 파일명 자체의 줄바꿈은 허용하되, 버튼 영역은 침범하지 않도록 */
         }
         .file-item:last-child {
             border-bottom: none;
         }
         .file-item-name {
-            flex-grow: 1;
+            flex-grow: 1; /* 남은 공간을 채우되, 줄어들 수도 있도록 (아래 min-width와 함께) */
             font-weight: 500;
+            margin-right: 15px; /* 파일명과 버튼 사이에 여백 추가 */
+            overflow: hidden; /* 넘치는 텍스트 숨김 */
+            text-overflow: ellipsis; /* 넘치는 텍스트 ...으로 표시 */
+            white-space: nowrap; /* 파일명은 한 줄로 표시하되, 넘치면 ...으로 */
+            min-width: 0; /* flex item에서 내용이 넘칠 때 줄바꿈이 아닌 생략되도록 허용 */
+        }
+        .file-item-actions {
+            flex-shrink: 0; /* <-- 버튼 그룹이 공간이 부족해도 줄어들지 않도록 */
+            display: flex; /* 버튼을 가로로 정렬 */
+            align-items: center;
         }
         .file-item-actions button {
             margin-left: 10px;
+            padding: 5px 10px;
+            font-size: 0.875rem;
+            white-space: nowrap; /* <-- 텍스트 줄바꿈 방지 */
+            min-width: 60px; /* <-- 버튼의 최소 너비 설정 (텍스트가 충분히 들어갈 만큼) */
+            text-align: center; /* 텍스트 가운데 정렬 */
         }
+        /* -- 수정 끝 -- */
         .section-header {
             margin-top: 40px;
             margin-bottom: 20px;
@@ -175,7 +194,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     {# 지식 베이스 관리 기능을 위한 JavaScript 파일 #}
     <script>
-
+        // Flask URL을 JavaScript 변수로 정의 (knowledge_base_manager.js 로드 전에 정의)
         // 일반 사용자용 API URL
         const flaskKnowledgeBaseFilesUrl = "{{ url_for('knowledge_base_routes.list_knowledge_base_files') }}"; 
         const flaskDeleteFileUrlBase = "{{ url_for('knowledge_base_routes.delete_knowledge_base_file', filename='') }}"; 

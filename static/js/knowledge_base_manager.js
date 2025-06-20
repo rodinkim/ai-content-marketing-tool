@@ -10,13 +10,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const mainWrapper = document.querySelector('.main-wrapper');
 
     // 일반 사용자용 요소 (isAdminUser가 false일 때만 존재)
-    // HTML에서 id가 'fileList', 'noFilesMessage', 'clearAllKbBtn'인 요소들을 참조
     const fileListDivUser = document.getElementById('fileList');
     const noFilesMessageUser = document.getElementById('noFilesMessage');
     const clearAllKbBtnUser = document.getElementById('clearAllKbBtn');
 
     // 관리자용 요소 (isAdminUser가 true일 때만 존재)
-    // HTML에서 id가 'userList', 'noUsersMessage', 'adminFileList', 'noAdminFilesMessage', 'adminFileListHeader', 'adminClearUserKbBtn'인 요소들을 참조
     const userListDiv = document.getElementById('userList');
     const noUsersMessage = document.getElementById('noUsersMessage');
     const adminFileListDiv = document.getElementById('adminFileList');
@@ -37,57 +35,55 @@ document.addEventListener('DOMContentLoaded', function() {
         if (h2Element) {
             h2Element.after(alertDiv);
         } else {
-            mainWrapper.prepend(alertDiv); // H2가 없으면 최상단에 추가
+            mainWrapper.prepend(alertDiv);
         }
-        setTimeout(() => alertDiv.remove(), 5000); // 5초 후 메시지 제거
+        setTimeout(() => alertDiv.remove(), 5000);
     }
 
     // =========================================================
     // 일반 사용자: 자신의 파일 목록을 불러와 렌더링하는 함수
     // =========================================================
     async function fetchAndRenderUserFiles() {
-        if (!fileListDivUser) return; // 요소가 없으면 (관리자 모드일 경우) 실행하지 않음
+        if (!fileListDivUser) return;
 
         fileListDivUser.innerHTML = '';
         noFilesMessageUser.style.display = 'none';
         clearAllKbBtnUser.style.display = 'none';
 
         try {
-            // flaskKnowledgeBaseFilesUrl는 "/knowledge_base/files" 엔드포인트에 매핑됩니다.
             const response = await fetch(flaskKnowledgeBaseFilesUrl);
-
+            
             if (!response.ok) {
-                // 로그인 필요 또는 리다이렉트 처리
                 if (response.status === 401 || response.redirected) {
                     fileListDivUser.innerHTML = '<p class="text-info text-center">로그인하시면 지식 베이스를 관리할 수 있습니다.</p>';
                     if (response.redirected) {
-                        window.location.href = flaskAuthLoginUrl; // 로그인 페이지로 리다이렉트
+                        window.location.href = flaskAuthLoginUrl;
                     }
                     return;
                 }
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-
+            
             const data = await response.json();
-            const files = data.files || []; // 파일명만 포함 (예: "기사제목.txt")
+            // files는 이제 [{display_name: "제목.txt", s3_key: "username/제목_URLHASH.txt"}, ...] 형태
+            const files = data.files || []; 
 
             if (files.length === 0) {
-                noFilesMessageUser.style.display = 'block'; // 파일 없음 메시지 표시
+                noFilesMessageUser.style.display = 'block';
             } else {
                 noFilesMessageUser.style.display = 'none';
-                clearAllKbBtnUser.style.display = 'block'; // '모든 파일 삭제' 버튼 표시
-                files.forEach(filename => {
+                clearAllKbBtnUser.style.display = 'block';
+                files.forEach(fileData => { // fileData는 {display_name, s3_key} 객체
                     const fileItem = document.createElement('div');
                     fileItem.className = 'file-item';
                     fileItem.innerHTML = `
-                        <span class="file-item-name">${filename}</span>
+                        <span class="file-item-name">${fileData.display_name}</span>
                         <div class="file-item-actions">
-                            <button type="button" class="btn btn-sm btn-danger delete-file-btn" data-filename="${filename}">삭제</button>
+                            <button type="button" class="btn btn-sm btn-danger delete-file-btn" data-filename="${fileData.s3_key}">삭제</button>
                         </div>
                     `;
                     fileListDivUser.appendChild(fileItem);
                 });
-                // 동적으로 생성된 삭제 버튼에 이벤트 리스너 추가
                 fileListDivUser.querySelectorAll('.delete-file-btn').forEach(button => {
                     button.addEventListener('click', handleDeleteUserFile);
                 });
@@ -102,21 +98,21 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // =========================================================
-    // 일반 사용자: 자신의 파일 삭제 함수
+    // 일반 사용자: 파일 삭제 함수
     // =========================================================
     async function handleDeleteUserFile(event) {
-        const filename = event.target.dataset.filename; // 순수 파일명 (예: "기사제목.txt")
+        const filename = event.target.dataset.filename; // 실제 S3 키 (예: "username/제목_URLHASH.txt")
         if (confirm(`'${filename}' 파일을 정말로 삭제하시겠습니까?`)) {
             try {
                 // flaskDeleteFileUrlBase는 "/knowledge_base/delete/" 로 끝납니다.
-                // 합치면 "/knowledge_base/delete/기사제목.txt" 형태의 URL이 됩니다.
+                // 백엔드 라우트는 /delete/<path:filename> 이므로 S3 키를 그대로 전달
                 const response = await fetch(`${flaskDeleteFileUrlBase}${filename}`, {
                     method: 'DELETE'
                 });
                 const result = await response.json();
                 if (response.ok) {
                     showMessage(result.message, 'success');
-                    fetchAndRenderUserFiles(); // 파일 목록 새로고침
+                    fetchAndRenderUserFiles();
                 } else {
                     showMessage(result.error || `파일 삭제 실패: ${response.statusText}`, 'danger');
                 }
@@ -130,18 +126,17 @@ document.addEventListener('DOMContentLoaded', function() {
     // =========================================================
     // 일반 사용자: 모든 지식 베이스 파일 삭제 함수
     // =========================================================
-    if (clearAllKbBtnUser) { // 버튼이 존재할 때만 이벤트 리스너 추가
+    if (clearAllKbBtnUser) {
         clearAllKbBtnUser.addEventListener('click', async function() {
             if (confirm("정말로 나의 모든 지식 베이스 파일을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) {
                 try {
-                    // flaskClearAllKbUrl는 "/knowledge_base/clear_all_files" 엔드포인트에 매핑됩니다.
                     const response = await fetch(flaskClearAllKbUrl, {
                         method: 'DELETE'
                     });
                     const result = await response.json();
                     if (response.ok) {
                         showMessage(result.message, 'success');
-                        fetchAndRenderUserFiles(); // 파일 목록 새로고침
+                        fetchAndRenderUserFiles();
                     } else {
                         showMessage(result.error || `모든 파일 삭제 실패: ${response.statusText}`, 'danger');
                     }
@@ -157,18 +152,17 @@ document.addEventListener('DOMContentLoaded', function() {
     // 관리자: 모든 사용자 목록을 불러와 렌더링하는 함수
     // =========================================================
     async function fetchAndRenderUsers() {
-        if (!userListDiv) return; // 요소가 없으면 (일반 사용자 모드일 경우) 실행하지 않음
+        if (!userListDiv) return;
 
         userListDiv.innerHTML = '';
         noUsersMessage.style.display = 'none';
-        adminFileListDiv.innerHTML = '<p class="text-muted text-center">사용자를 선택하여 파일을 확인하세요.</p>'; // 파일 목록 초기화
+        adminFileListDiv.innerHTML = '<p class="text-muted text-center">사용자를 선택하여 파일을 확인하세요.</p>';
         noAdminFilesMessage.style.display = 'block';
         adminFileListHeader.textContent = '선택된 사용자의 파일';
         adminClearUserKbBtn.style.display = 'none';
 
 
         try {
-            // flaskUsersListUrl는 "/knowledge_base/users" 엔드포인트에 매핑됩니다.
             const response = await fetch(flaskUsersListUrl);
             if (!response.ok) {
                 const errorData = await response.json();
@@ -177,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             const data = await response.json();
-            const users = data.users || []; // 사용자명 목록 (예: ["ohsung", "testuser"])
+            const users = data.users || [];
 
             if (users.length === 0) {
                 noUsersMessage.style.display = 'block';
@@ -192,7 +186,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     `;
                     userListDiv.appendChild(div);
                 });
-                // 사용자 선택 이벤트 리스너 (이벤트 위임 대신 각 버튼에 직접 추가)
                 userListDiv.querySelectorAll('.btn-select-user').forEach(button => {
                     button.addEventListener('click', handleSelectUser);
                 });
@@ -205,57 +198,79 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // =========================================================
-    // 관리자: 특정 사용자의 파일 목록을 불러와 렌더링하는 함수
+    // 관리자: 특정 사용자의 파일 목록을 불러와 렌더링하는 함수 (혹은 모든 파일 통합 조회)
     // =========================================================
-    async function fetchAndRenderAdminTargetFiles(username) {
-        if (!adminFileListDiv) return; // 요소가 없으면 실행하지 않음
+    async function fetchAndRenderAdminTargetFiles(username = null) { // username이 null이면 통합 조회
+        if (!adminFileListDiv) return;
 
-        currentAdminTargetUser = username; // 현재 선택된 사용자 업데이트
+        currentAdminTargetUser = username;
         adminFileListDiv.innerHTML = '';
         noAdminFilesMessage.style.display = 'none';
         adminClearUserKbBtn.style.display = 'none';
-        adminFileListHeader.textContent = `${username}의 파일 목록`;
+        adminFileListHeader.textContent = username ? `${username}의 파일 목록` : '모든 사용자 파일 (통합)';
 
         try {
-            // flaskAdminTargetFilesUrlBase는 "/knowledge_base/files/"로 끝납니다.
-            // 여기에 target_username을 붙여 "/knowledge_base/files/someuser" 형태로 만듭니다.
-            const url = `${flaskAdminTargetFilesUrlBase}${username}`;
+            let url;
+            if (username) {
+                // 특정 사용자 파일 조회: /knowledge_base/files/username
+                url = `${flaskAdminTargetFilesUrlBase}${username}`;
+            } else {
+                // 모든 사용자 파일 통합 조회: /knowledge_base/files
+                url = flaskKnowledgeBaseFilesUrl;
+            }
+            
             const response = await fetch(url);
 
             if (!response.ok) {
                 const errorData = await response.json();
-                showMessage(errorData.error || `사용자 ${username}의 파일을 불러오는 데 실패했습니다: ${response.statusText}`, 'danger');
+                showMessage(errorData.error || `파일을 불러오는 데 실패했습니다: ${response.statusText}`, 'danger');
                 noAdminFilesMessage.style.display = 'block';
                 return;
             }
 
             const data = await response.json();
-            const files = data.files || []; // 파일명만 포함 (예: "기사제목.txt")
+            // files는 이제 [{display_name: "제목.txt", s3_key: "username/제목_URLHASH.txt"}, ...] 형태
+            const files = data.files || [];
 
             if (files.length === 0) {
                 noAdminFilesMessage.style.display = 'block';
             } else {
                 noAdminFilesMessage.style.display = 'none';
-                adminClearUserKbBtn.style.display = 'block'; // 파일이 있으면 '모든 파일 삭제' 버튼 표시
-                files.forEach(filename => {
-                    const fileItem = document.createElement('div');
-                    fileItem.className = 'file-item';
-                    fileItem.innerHTML = `
-                        <span class="file-item-name">${filename}</span>
+                // 관리자 통합 조회 시에만 '모든 파일 삭제' 버튼 활성화 (특정 유저 삭제는 해당 유저 클릭 후)
+                if (username) { // 특정 사용자 조회 시에는 해당 사용자 모든 파일 삭제 버튼
+                    adminClearUserKbBtn.style.display = 'block';
+                } else { // 통합 조회 시에는 버튼을 숨기거나, 관리자 전체 삭제 기능으로 연결
+                    // adminClearUserKbBtn.style.display = 'block'; // <- 모든 사용자 파일 삭제 버튼 필요시 활성화
+                }
+                
+                files.forEach(fileData => { // fileData는 {display_name, s3_key} 객체
+                    const div = document.createElement('div');
+                    div.className = 'file-item';
+                    
+                    // 관리자 통합 조회시에는 '사용자명/제목.txt' 형태로 보여줄 수 있습니다.
+                    let displayName = fileData.display_name;
+                    if (!username && fileData.s3_key && fileData.s3_key.includes('/')) {
+                        // 통합 조회이면서 S3 키에 사용자명이 포함된 경우
+                        const parts = fileData.s3_key.split('/');
+                        const userFolder = parts[0];
+                        displayName = `${userFolder}/${fileData.display_name}`;
+                    }
+
+                    div.innerHTML = `
+                        <span class="file-item-name">${displayName}</span>
                         <div class="file-item-actions">
-                            <button type="button" class="btn btn-sm btn-danger btn-admin-delete-file" data-filename="${filename}" data-username="${username}">삭제</button>
+                            <button type="button" class="btn btn-sm btn-danger btn-admin-delete-file" data-filename="${fileData.s3_key}" data-username="${fileData.s3_key.split('/')[0]}">삭제</button>
                         </div>
                     `;
-                    adminFileListDiv.appendChild(fileItem);
+                    adminFileListDiv.appendChild(div);
                 });
-                // 동적으로 생성된 삭제 버튼에 이벤트 리스너 추가
                 adminFileListDiv.querySelectorAll('.btn-admin-delete-file').forEach(button => {
                     button.addEventListener('click', handleAdminDeleteFile);
                 });
             }
         } catch (error) {
-            console.error(`Error fetching files for user ${username} (Admin):`, error);
-            showMessage(`네트워크 오류: 사용자 ${username}의 파일 목록을 불러올 수 없습니다.`, 'danger');
+            console.error(`Error fetching files for user ${username || 'all users'} (Admin):`, error);
+            showMessage(`네트워크 오류: 파일을 불러올 수 없습니다.`, 'danger');
             noAdminFilesMessage.style.display = 'block';
         }
     }
@@ -272,14 +287,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // 관리자: 특정 사용자의 파일 삭제 함수
     // =========================================================
     async function handleAdminDeleteFile(event) {
-        const filename = event.target.dataset.filename;
-        const targetUsername = event.target.dataset.username;
+        const filename = event.target.dataset.filename; // 실제 S3 키 (예: "username/제목_URLHASH.txt")
+        const targetUsername = event.target.dataset.username; // 실제 S3 키에서 추출한 사용자명
 
-        if (confirm(`관리자: 사용자 '${targetUsername}'의 파일 '${filename}'을 정말로 삭제하시겠습니까?`)) {
+        if (confirm(`관리자: 사용자 '${targetUsername}'의 파일 '${filename.split('/').pop()}'을 정말로 삭제하시겠습니까?`)) {
             try {
-                // flaskAdminTargetDeleteUrlBase는 "/knowledge_base/delete/" 로 끝납니다.
-                // Flask 라우트는 /delete/<target_username>/<filename> 형태이므로, URL을 정확히 조합합니다.
-                const deleteUrl = `${flaskAdminTargetDeleteUrlBase}${targetUsername}/${filename}`;
+                // Flask 라우트가 /delete/<string:target_username>/<path:filename> 이므로 정확히 조합
+                const deleteUrl = `${flaskAdminTargetDeleteUrlBase}${targetUsername}/${filename.split('/').pop()}`; // filename은 순수 파일명만
 
                 const response = await fetch(deleteUrl, {
                     method: 'DELETE'
@@ -287,7 +301,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 const result = await response.json();
                 if (response.ok) {
                     showMessage(result.message, 'success');
-                    fetchAndRenderAdminTargetFiles(targetUsername); // 파일 목록 새로고침
+                    // 현재 보고 있는 뷰에 따라 파일 목록 새로고침
+                    if (currentAdminTargetUser) { // 특정 유저를 보고 있으면 해당 유저 파일 새로고침
+                        fetchAndRenderAdminTargetFiles(currentAdminTargetUser);
+                    } else { // 통합 목록을 보고 있었으면 통합 목록 새로고침
+                        fetchAndRenderAdminTargetFiles(null);
+                    }
                 } else {
                     showMessage(result.error || `파일 삭제 실패: ${response.statusText}`, 'danger');
                 }
@@ -301,7 +320,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // =========================================================
     // 관리자: 선택된 사용자의 모든 파일 삭제 함수
     // =========================================================
-    if (adminClearUserKbBtn) { // 버튼이 존재할 때만 이벤트 리스너 추가
+    if (adminClearUserKbBtn) {
         adminClearUserKbBtn.addEventListener('click', async function() {
             if (!currentAdminTargetUser) {
                 showMessage("파일을 삭제할 사용자를 먼저 선택해주세요.", "warning");
@@ -309,8 +328,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             if (confirm(`관리자: 사용자 '${currentAdminTargetUser}'의 모든 지식 베이스 파일을 정말로 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.`)) {
                 try {
-                    // flaskAdminTargetClearAllUrlBase는 "/knowledge_base/clear_all_files/" 로 끝납니다.
-                    // Flask 라우트는 /clear_all_files/<target_username> 형태이므로, URL을 정확히 조합합니다.
+                    // Flask 라우트가 /clear_all_files/<string:target_username> 형태이므로 조합
                     const clearUrl = `${flaskAdminTargetClearAllUrlBase}${currentAdminTargetUser}`;
 
                     const response = await fetch(clearUrl, {
@@ -354,17 +372,16 @@ document.addEventListener('DOMContentLoaded', function() {
             if (response.ok) {
                 showMessage(result.message, 'success');
                 urlInput.value = '';
-                // 파일 추가 후 현재 보고 있는 뷰에 따라 다르게 새로고침
-                if (isAdminUser && currentAdminTargetUser) {
-                    // 관리자가 특정 유저의 파일을 보고 있었으면 그 유저 파일 새로고침
-                    fetchAndRenderAdminTargetFiles(currentAdminTargetUser);
-                } else {
-                    // 일반 사용자 또는 관리자가 자기 파일을 보고 있었으면 자기 파일 새로고침
-                    fetchAndRenderUserFiles();
-                }
-                // 관리자는 사용자 목록도 새로고침할 필요가 있을 수 있음 (새로운 사용자 폴더 생성 등)
                 if (isAdminUser) {
-                    fetchAndRenderUsers();
+                    // 관리자일 경우, 현재 보고 있는 뷰에 따라 새로고침
+                    if (currentAdminTargetUser) { // 특정 유저를 보고 있으면 해당 유저 파일 새로고침
+                        fetchAndRenderAdminTargetFiles(currentAdminTargetUser);
+                    } else { // 통합 목록을 보고 있으면 통합 목록 새로고침
+                        fetchAndRenderAdminTargetFiles(null);
+                    }
+                    fetchAndRenderUsers(); // 사용자 목록도 새로고침 (새 사용자 폴더 생길 경우 대비)
+                } else {
+                    fetchAndRenderUserFiles(); // 일반 사용자: 자기 파일 목록 새로고침
                 }
             } else {
                 showMessage(result.error || `URL에서 지식 추가 실패: ${response.statusText}`, 'danger');
@@ -379,13 +396,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-
     // =========================================================
     // 페이지 로드 시 초기화 로직
     // =========================================================
     window.addEventListener('load', function() {
         if (isAdminUser) {
             fetchAndRenderUsers(); // 관리자는 사용자 목록부터 로드
+            fetchAndRenderAdminTargetFiles(null); // 관리자 페이지 로드 시, 모든 사용자 파일 통합 목록을 바로 보여줍니다.
         } else {
             fetchAndRenderUserFiles(); // 일반 사용자는 자기 파일 목록 로드
         }
