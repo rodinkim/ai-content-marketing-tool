@@ -10,6 +10,7 @@ __pycache__/
 # 테라폼 상태 파일. 민감한 정보를 포함할 수 있습니다.
 *.tfstate
 *.tfstate.*
+terraform.tfvars
 
 # 테라폼이 프로바이더를 다운로드하는 폴더입니다.
 .terraform/

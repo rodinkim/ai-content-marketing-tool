@@ -1,6 +1,6 @@
 # ai-content-marketing-tool/models.py
 from datetime import datetime
-from extensions import db # <--- app.py 대신 extensions.py에서 db 임포트
+from extensions import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
