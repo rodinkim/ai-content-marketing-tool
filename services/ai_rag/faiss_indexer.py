@@ -30,7 +30,7 @@ class FaissIndexer:
             return
 
         self.documents = document_chunks # 문서 청크를 클래스 변수에 저장
-        d = embeddings.shape[1] # 임베딩 벡터의 차원 (예: Titan 임베딩은 1024 512 256 차원 256 예정)
+        d = embeddings.shape[1] # 임베딩 벡터의 차원 (예: Titan 임베딩은 1024 512 256)
         
         # FAISS IndexFlatL2 생성: L2 (유클리드) 거리 기반의 평면 인덱스
         self.index = faiss.IndexFlatL2(d) 

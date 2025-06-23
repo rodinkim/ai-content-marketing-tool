@@ -1,9 +1,8 @@
 # __init__.py
 
 from flask import Flask
-import os
 # services.app_core 모듈에서 필요한 함수들을 임포트합니다.
-from services.app_core.app_factory_utils import ( # <-- 경로 변경
+from services.app_core.app_factory_utils import ( 
     configure_logging,
     load_app_config,
     init_app_extensions,
@@ -19,7 +18,7 @@ def create_app():
 
     # 1. 로깅 설정
     configure_logging(app)
-    logger = app.logger # Flask 앱 로거 사용
+    logger = app.logger
 
     # 2. 설정 로드
     load_app_config(app)
@@ -34,7 +33,7 @@ def create_app():
     init_s3_client(app)
 
     # 6. RAG 시스템 및 AI 서비스 초기화
-    init_rag_and_ai_services(app, bedrock_runtime_client) # 이 함수 내에서 RAGSystem이 pgvector를 사용하도록 변경 예정
+    init_rag_and_ai_services(app, bedrock_runtime_client)
 
     # 7. 블루프린트 등록
     register_app_blueprints(app)

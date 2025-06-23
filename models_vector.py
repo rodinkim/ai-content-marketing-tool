@@ -17,7 +17,7 @@ class KnowledgeBaseVector(db.Model): # <-- db_vector.Model 대신 db.Model 사�
     filename = Column(Text, nullable=False)
     chunk_index = Column(Integer, nullable=False, default=0)
     text_content = Column(Text, nullable=False)
-    embedding = Column(Vector(256), nullable=False)
+    embedding = Column(Vector(1024), nullable=False)
     metadata_ = Column('metadata', JSONB, default={})
 
     created_at = Column(DateTime, server_default=func.now())

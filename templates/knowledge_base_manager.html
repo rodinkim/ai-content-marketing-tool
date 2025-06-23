@@ -8,75 +8,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
-        /* 기존 style.css 외에 이 페이지에 필요한 추가 스타일 */
-        .main-wrapper {
-            max-width: 960px;
-            margin: auto;
-            padding: 40px;
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            flex-grow: 1;
-        }
-        /* 관리자 UI를 위한 추가 스타일 */
-        .admin-content-area {
-            display: flex; /* 사용자 목록과 파일 목록을 가로로 정렬 */
-            gap: 20px; /* 간격 */
-            margin-top: 20px;
-        }
-        .user-list-container, .file-list-container {
-            flex: 1; /* 두 컨테이너가 동일한 너비를 가지도록 */
-            background-color: var(--light-bg); /* 배경색 지정 */
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: inset 0 0 5px rgba(0,0,0,0.05); /* 내부 그림자 */
-            overflow-y: auto; /* 내용이 넘칠 경우 스크롤 */
-            max-height: 500px; /* 최대 높이 설정 */
-        }
-        .user-item {
-            padding: 10px 15px;
-            border-bottom: 1px solid var(--border-color);
-            cursor: pointer; /* 클릭 가능한 항목에 커서 변경 */
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .user-item:last-child {
-            border-bottom: none;
-        }
-        .user-item:hover {
-            background-color: var(--hover-bg); /* 호버 효과 */
-        }
-        .user-item-name {
-            font-weight: 500;
-        }
-        .file-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 15px;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .file-item:last-child {
-            border-bottom: none;
-        }
-        .file-item-name {
-            flex-grow: 1;
-            font-weight: 500;
-        }
-        .file-item-actions button {
-            margin-left: 10px;
-        }
-        .section-header {
-            margin-top: 40px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
-        }
-        .btn-sm {
-            padding: 5px 10px;
-            font-size: 0.875rem;
-        }
+        .main-wrapper { max-width: 960px; margin: auto; padding: 40px; background-color: var(--card-bg); border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); flex-grow: 1; }
+        .admin-content-area { display: flex; gap: 20px; margin-top: 20px; }
+        .user-list-container { flex: 1; background-color: var(--light-bg); border-radius: 8px; padding: 20px; box-shadow: inset 0 0 5px rgba(0,0,0,0.05); overflow-y: auto; max-height: 500px; }
+        .file-list-container { flex: 2; background-color: var(--light-bg); border-radius: 8px; padding: 20px; box-shadow: inset 0 0 5px rgba(0,0,0,0.05); overflow-y: auto; max-height: 500px; }
+        .user-item { padding: 10px 15px; border-bottom: 1px solid var(--border-color); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .user-item:last-child { border-bottom: none; }
+        .user-item:hover { background-color: var(--hover-bg); }
+        .user-item-name { font-weight: 500; }
+        .section-header { margin-top: 40px; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .kb-group { border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; }
+        .kb-group-header { background-color: var(--hover-bg); padding: 10px 15px; font-size: 1.1rem; margin: 0; }
     </style>
 </head>
 <body>
@@ -126,81 +68,59 @@
             {% endif %}
         {% endwith %}
 
-        {# URL에서 콘텐츠 추가 섹션 #}
         <h4 class="section-header">URL에서 지식 추가</h4>
         <div class="card p-3 mb-4">
             <form id="addUrlForm">
-                <div class="mb-3">
-                    <label for="urlInput" class="form-label">기사 URL 입력:</label>
-                    <input type="url" class="form-control" id="urlInput" name="url" placeholder="예: https://news.example.com/article-title" required>
-                    <small class="form-text text-muted">기사 본문이 잘 추출되는 URL을 입력해주세요.</small>
+                <div class="input-group">
+                    <input type="url" class="form-control" id="urlInput" placeholder="지식으로 추가할 URL을 입력하세요" required style="flex-grow: 2;">
+                    <select class="form-select" id="industrySelect" required style="flex-grow: 1;">
+                        <option value="">-- 산업 분야 선택 --</option>
+                    </select>
+                    <button class="btn btn-primary" type="submit" id="addUrlBtn">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
+                        추가
+                    </button>
                 </div>
-                <button type="submit" class="btn btn-primary w-100" id="addUrlBtn">
-                    URL에서 지식 추가
-                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
-                </button>
             </form>
         </div>
 
-        {# 관리자 전용: 모든 사용자 목록 및 파일 #}
         {% if is_admin %}
-        <h4 class="section-header">모든 사용자 지식 베이스 관리</h4>
+        <h4 class="section-header">모든 사용자 및 산업별 지식 베이스 관리</h4>
         <div class="admin-content-area">
-            <div class="card p-3 user-list-container">
-                <h5 class="mb-3">사용자 목록</h5>
+            <div class="user-list-container">
+                <h5 class="mb-3">사용자/산업 목록</h5>
                 <div id="userList">
                     <p class="text-muted text-center" id="noUsersMessage">사용자가 없습니다.</p>
                 </div>
             </div>
-            <div class="card p-3 file-list-container">
-                <h5 class="mb-3" id="adminFileListHeader">선택된 사용자의 파일</h5>
-                <div id="adminFileList">
-                    <p class="text-muted text-center" id="noAdminFilesMessage">사용자를 선택하여 파일을 확인하세요.</p>
+            <div class="file-list-container">
+                <h5 class="mb-3" id="fileListHeader">전체 지식 베이스</h5>
+                <div id="fileList">
+                    <p class="text-muted text-center" id="noFilesMessage">지식 베이스에 파일이 없습니다.</p>
                 </div>
-                <button class="btn btn-danger mt-3" id="adminClearUserKbBtn" style="display: none;">선택된 사용자의 모든 파일 삭제</button>
             </div>
         </div>
         {% else %}
-        {# 일반 사용자: 자신의 지식 베이스 파일 목록 #}
-        <h4 class="section-header">나의 지식 베이스 파일 목록</h4>
+        <h4 class="section-header">전체 지식 베이스</h4>
         <div class="card p-3">
+            <h5 class="mb-3" id="fileListHeader">전체 지식 베이스 (산업별)</h5>
             <div id="fileList">
                 <p class="text-muted text-center" id="noFilesMessage">지식 베이스에 파일이 없습니다.</p>
             </div>
-            <button class="btn btn-danger mt-3" id="clearAllKbBtn" style="display: none;">모든 지식 베이스 파일 삭제</button>
         </div>
         {% endif %}
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    {# 지식 베이스 관리 기능을 위한 JavaScript 파일 #}
     <script>
-
-        // 일반 사용자용 API URL
-        const flaskKnowledgeBaseFilesUrl = "{{ url_for('knowledge_base_routes.list_knowledge_base_files') }}"; 
-        const flaskDeleteFileUrlBase = "{{ url_for('knowledge_base_routes.delete_knowledge_base_file', filename='') }}"; 
-        const flaskClearAllKbUrl = "{{ url_for('knowledge_base_routes.clear_all_knowledge_base_files') }}"; 
-        
-        // 관리자용 API URL (is_admin 변수 활용)
         const isAdminUser = {{ is_admin | tojson }};
-        const flaskUsersListUrl = "{{ url_for('knowledge_base_routes.list_all_users_for_admin') }}";
-        
-        // flaskAdminTargetFilesUrlBase의 정의.
-        const flaskAdminTargetFilesUrlBase = "{{ url_for('knowledge_base_routes.list_knowledge_base_files', target_username='DUMMY') }}".replace('DUMMY', ''); 
-        const flaskAdminTargetDeleteUrlBase = "{{ url_for('knowledge_base_routes.delete_knowledge_base_file', target_username='DUMMY', filename='DUMMY_FILE') }}".split('/DUMMY/DUMMY_FILE')[0] + '/';
-        const flaskAdminTargetClearAllUrlBase = "{{ url_for('knowledge_base_routes.clear_all_knowledge_base_files', target_username='DUMMY') }}".replace('DUMMY', '');
-
-        // 공통 API URL
         const flaskAddUrlUrl = "{{ url_for('knowledge_base_routes.add_knowledge_base_from_url') }}";
-
-
-        // 로그인/로그아웃/회원가입/인덱스 URL (네비게이션 바에서 사용)
-        const flaskAuthIndexUrl = "{{ url_for('auth_routes.index') }}";
-        const flaskContentHistoryUrl = "{{ url_for('content_routes.get_history_page') }}";
-        const flaskAuthLogoutUrl = "{{ url_for('auth_routes.logout') }}";
-        const flaskAuthRegisterUrl = "{{ url_for('auth_routes.register') }}";
+        const flaskKnowledgeBaseFilesUrl = "{{ url_for('knowledge_base_routes.list_knowledge_base_files') }}"; 
+        const flaskDeleteFileUrlBase = "{{ url_for('knowledge_base_routes.delete_knowledge_base_file', filename='') }}";
+        const flaskIndustriesListUrl = "{{ url_for('knowledge_base_routes.get_industries') }}";
+        const flaskUsersListUrl = "{{ url_for('knowledge_base_routes.list_all_users_for_admin') }}";
+        const flaskAdminTargetFilesUrlBase = "{{ url_for('knowledge_base_routes.list_knowledge_base_files', target_username='DUMMY') }}".replace('DUMMY', ''); 
         const flaskAuthLoginUrl = "{{ url_for('auth_routes.login') }}";
-        const flaskKnowledgeBaseManageUrl = "{{ url_for('knowledge_base_routes.manage_knowledge_base') }}";
     </script>
     <script src="{{ url_for('static', filename='js/knowledge_base_manager.js') }}"></script>
 </body>
