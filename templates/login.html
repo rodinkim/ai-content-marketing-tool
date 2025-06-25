@@ -3,44 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>로그인 - AI 콘텐츠 생성기</title>
+    <title>로그인 - Contento</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
     <style>
-        body { padding-top: 20px; background-color: #f8f9fa; }
-        .container { max-width: 500px; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        .form-label { font-weight: bold; }
-        .alert { margin-top: 20px; }
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+        :root {
+            --primary-color: #0052cc; --secondary-color: #f4f5f7; --dark-color: #172b4d;
+            --light-color: #ffffff; --gray-color: #6c757d; --border-color: #e9ecef;
+            --font-family: 'Noto Sans KR', sans-serif;
+        }
+        html, body { height: 100%; margin: 0; font-family: var(--font-family); background-color: var(--light-color); }
+        .auth-wrapper { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+        .promo-panel {
+            background-color: var(--secondary-color); padding: 60px; display: flex;
+            flex-direction: column; justify-content: center;
+        }
+        .promo-panel .logo { font-size: 28px; font-weight: 700; color: var(--primary-color); text-decoration: none; margin-bottom: 40px; }
+        .promo-panel h1 { font-size: 36px; font-weight: 700; color: var(--dark-color); line-height: 1.4; margin-bottom: 20px; }
+        .promo-panel p { font-size: 18px; color: var(--gray-color); margin-bottom: 40px; }
+        .feature-list .feature-item { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 25px; }
+        .feature-list .icon { font-size: 24px; color: var(--primary-color); }
+        .feature-list h5 { font-size: 16px; font-weight: 700; margin-bottom: 5px; }
+        .feature-list span { font-size: 14px; color: var(--gray-color); }
+        .form-panel { padding: 40px; display: flex; flex-direction: column; justify-content: center; }
+        .form-container { width: 100%; max-width: 420px; margin: 0 auto; }
+        .form-header { text-align: left; margin-bottom: 30px; }
+        .form-header h1 { font-size: 28px; font-weight: 700; }
+        .form-header p { color: var(--gray-color); }
+        .form-label { font-weight: 500; margin-bottom: 8px; }
+        .form-control { font-size: 16px; padding: 12px 15px; border-radius: 8px; border: 1px solid #ced4da; }
+        .form-control:focus { border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0, 82, 204, 0.15); }
+        .form-check-label { font-weight: 500; }
+        .cta-button { display: block; width: 100%; background: var(--primary-color); color: var(--light-color) !important; padding: 12px; border-radius: 8px; text-decoration: none; font-size: 16px; font-weight: 700; border: none; cursor: pointer; transition: all 0.2s ease; }
+        .cta-button:hover { background: #003e99; }
+        .form-footer { text-align: center; margin-top: 25px; font-size: 15px; }
+        .form-footer a { color: var(--primary-color); font-weight: 700; text-decoration: none; }
+        .form-footer a:hover { text-decoration: underline; }
+
+        .toast-container { z-index: 1100; }
+        .toast-header .me-auto { font-weight: 700; }
+
+        @media (max-width: 992px) {
+            .auth-wrapper { grid-template-columns: 1fr; }
+            .promo-panel { display: none; }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2 class="mb-4 text-center">로그인</h2>
-        <form method="POST" action="{{ url_for('auth_routes.login') }}">
-            <div class="mb-3">
-                <label for="email" class="form-label">이메일:</label>
-                <input type="email" class="form-control" id="email" name="email" required>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="flashToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <svg class="rounded me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#198754"></rect></svg>
+                <strong class="me-auto">알림</strong>
+                <small>just now</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">비밀번호:</label>
-                <input type="password" class="form-control" id="password" name="password" required>
-            </div>
-            <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="remember_me" name="remember_me">
-                <label class="form-check-label" for="remember_me">로그인 유지</label>
-            </div>
-            <button type="submit" class="btn btn-primary w-100">로그인</button>
-        </form>
-
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }} mt-3">{{ message }}</div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-
-        <p class="mt-3 text-center">계정이 없으신가요? <a href="{{ url_for('auth_routes.register') }}">회원가입</a></p>
+            <div class="toast-body">
+                </div>
+        </div>
     </div>
+    <div class="auth-wrapper">
+        <div class="promo-panel">
+            <a class="logo" href="{{ url_for('auth_routes.index') }}">Contento</a>
+            <h1>
+                AI와 함께, <br>
+                당신의 아이디어를 현실로.
+            </h1>
+            <p>콘텐츠 제작에 드는 시간을 획기적으로 줄이고, 비즈니스의 핵심에 더 집중하세요.</p>
+            <div class="feature-list">
+                <div class="feature-item"><span class="icon">📝</span><div><h5>블로그 글 자동 생성</h5><span>SEO에 최적화된 고품질의 글을 몇 분 만에 완성합니다.</span></div></div>
+                <div class="feature-item"><span class="icon">📱</span><div><h5>SNS 게시물 자동화</h5><span>타겟 고객의 참여를 유도하는 콘텐츠를 손쉽게 제작합니다.</span></div></div>
+                <div class="feature-item"><span class="icon">📧</span><div><h5>이메일 마케팅 최적화</h5><span>높은 반응률을 이끌어내는 이메일 본문을 AI가 작성합니다.</span></div></div>
+            </div>
+        </div>
+
+        <div class="form-panel">
+            <div class="form-container">
+                <div class="form-header">
+                    <h1>다시 만나서 반가워요!</h1>
+                    <p>로그인하고 콘텐츠 생성을 바로 시작해보세요.</p>
+                </div>
+
+                <div id="flash-messages" style="display: none;">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div data-category="{{ category }}">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+                <form method="POST" action="{{ url_for('auth_routes.login') }}">
+                    {{ form.hidden_tag() }}
+                    <div class="mb-3">
+                        <label for="email" class="form-label">이메일 주소</label>
+                        {{ form.email(class="form-control", placeholder="email@example.com", autofocus=true) }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">비밀번호</label>
+                        {{ form.password(class="form-control", placeholder="비밀번호를 입력하세요") }}
+                    </div>
+                    <div class="mb-3 form-check">
+                        {{ form.remember_me(class="form-check-input") }}
+                        {{ form.remember_me.label(class="form-check-label") }}
+                    </div>
+                    <div class="mt-4">
+                        <button type="submit" class="cta-button">로그인</button>
+                    </div>
+                </form>
+
+                <div class="form-footer">
+                    <p>아직 계정이 없으신가요? <a href="{{ url_for('auth_routes.register') }}">회원가입</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const flashMessagesDiv = document.getElementById('flash-messages');
+            const messages = flashMessagesDiv.querySelectorAll('div[data-category]');
+            
+            if (messages.length > 0) {
+                const toastElement = document.getElementById('flashToast');
+                const toastBody = toastElement.querySelector('.toast-body');
+                const toastBootstrap = new bootstrap.Toast(toastElement);
+
+                const firstMessage = messages[0];
+                const messageText = firstMessage.textContent;
+                const category = firstMessage.dataset.category;
+
+                const toastHeaderRect = toastElement.querySelector('.toast-header rect');
+                if (category === 'success') {
+                    toastHeaderRect.setAttribute('fill', '#198754'); // 성공: 초록색
+                } else if (category === 'danger') {
+                    toastHeaderRect.setAttribute('fill', '#dc3545'); // 실패: 빨간색
+                } else {
+                    toastHeaderRect.setAttribute('fill', '#0d6efd'); // 정보: 파란색
+                }
+                
+                toastBody.textContent = messageText;
+                toastBootstrap.show();
+            }
+        });
+    </script>
+    </body>
 </html>

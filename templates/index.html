@@ -3,139 +3,293 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 콘텐츠 생성기</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    
-    </head>
+    <title>Contento - AI 마케팅 콘텐츠 자동 생성</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+
+        :root {
+            --primary-color: #0052cc; /* Professional Blue */
+            --secondary-color: #f4f5f7; /* Light Gray */
+            --dark-color: #172b4d; /* Dark Blue-Gray Text */
+            --light-color: #ffffff;
+            --font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--font-family);
+            line-height: 1.6;
+            color: var(--dark-color);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        header {
+            background: var(--light-color);
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center; 
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 700;
+        }
+        
+        nav a:hover {
+            color: var(--primary-color);
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: var(--primary-color);
+            color: var(--light-color) !important; /* Ensure text is light */
+            padding: 15px 35px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 700;
+            transition: background 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background: #003e99;
+        }
+
+        .hero {
+            background: var(--secondary-color);
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+
+        .hero p {
+            font-size: 20px;
+            max-width: 700px;
+            margin: 0 auto 30px auto;
+        }
+
+        .section {
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 36px;
+            margin-bottom: 40px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            text-align: left;
+        }
+
+        .feature-card {
+            background: var(--light-color);
+            padding: 30px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .feature-card .icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .feature-card h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        #testimonials {
+            background: var(--secondary-color);
+        }
+        
+        .testimonial-card {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 30px;
+            background: var(--light-color);
+            border-radius: 8px;
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .testimonial-card p {
+            font-style: italic;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .testimonial-card .author {
+            font-weight: 700;
+            text-align: right;
+        }
+
+        .final-cta {
+            background: var(--dark-color);
+            color: var(--light-color);
+        }
+        
+        .final-cta h2 {
+            color: var(--light-color);
+        }
+
+        .final-cta p {
+            margin-bottom: 30px;
+        }
+
+        footer {
+            background: #222;
+            color: #ccc;
+            padding: 30px 0;
+            text-align: center;
+        }
+        
+        footer p {
+            margin: 0;
+        }
+    </style>
+</head>
 <body>
-    <div class="main-wrapper">
-        <nav class="navbar navbar-expand-lg navbar-light">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="{{ url_for('auth_routes.index') }}">AI 콘텐츠</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        {% if current_user.is_authenticated %}
-                            <li class="nav-item d-flex align-items-center me-2">
-                                <span class="nav-link text-muted pe-0">환영합니다,</span>
-                                <span class="nav-link fw-bold text-dark ps-1">{{ current_user.username }}님!</span>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url_for('content_routes.get_history_page') }}">내 기록</a>
-                            </li>
-                            <li class="nav-item"> {# 지식 베이스 관리 페이지 링크 추가 #}
-                                <a class="nav-link" href="{{ url_for('knowledge_base_routes.manage_knowledge_base') }}">지식 베이스</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link btn btn-danger text-white" href="{{ url_for('auth_routes.logout') }}">로그아웃</a>
-                            </li>
-                        {% else %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url_for('auth_routes.register') }}">회원가입</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link btn btn-primary text-white" href="{{ url_for('auth_routes.login') }}">로그인</a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        <h2 class="mb-4 text-center">AI 마케팅 콘텐츠 생성기</h2>
+
+    <header>
+        <div class="container">
+            <div class="logo">Contento</div>
+            <nav>
+                <ul>
+                    <li><a href="#features">주요 기능</a></li>
+                    <li><a href="#testimonials">사용 후기</a></li>
+                    
+                    {% if current_user.is_authenticated %}
+                        <li><a href="{{ url_for('content_routes.content_page') }}">워크스페이스</a></li>
+                        <li><a href="{{ url_for('auth_routes.logout') }}">로그아웃</a></li>
+                    {% else %}
+                        <li><a href="{{ url_for('auth_routes.register') }}">회원가입</a></li>
+                        <li><a href="{{ url_for('auth_routes.login') }}">로그인</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
+                <div class="container">
                 {% for category, message in messages %}
-                    <div class="alert alert-{{ category }} mt-3">{{ message }}</div>
+                    <div class="alert alert-info alert-dismissible fade show my-3" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                 {% endfor %}
+                </div>
             {% endif %}
         {% endwith %}
+        <section class="hero">
+            <div class="container">
+                <h1>클릭 한 번으로, 전문가 수준의 마케팅 콘텐츠를 완성하세요</h1>
+                <p>Contento의 강력한 AI가 블로그, SNS, 광고 문구를 자동으로 생성하여 당신의 비즈니스 성장을 가속화합니다.</p>
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('content_routes.content_page') }}" class="cta-button">워크스페이스로 이동</a>
+                {% else %}
+                    <a href="{{ url_for('auth_routes.register') }}" class="cta-button">지금 바로 무료 체험</a>
+                {% endif %}
+            </div>
+        </section>
 
-        <form id="contentForm">
-            <div class="mb-3">
-                <label for="topic" class="form-label">주제:</label>
-                <input type="text" class="form-control" id="topic" name="topic" placeholder="예: '친환경 세제 출시', '신규 웹툰 홍보'" required>
+        <section id="features" class="section">
+            <div class="container">
+                <h2 class="section-title">당신의 시간을 아껴주는 강력한 기능</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="icon">📝</div>
+                        <h3>블로그 글 생성</h3>
+                        <p>핵심 키워드 몇 개만 입력하면 SEO에 최적화된 고품질의 블로그 포스트를 몇 분 만에 완성합니다.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon">📱</div>
+                        <h3>SNS 게시물 자동화</h3>
+                        <p>타겟 고객의 참여를 유도하는 인스타그램, 페이스북 콘텐츠를 다양한 톤앤매너로 손쉽게 제작합니다.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon">📧</div>
+                        <h3>이메일 글 제작</h3>
+                        <p>뉴스레터, 프로모션 이메일 등 목적에 맞는 이메일 본문을 AI가 작성하여 고객의 높은 반응률을 이끌어냅니다.</p>
+                    </div>
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="industry" class="form-label">업종:</label>
-                <select class="form-select" id="industry" name="industry" required>
-                    <option value="">업종을 선택해주세요</option>
-                    <option value="IT 기술">IT 기술</option>
-                    <option value="패션 의류">패션 의류</option>
-                    <option value="식품 요리">식품 요리</option>
-                    <option value="헬스케어 건강">헬스케어/건강</option>
-                    <option value="뷰티 코스메틱">뷰티/코스메틱</option>
-                    <option value="여행 레저">여행/레저</option>
-                </select>
+        </section>
+        
+        <section id="testimonials" class="section">
+            <div class="container">
+                <h2 class="section-title">고객들이 말하는 Contento</h2>
+                <div class="testimonial-card">
+                    <p>"Contento 도입 후 콘텐츠 제작 시간이 1/10로 줄었습니다. 이제 저희 팀은 더 중요한 전략에 집중할 수 있게 되었어요. 정말 혁신적인 서비스입니다."</p>
+                    <p class="author">- 김민준, 스타트업 A사 마케팅 팀장</p>
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="contentType" class="form-label">콘텐츠 종류:</label>
-                <select class="form-select" id="contentType" name="content_type" required>
-                    <option value="">콘텐츠 종류를 선택해주세요</option>
-                    <option value="블로그 게시글">블로그 게시글</option>
-                    <option value="SNS 게시물">SNS 게시물</option>
-                    <option value="이메일 뉴스레터">이메일 뉴스레터</option>
-                </select>
-            </div>
+        </section>
 
-            <div class="mb-3" id="emailSubjectField">
-                <label for="emailSubject" class="form-label">이메일 제목 (AI가 제안):</label>
-                <input type="text" class="form-control" id="emailSubject" name="email_subject" placeholder="이메일 제목을 입력하거나 AI가 제안하도록 비워두세요.">
-                <small class="form-text text-muted">AI가 이메일 제목을 제안해주길 원하면 비워두세요. 직접 입력할 수도 있습니다.</small>
+        <section class="section final-cta">
+            <div class="container">
+                <h2 class="section-title">이제 마케팅 콘텐츠 고민은 AI에게 맡기세요</h2>
+                <p>지금 Contento와 함께 마케팅의 미래를 경험하세요.</p>
+                 {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('content_routes.content_page') }}" class="cta-button">워크스페이스로 이동</a>
+                {% else %}
+                    <a href="{{ url_for('auth_routes.register') }}" class="cta-button">가입하고 콘텐츠 만들기</a>
+                {% endif %}
             </div>
-            
-            <div class="mb-3">
-                <label for="tone" class="form-label">톤앤매너:</label>
-                <select class="form-select" id="tone" name="tone" required>
-                    <option value="">톤앤매너를 선택해주세요</option>
-                    <option value="전문적이고 공식적인">전문적이고 공식적인</option>
-                    <option value="친근하고 캐주얼한">친근하고 캐주얼한</option>
-                    <option value="유머러스하고 재치있는">유머러스하고 재치있는</option>
-                    <option value="감성적이고 따뜻한">감성적이고 따뜻한</option>
-                    <option value="정보 전달 위주의">정보 전달 위주의</option>
-                    <option value="재미있고 흥미로운">재미있고 흥미로운</option>
-                </select>
-            </div>
+        </section>
+    </main>
 
-            <div class="mb-3">
-                <label for="length" class="form-label">콘텐츠 길이:</label>
-                <select class="form-select" id="length" name="length" required>
-                    <option value="">길이를 선택해주세요</option>
-                    <option value="short">짧게 (약 500-1000자)</option>
-                    <option value="medium">중간 (약 1000-2000자)</option>
-                    <option value="long">길게 (약 2000-4000자)</option>
-                </select>
-            </div>
-            
-            <div class="mb-3">
-                <label for="seoKeywords" class="form-label">SEO 키워드 (쉼표로 구분):</label>
-                <input type="text" class="form-control" id="seoKeywords" name="seo_keywords" placeholder="예: 'AI 마케팅, 콘텐츠 자동화, 중소기업 마케팅'">
-                <small class="form-text text-muted">콘텐츠에 포함하고 싶은 키워드를 쉼표(,)로 구분하여 입력해주세요.</small>
-            </div>
-            
-            <button type="submit" class="btn btn-primary w-100" id="generateBtn">
-                콘텐츠 생성
-                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            </button>
-        </form>
-
-        <h4 class="mt-5">생성된 콘텐츠:</h4>
-        <div class="card p-3">
-            <div id="generatedContent">여기에 AI가 생성한 콘텐츠가 표시됩니다.</div>
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Contento Inc. All Rights Reserved.</p>
         </div>
-        <div class="d-flex justify-content-end mt-3">
-            <button class="btn btn-secondary me-2" id="copyBtn">클립보드에 복사</button>
-        </div>
-
-    </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 </body>
 </html>
