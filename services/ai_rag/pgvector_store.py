@@ -119,7 +119,22 @@ class PgVectorStore:
             logger.error(f"pgvector DB에 벡터 추가/업데이트 중 오류 발생: {e}", exc_info=True)
             db.session.rollback() # 오류 발생 시 롤백
             raise 
-
+    
+    def get_vectors_by_user_id(self, user_id: int) -> List: # List[KnowledgeBaseVector]를 반환하도록 타입 힌트
+        """
+        특정 user_id에 해당하는 모든 KnowledgeBaseVector 객체를 PgVector DB에서 가져옵니다.
+        """
+        from extensions import db
+        from models_vector import KnowledgeBaseVector # KnowledgeBaseVector 모델 임포트
+        try:
+            # user_id로 필터링하여 모든 벡터를 쿼리합니다.
+            filtered_vectors = KnowledgeBaseVector.query.filter_by(user_id=user_id).all()
+            logger.info(f"Retrieved {len(filtered_vectors)} vectors for user_id {user_id} from PgVector DB.")
+            return filtered_vectors
+        except Exception as e:
+            logger.error(f"Failed to retrieve vectors for user_id {user_id} from PgVector DB: {e}", exc_info=True)
+            return []
+    
     def get_all_vectors(self):
         """
         PgVector DB에 저장된 모든 KnowledgeBaseVector 객체를 가져옵니다.
