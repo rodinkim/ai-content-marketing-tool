@@ -112,6 +112,7 @@ def list_knowledge_base_files():
     if is_admin:
         target_filter_type = request.args.get('target_type') # 'industry' 또는 'user'
         target_filter_name = request.args.get('target_username') # 조회할 산업명 또는 사용자명
+        pass # 현재 s3_filter_prefix, pgvector_filter_user_id 설정 로직은 유지
 
         if target_filter_type == 'industry':
             # 산업명으로 S3 프리픽스 필터를 설정합니다.
@@ -157,7 +158,7 @@ def list_knowledge_base_files():
         except Exception as e:
             logger.error(f"PgVector DB에서 사용자 파일 목록 조회 중 예기치 않은 오류 발생: {e}", exc_info=True)
             return jsonify({"error": "사용자 파일 목록 조회 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요."}), 500
-    
+        pass
     else:
         # PgVector 필터가 없는 경우 (즉, 산업 필터링 또는 모든 S3 파일 조회)
         # 기존처럼 S3에서 직접 파일 목록을 가져옵니다.
@@ -165,11 +166,18 @@ def list_knowledge_base_files():
             paginator = s3_client.get_paginator('list_objects_v2')
             pages = paginator.paginate(Bucket=bucket_name, Prefix=s3_filter_prefix)
             files_from_s3_keys = []
+
+            # S3에서 파일 목록을 가져올 때 설정 파일 폴더를 제외하는 필터링 추가
+            # config에서 CRAWLER_CONFIG_S3_KEY의 접두사를 가져옵니다.
+            config_prefix = current_app.config.get('CRAWLER_CONFIG_S3_KEY', '_system_configs/crawler_urls.json').split('/')[0] + '/'
+
             for page in pages:
                 for obj in page.get('Contents', []):
                     key = obj['Key']
-                    if not key.endswith('/'): # 폴더 항목은 제외
+                    # 폴더 항목이 아니고, .txt 파일이며, 설정 파일 프리픽스가 아닌 경우에만 추가
+                    if not key.endswith('/') and key.endswith('.txt') and not key.startswith(config_prefix):
                         files_from_s3_keys.append(key)
+            
             
             for s3_key in files_from_s3_keys:
                 display_filename = re.sub(r'_[0-9a-fA-F]{8}\.txt$', '.txt', s3_key.split('/')[-1])
