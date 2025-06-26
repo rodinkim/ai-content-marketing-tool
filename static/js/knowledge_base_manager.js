@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // DOM 요소 변수
     const addUrlForm = document.getElementById('addUrlForm');
     const urlInput = document.getElementById('urlInput');
     const industrySelect = document.getElementById('industrySelect');
@@ -8,8 +9,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const alertContainer = document.getElementById('alert-container');
     const fileListDiv = document.getElementById('fileList');
     const userListDiv = document.getElementById('userList');
-    let currentAdminTarget = null;
+    const paginationContainerAdmin = document.getElementById('pagination-container-admin');
+    const paginationContainerUser = document.getElementById('pagination-container-user');
 
+    // 상태 변수
+    let currentAdminTarget = null;
+    let currentPage = 1;
+
+    // 사용자에게 메시지를 표시하는 함수
     function showMessage(message, type = 'success') {
         const alertDiv = document.createElement('div');
         alertDiv.className = `alert alert-${type} alert-dismissible fade show m-3`;
@@ -19,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => bootstrap.Alert.getOrCreateInstance(alertDiv)?.close(), 5000);
     }
 
+    // 산업 분야 목록을 가져와 드롭다운을 채우는 함수
     async function fetchAndPopulateIndustries() {
         if (!industrySelect) return;
         try {
@@ -32,9 +40,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 option.textContent = industry;
                 industrySelect.appendChild(option);
             });
-        } catch (error) { console.error('Error fetching industries:', error); }
+        } catch (error) {
+            console.error('Error fetching industries:', error);
+        }
     }
 
+    // 관리자용 사이드바를 렌더링하는 함수
     async function fetchAndRenderAdminSidebar() {
         if (!userListDiv) return;
         userListDiv.innerHTML = '<h5>관리 대상</h5>';
@@ -62,6 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // 사이드바 아이템을 생성하는 함수
     function createSidebarItem(type, name, icon) {
         const item = document.createElement('button');
         item.className = 'sidebar-item';
@@ -72,60 +84,70 @@ document.addEventListener('DOMContentLoaded', function() {
         return item;
     }
 
+    // 관리자가 사이드바에서 대상을 선택했을 때 처리하는 함수
     function handleSelectAdminTarget(event) {
         const selectedBtn = event.currentTarget;
         currentAdminTarget = { type: selectedBtn.dataset.targetType, name: selectedBtn.dataset.targetName };
         document.querySelectorAll('.sidebar-item').forEach(btn => btn.classList.remove('active'));
         selectedBtn.classList.add('active');
-        fetchAndRenderFiles(currentAdminTarget.type, currentAdminTarget.name);
+        fetchAndRenderFiles(currentAdminTarget.type, currentAdminTarget.name, 1);
     }
-
-    async function fetchAndRenderFiles(type = null, name = null) {
+    
+    // 파일 목록을 서버에서 가져와 렌더링하는 함수 (페이지네이션 적용)
+    async function fetchAndRenderFiles(type = null, name = null, page = 1) {
         if (!fileListDiv) return;
+        
+        currentPage = page; // 현재 페이지 상태 업데이트
         fileListDiv.innerHTML = '<div class="d-flex justify-content-center p-5"><div class="spinner-border text-primary" role="status"></div></div>';
-        let url = flaskKnowledgeBaseFilesUrl;
+        
+        let url = new URL(isAdminUser ? flaskAdminTargetFilesUrlBase : flaskKnowledgeBaseFilesUrl, window.location.origin);
         if (isAdminUser && type && name) {
-            url = `${flaskAdminTargetFilesUrlBase.split('?')[0]}?target_type=${type}&target_username=${name}`;
+            url.searchParams.set('target_type', type);
+            url.searchParams.set('target_username', name);
             document.getElementById('fileListHeader').textContent = `[${name}] 파일 목록`;
         }
+        url.searchParams.set('page', page);
 
         try {
             const response = await fetch(url);
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             const data = await response.json();
             const files = data.files || [];
+            
             fileListDiv.innerHTML = '';
             if (files.length === 0) {
                 fileListDiv.innerHTML = `<p class="text-muted text-center p-5">표시할 파일이 없습니다.</p>`;
-                return;
-            }
-
-            if (isAdminUser) {
-                files.forEach(fileData => fileListDiv.appendChild(createFileItem(fileData)));
             } else {
-                const groupedFiles = {};
-                files.forEach(fileData => {
-                    const groupName = fileData.s3_key.split('/')[0];
-                    if (!groupedFiles[groupName]) groupedFiles[groupName] = [];
-                    groupedFiles[groupName].push(fileData);
-                });
-                Object.keys(groupedFiles).sort().forEach(groupName => {
-                    const groupTitle = document.createElement('h4');
-                    groupTitle.className = 'kb-group-title';
-                    groupTitle.textContent = groupName;
-                    fileListDiv.appendChild(groupTitle);
-                    const listContainer = document.createElement('div');
-                    listContainer.className = 'list-container';
-                    groupedFiles[groupName].forEach(fileData => listContainer.appendChild(createFileItem(fileData)));
-                    fileListDiv.appendChild(listContainer);
-                });
+                if (isAdminUser) {
+                    files.forEach(fileData => fileListDiv.appendChild(createFileItem(fileData)));
+                } else {
+                    const groupedFiles = {};
+                    files.forEach(fileData => {
+                        const groupName = fileData.s3_key.split('/')[0];
+                        if (!groupedFiles[groupName]) groupedFiles[groupName] = [];
+                        groupedFiles[groupName].push(fileData);
+                    });
+                    Object.keys(groupedFiles).sort().forEach(groupName => {
+                        const groupTitle = document.createElement('h4');
+                        groupTitle.className = 'kb-group-title';
+                        groupTitle.textContent = groupName;
+                        fileListDiv.appendChild(groupTitle);
+                        const listContainer = document.createElement('div');
+                        listContainer.className = 'list-container';
+                        groupedFiles[groupName].forEach(fileData => listContainer.appendChild(createFileItem(fileData)));
+                        fileListDiv.appendChild(listContainer);
+                    });
+                }
             }
+            renderPagination(data.pagination);
         } catch (error) {
             console.error('Error fetching files:', error);
             fileListDiv.innerHTML = '<p class="text-danger text-center">파일 목록을 불러오는 데 실패했습니다.</p>';
+            renderPagination(null); // 실패 시 페이지네이션도 클리어
         }
     }
 
+    // 파일 아이템 DOM 요소를 생성하는 함수
     function createFileItem(fileData) {
         const item = document.createElement('div');
         item.className = 'kb-file-item';
@@ -139,14 +161,67 @@ document.addEventListener('DOMContentLoaded', function() {
         return item;
     }
 
+    // 페이지네이션 UI를 생성하는 함수
+    function renderPagination(pagination) {
+        const container = isAdminUser ? paginationContainerAdmin : paginationContainerUser;
+        if (!container) return;
+        container.innerHTML = '';
+
+        if (!pagination || pagination.total_pages <= 1) {
+            return;
+        }
+
+        const { page, total_pages } = pagination;
+        const ul = document.createElement('ul');
+        ul.className = 'pagination';
+
+        const prevLi = document.createElement('li');
+        prevLi.className = `page-item ${page === 1 ? 'disabled' : ''}`;
+        prevLi.innerHTML = `<a class="page-link" href="#" data-page="${page - 1}">이전</a>`;
+        ul.appendChild(prevLi);
+
+        for (let i = 1; i <= total_pages; i++) {
+            const pageLi = document.createElement('li');
+            pageLi.className = `page-item ${i === page ? 'active' : ''}`;
+            pageLi.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i}</a>`;
+            ul.appendChild(pageLi);
+        }
+
+        const nextLi = document.createElement('li');
+        nextLi.className = `page-item ${page === total_pages ? 'disabled' : ''}`;
+        nextLi.innerHTML = `<a class="page-link" href="#" data-page="${page + 1}">다음</a>`;
+        ul.appendChild(nextLi);
+
+        container.appendChild(ul);
+    }
+    
+    // 페이지네이션 클릭 이벤트를 처리하는 함수 (이벤트 위임)
+    function setupPaginationListener() {
+        const container = isAdminUser ? paginationContainerAdmin : paginationContainerUser;
+        if(container) {
+            container.addEventListener('click', function(event) {
+                event.preventDefault();
+                const target = event.target;
+                if (target.tagName === 'A' && !target.closest('.disabled') && !target.closest('.active')) {
+                    const page = parseInt(target.dataset.page, 10);
+                    const { type, name } = currentAdminTarget || {};
+                    fetchAndRenderFiles(type, name, page);
+                }
+            });
+        }
+    }
+
+    // URL 추가 폼 제출 이벤트 리스너
     addUrlForm.addEventListener('submit', async (event) => {
         event.preventDefault();
         const url = urlInput.value;
         const industry = industrySelect.value;
         if (!industry) { showMessage('산업 분야를 선택해주세요.', 'warning'); return; }
+
         addUrlSpinner.style.display = 'inline-block';
         addUrlIcon.style.display = 'none';
         addUrlBtn.disabled = true;
+
         try {
             const response = await fetch(flaskAddUrlUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url, industry }) });
             const result = await response.json();
@@ -154,12 +229,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 showMessage(result.message, 'success');
                 urlInput.value = '';
                 const { type, name } = currentAdminTarget || {};
-                fetchAndRenderFiles(type, name);
-            } else { showMessage(result.error || 'URL 추가 실패', 'danger'); }
-        } catch (error) { console.error('Error adding URL:', error); showMessage('네트워크 오류: 지식 추가 중 오류 발생', 'danger'); } 
-        finally { addUrlSpinner.style.display = 'none'; addUrlIcon.style.display = 'block'; addUrlBtn.disabled = false; }
+                fetchAndRenderFiles(type, name, 1);
+            } else {
+                showMessage(result.error || 'URL 추가 실패', 'danger');
+            }
+        } catch (error) {
+            console.error('Error adding URL:', error);
+            showMessage('네트워크 오류: 지식 추가 중 오류 발생', 'danger');
+        } finally {
+            addUrlSpinner.style.display = 'none';
+            addUrlIcon.style.display = 'block';
+            addUrlBtn.disabled = false;
+        }
     });
 
+    // 파일 목록에서 삭제 버튼 클릭 이벤트 리스너 (이벤트 위임)
     fileListDiv.addEventListener('click', async function(event) {
         const deleteButton = event.target.closest('.delete-btn');
         if (deleteButton) {
@@ -171,17 +255,24 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (response.ok) {
                         showMessage(result.message, 'success');
                         const { type, name } = currentAdminTarget || {};
-                        fetchAndRenderFiles(type, name);
-                    } else { showMessage(result.error || '파일 삭제 실패', 'danger'); }
-                } catch (error) { console.error('Error deleting file:', error); showMessage('파일 삭제 중 오류 발생', 'danger'); }
+                        fetchAndRenderFiles(type, name, currentPage);
+                    } else {
+                        showMessage(result.error || '파일 삭제 실패', 'danger');
+                    }
+                } catch (error) {
+                    console.error('Error deleting file:', error);
+                    showMessage('파일 삭제 중 오류 발생', 'danger');
+                }
             }
         }
     });
 
+    // --- 최초 실행 ---
     fetchAndPopulateIndustries();
+    setupPaginationListener();
     if (isAdminUser) {
         fetchAndRenderAdminSidebar();
     } else {
-        fetchAndRenderFiles();
+        fetchAndRenderFiles(null, null, 1);
     }
 });

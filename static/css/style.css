@@ -13,7 +13,7 @@
     --danger-color-old: #dc3545;
     --info-color-old: #17a2b8;
 
-    /* --- 미니멀하고 고급스러운 팔레트 (Apple 느낌을 지향) --- */
+    /* --- 미니멀하고 고급스러운 팔레트 --- */
     --base-white: #FFFFFF;
     --light-gray-background: #F8F8F8; /* 부드러운 배경색 */
     --medium-gray-border: #E0E0E0; /* 은은한 테두리 및 구분선 */
@@ -319,4 +319,36 @@ h2 {
         max-width: 100%;
         margin-top: 15px;
     }
+}
+
+/* --- 페이지네이션 (최종 미니멀 스타일) --- */
+.pagination {
+    gap: 16px;
+    margin-bottom: 0;
+    justify-content: center;
+}
+.page-item .page-link {
+    background-color: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 4px 8px !important;
+    font-weight: 500;
+    color: var(--gray-color);
+    transition: color 0.2s ease-in-out;
+    border-bottom: 2px solid transparent;
+}
+.page-item.active .page-link {
+    font-weight: 700;
+    color: var(--dark-color); /* 검정색으로 변경 */
+    border-bottom-color: var(--dark-color); /* 검정색으로 변경 */
+}
+.page-item:not(.disabled) .page-link:hover {
+    color: var(--dark-color); /* 호버 시 검정색으로만 변경 (밑줄 없음) */
+}
+.page-item.disabled .page-link {
+    color: #ced4da;
+    pointer-events: none;
+}
+.page-link:focus {
+    box-shadow: none;
 }

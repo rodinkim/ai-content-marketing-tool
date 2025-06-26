@@ -53,6 +53,38 @@
         .kb-group-title { font-size: 20px; font-weight: 700; padding: 25px 25px 15px; border-bottom: 1px solid var(--border-color); margin: 0; }
         .list-container { padding: 8px 15px; }
         footer { background: #222; color: #ccc; padding: 30px 0; text-align: center; margin-top: 60px; }
+
+        /* --- 페이지네이션 (최종 미니멀 스타일) --- */
+        .pagination {
+            gap: 16px;
+            margin-bottom: 0;
+            justify-content: center;
+        }
+        .page-item .page-link {
+            background-color: transparent !important;
+            border: none !important;
+            border-radius: 0 !important;
+            padding: 4px 8px !important;
+            font-weight: 500;
+            color: var(--gray-color);
+            transition: color 0.2s ease-in-out;
+            border-bottom: 2px solid transparent;
+        }
+        .page-item.active .page-link {
+            font-weight: 700;
+            color: var(--dark-color); /* 검정색으로 변경 */
+            border-bottom-color: var(--dark-color); /* 검정색으로 변경 */
+        }
+        .page-item:not(.disabled) .page-link:hover {
+            color: var(--dark-color); /* 호버 시 검정색으로만 변경 (밑줄 없음) */
+        }
+        .page-item.disabled .page-link {
+            color: #ced4da;
+            pointer-events: none;
+        }
+        .page-link:focus {
+            box-shadow: none;
+        }   
     </style>
 </head>
 <body>
@@ -81,7 +113,24 @@
                 <label for="urlInput" class="form-label">URL에서 지식 추가</label>
                 <form id="addUrlForm"><div class="input-group"><input type="url" class="form-control" id="urlInput" placeholder="https://example.com/my-brand-story" required><select class="form-select" id="industrySelect" required><option value="">-- 산업 분야 --</option></select><button class="add-icon-btn" type="submit" id="addUrlBtn" title="URL 추가"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span><svg class="add-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button></div></form>
             </div>
-            {% if is_admin %}<div class="kb-management-grid"><div class="kb-sidebar"><div id="userList" class="list-unstyled"></div></div><div class="kb-file-pane"><h5 class="kb-file-list-header" id="fileListHeader">파일 목록</h5><div id="fileList"><p class="text-muted small p-3">왼쪽에서 대상을 선택하세요.</p></div></div></div>{% else %}<div id="fileList"><p class="text-muted text-center p-5">아직 추가된 지식 베이스가 없습니다.</p></div>{% endif %}
+            
+            {% if is_admin %}
+            <div class="kb-management-grid">
+                <div class="kb-sidebar">
+                    <div id="userList" class="list-unstyled"></div>
+                </div>
+                <div class="kb-file-pane">
+                    <h5 class="kb-file-list-header" id="fileListHeader">파일 목록</h5>
+                    <div id="fileList"><p class="text-muted small p-3">왼쪽에서 대상을 선택하세요.</p></div>
+                    <div id="pagination-container-admin" class="d-flex justify-content-center mt-4 pb-3"></div>
+                </div>
+            </div>
+            {% else %}
+            <div>
+                <div id="fileList"><p class="text-muted text-center p-5">아직 추가된 지식 베이스가 없습니다.</p></div>
+                <div id="pagination-container-user" class="d-flex justify-content-center mt-4 pb-3"></div>
+            </div>
+            {% endif %}
         </div>
     </div>
     <footer><div class="container"><p>&copy; 2025 Contento Inc. All Rights Reserved.</p></div></footer>
@@ -93,7 +142,7 @@
         const flaskDeleteFileUrlBase = "{{ url_for('knowledge_base_routes.delete_knowledge_base_file', s3_key='') }}";
         const flaskIndustriesListUrl = "{{ url_for('knowledge_base_routes.get_industries') }}";
         const flaskUsersListUrl = "{{ url_for('knowledge_base_routes.list_all_users_for_admin') }}";
-        const flaskAdminTargetFilesUrlBase = "{{ url_for('knowledge_base_routes.list_knowledge_base_files', target_username='DUMMY', target_type='user') }}".replace('DUMMY', '');
+        const flaskAdminTargetFilesUrlBase = "{{ url_for('knowledge_base_routes.list_knowledge_base_files') }}";
     </script>
     <script src="{{ url_for('static', filename='js/knowledge_base_manager.js') }}"></script>
 </body>

@@ -14,4 +14,4 @@ if __name__ == '__main__':
     # initialize_full_app 내에서 이미 로깅이 설정되어 있으므로, 
     # 여기서 다시 app.logger를 설정할 필요는 없습니다.
     app.logger.info("Starting Flask development server...")
-    app.run(debug=app.config.get('DEBUG', False), host='0.0.0.0', port=5000)
+    app.run(debug=app.config.get('DEBUG', False), use_reloader=True, host='0.0.0.0', port=5000)
