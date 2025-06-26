@@ -19,14 +19,16 @@ logger = logging.getLogger(__name__)
 
 knowledge_base_bp = Blueprint('knowledge_base_routes', __name__)
 
-def sanitize_industry_name(username_raw):
+
+# --- 유틸리티 함수 ---
+def sanitize_industry_name(raw_industry_name):
     """
-    사용자 이름을 기반으로 S3 폴더 이름(산업명)을 생성합니다.
-    특수 문자를 제거하고 안전한 폴더명으로 변환합니다.
+    제공된 산업(Industry) 이름을 S3 폴더명으로 적합하게 정제합니다.
+    특수 문자를 제거하고 안전한 파일 시스템 이름으로 변환합니다.
     """
-    if not username_raw: 
+    if not raw_industry_name: 
         return "default_industry"
-    user_folder_name = re.sub(r'[^a-zA-Z0-9가-힣_-]', '', username_raw).strip()
+    user_folder_name = re.sub(r'[^a-zA-Z0-9가-힣_-]', '', raw_industry_name).strip()
     return user_folder_name if user_folder_name else "default_industry"
 
 def get_s3_info():
@@ -44,14 +46,18 @@ def get_s3_info():
         raise RuntimeError("S3 버킷 이름을 사용할 수 없습니다.")
     return s3_client, bucket_name
 
+
 # --- 페이지 렌더링 라우트 ---
 @knowledge_base_bp.route('/', methods=['GET'])
 @login_required
 def manage_knowledge_base():
-    """지식 베이스 관리 페이지를 렌더링합니다."""
+    """
+    지식 베이스 관리 페이지를 렌더링합니다.
+    """
     # 현재 로그인한 사용자가 관리자인지 확인하여 페이지에 전달합니다.
     is_admin = current_user.username == current_app.config.get('ADMIN_USERNAME')
     return render_template('knowledge_base_manager.html', is_admin=is_admin)
+
 
 # --- API 라우트 ---
 @knowledge_base_bp.route('/users', methods=['GET'])
@@ -81,6 +87,7 @@ def list_all_users_for_admin():
     except Exception as e:
         logger.error(f"등록된 사용자 목록 조회 중 예기치 않은 오류 발생: {e}", exc_info=True)
         return jsonify({"error": "사용자 목록 조회 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요."}), 500
+
 
 
 @knowledge_base_bp.route('/files', methods=['GET'])
