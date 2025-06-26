@@ -9,8 +9,16 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-# 블루프린트 정의: content_bp로 변경하고, 이름을 'content_routes'로 설정합니다.
 content_bp = Blueprint('content_routes', __name__) 
+
+### ▼▼▼ 여기에 새로운 라우트 추가 ▼▼▼ ###
+@content_bp.route('/content')
+@login_required
+def content_page():
+    """로그인한 사용자를 위한 메인 콘텐츠 생성 페이지를 렌더링합니다."""
+    return render_template('content.html')
+### ▲▲▲ 추가된 라우트 끝 ▲▲▲ ###
+
 
 @content_bp.route('/generate_content', methods=['POST'])
 @login_required

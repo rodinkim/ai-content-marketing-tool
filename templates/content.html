@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>콘텐츠 워크스페이스 - Contento</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+        :root {
+            --primary-color: #0052cc; --secondary-color: #f4f5f7; --dark-color: #172b4d;
+            --light-color: #ffffff; --gray-color: #6c757d; --border-color: #e9ecef;
+            --danger-color: #dc3545; --danger-bg-hover: #fbebee; --font-family: 'Noto Sans KR', sans-serif;
+        }
+        body { margin: 0; font-family: var(--font-family); line-height: 1.6; color: var(--dark-color); background-color: var(--secondary-color); }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 30px; }
+        header { background: var(--light-color); padding: 20px 0; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; }
+        header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 24px; font-weight: 700; color: var(--primary-color); text-decoration: none; }
+        nav ul { list-style: none; margin: 0; padding: 0; display: flex; align-items: center; }
+        nav ul li { margin-left: 25px; }
+        nav a { text-decoration: none; color: var(--dark-color); font-weight: 700; transition: color 0.2s; }
+        nav a:hover { color: var(--primary-color); }
+        nav a.active { color: var(--primary-color); }
+        .page-header { max-width: 800px; margin: 50px auto 30px auto; text-align: left; }
+        .page-header h1 { font-size: 32px; font-weight: 700; margin-bottom: 10px; color: var(--dark-color); }
+        .page-header p { font-size: 16px; color: var(--gray-color); }
+        .page-wrapper { max-width: 800px; margin: 0 auto 50px auto; padding: 40px; background-color: var(--light-color); border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.08); }
+        .form-section { margin-bottom: 35px; }
+        .form-section-title { font-size: 16px; font-weight: 700; color: var(--dark-color); margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid var(--secondary-color); }
+        .input-with-icon { position: relative; }
+        .input-with-icon .icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--gray-color); pointer-events: none; }
+        .form-control, .form-select { padding: 12px 15px 12px 45px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 16px; width: 100%; transition: border-color 0.3s ease, box-shadow 0.3s ease; }
+        .form-select { padding-right: 15px; }
+        .form-control:focus, .form-select:focus { border-color: var(--primary-color); box-shadow: 0 0 0 4px rgba(0, 82, 204, 0.15); outline: none; }
+        .cta-button { display: inline-block; background: var(--primary-color); color: var(--light-color) !important; padding: 15px 35px; border-radius: 8px; text-decoration: none; font-size: 18px; font-weight: 700; transition: all 0.3s ease; border: none; cursor: pointer; text-align: center; box-shadow: 0 4px 15px rgba(0, 82, 204, 0.2); }
+        .cta-button:hover { background: #003e99; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 82, 204, 0.3); }
+        .result-area { margin-top: 50px; }
+        #result-placeholder { text-align: center; padding: 60px 20px; background-color: var(--secondary-color); border: 2px dashed var(--border-color); border-radius: 12px; }
+        #result-placeholder .icon { font-size: 48px; color: var(--primary-color); margin-bottom: 15px; }
+        #result-placeholder p { font-size: 18px; font-weight: 500; color: var(--gray-color); }
+        #generatedContent { white-space: pre-wrap; background-color: #f8f9fa; border: 1px solid var(--border-color); border-radius: 8px; padding: 25px; min-height: 200px; font-size: 16px; }
+        footer { background: #222; color: #ccc; padding: 30px 0; text-align: center; margin-top: 60px; }
+        .toast-container { z-index: 1100; }
+        .toast-header .me-auto { font-weight: 700; }
+    </style>
+</head>
+<body>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="flashToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header"><svg class="rounded me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#0052cc"></rect></svg><strong class="me-auto">알림</strong><small>just now</small><button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button></div>
+            <div class="toast-body"></div>
+        </div>
+    </div>
+    <header>
+        <div class="container">
+            <a class="logo" href="{{ url_for('auth_routes.index') }}">Contento</a>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('content_routes.content_page') }}" class="active">콘텐츠 워크스페이스</a></li>
+                    <li><a href="{{ url_for('content_routes.get_history_page') }}">콘텐츠 아카이브</a></li>
+                    <li><a href="{{ url_for('knowledge_base_routes.manage_knowledge_base') }}">지식 베이스</a></li>
+                    <li><a href="{{ url_for('auth_routes.logout') }}">로그아웃</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="page-header">
+            <h1>콘텐츠 워크스페이스</h1>
+            <p>AI와 함께 당신의 아이디어를 전문가 수준의 콘텐츠로 완성하세요.</p>
+        </div>
+        <div class="page-wrapper">
+            <div id="flash-messages" style="display: none;">{% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}{% for category, message in messages %}<div data-category="{{ category }}">{{ message }}</div>{% endfor %}{% endif %}{% endwith %}</div>
+            <form id="contentForm">
+                <div class="form-section">
+                    <h3 class="form-section-title">기본 정보</h3>
+                    <div class="mb-3 input-with-icon"><span class="icon">🎯</span><input type="text" class="form-control" id="topic" name="topic" placeholder="콘텐츠의 핵심 주제를 알려주세요" required></div>
+                    <div class="mb-3 input-with-icon"><span class="icon">🏢</span><select class="form-select" id="industry" name="industry" required><option value="">업종 선택</option><option value="IT 기술">IT 기술</option><option value="패션 의류">패션 의류</option><option value="식품 요리">식품 요리</option><option value="헬스케어 건강">헬스케어/건강</option><option value="뷰티 코스메틱">뷰티/코스메틱</option><option value="여행 레저">여행/레저</option></select></div>
+                </div>
+                <div class="form-section">
+                    <h3 class="form-section-title">콘텐츠 설정</h3>
+                    <div class="row">
+                        <div class="col-md-4 mb-3 input-with-icon"><span class="icon">📄</span><select class="form-select" id="contentType" name="content_type" required><option value="">콘텐츠 종류</option><option value="블로그 게시글">블로그 게시글</option><option value="SNS 게시물">SNS 게시물</option><option value="이메일 뉴스레터">이메일 뉴스레터</option></select></div>
+                        <div class="col-md-4 mb-3 input-with-icon"><span class="icon">🎨</span><select class="form-select" id="tone" name="tone" required><option value="">톤앤매너</option><option value="전문적이고 공식적인">전문적</option><option value="친근하고 캐주얼한">친근함</option><option value="유머러스하고 재치있는">유머러스</option><option value="감성적이고 따뜻한">감성적</option><option value="정보 전달 위주의">정보 중심</option></select></div>
+                        <div class="col-md-4 mb-3 input-with-icon"><span class="icon">📏</span><select class="form-select" id="length" name="length" required><option value="">분량</option><option value="short">짧게</option><option value="medium">중간</option><option value="long">길게</option></select></div>
+                    </div>
+                </div>
+                <div class="form-section">
+                     <h3 class="form-section-title">고급 설정 (선택)</h3>
+                     <div class="mb-3 input-with-icon" id="emailSubjectField" style="display: none;"><span class="icon">✉️</span><input type="text" class="form-control" id="emailSubject" name="email_subject" placeholder="이메일 제목 (AI 추천 가능)"></div>
+                     <div class="mb-3 input-with-icon"><span class="icon">🔑</span><input type="text" class="form-control" id="seoKeywords" name="seo_keywords" placeholder="SEO 키워드 (쉼표로 구분)"></div>
+                </div>
+                <button type="submit" class="cta-button w-100 mt-3" id="generateBtn">AI로 콘텐츠 생성하기<span id="generateSpinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span></button>
+            </form>
+            <div class="result-area">
+                <div id="result-placeholder"><div class="icon">✨</div><p>AI가 당신의 아이디어를 멋진 콘텐츠로<br>만들어 드릴 준비가 되었어요.</p></div>
+                <div id="generatedContent" style="display: none;"></div>
+                <div class="d-flex justify-content-end mt-3"><button class="cta-button" id="copyBtn" style="display: none; font-size: 16px; padding: 10px 25px; background-color: var(--gray-color); box-shadow: none;">클립보드에 복사</button></div>
+            </div>
+        </div>
+    </main>
+    <footer><div class="container"><p>&copy; 2025 Contento Inc. All Rights Reserved.</p></div></footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const flashMessagesDiv = document.getElementById('flash-messages');
+            const messages = flashMessagesDiv.querySelectorAll('div[data-category]');
+            if (messages.length > 0) {
+                const toastElement = document.getElementById('flashToast');
+                const toastBody = toastElement.querySelector('.toast-body');
+                const toastBootstrap = new bootstrap.Toast(toastElement);
+                const firstMessage = messages[0];
+                const messageText = firstMessage.textContent;
+                const category = firstMessage.dataset.category;
+                const toastHeaderRect = toastElement.querySelector('.toast-header rect');
+                if (category === 'success') { toastHeaderRect.setAttribute('fill', '#198754'); } else { toastHeaderRect.setAttribute('fill', '#0052cc'); }
+                toastBody.textContent = messageText;
+                toastBootstrap.show();
+            }
+        });
+    </script>
+</body>
+</html>

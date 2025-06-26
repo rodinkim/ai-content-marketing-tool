@@ -3,284 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>내 콘텐츠 기록 - AI 콘텐츠 생성기</title>
+    <title>콘텐츠 아카이브 - Contento</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
-        /* 기존 CSS는 그대로 유지합니다. */
-        :root {
-            --primary-color: #007bff;
-            --secondary-color: #6c757d;
-            --background-light: #f4f7f6;
-            --card-bg: #ffffff;
-            --text-dark: #212529;
-            --text-muted: #6c757d;
-            --border-color: #dee2e6;
-            --success-color: #28a745;
-            --danger-color: #dc3545;
-            --info-color: #17a2b8;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--background-light);
-            color: var(--text-dark);
-            padding-top: 20px;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .main-wrapper {
-            max-width: 960px;
-            margin: auto;
-            padding: 40px;
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            flex-grow: 1;
-        }
-
-        .navbar {
-            background-color: var(--card-bg) !important;
-            border-bottom: 1px solid var(--border-color);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            margin-bottom: 40px;
-        }
-
-        .navbar-brand {
-            font-weight: 700;
-            font-size: 1.5rem;
-            color: var(--primary-color) !important;
-        }
-
-        .nav-link {
-            font-weight: 500;
-            color: var(--text-dark) !important;
-            margin-left: 15px;
-            transition: color 0.2s ease-in-out;
-        }
-        .nav-link:hover {
-            color: var(--primary-color) !important;
-        }
-
-        .nav-link.btn {
-            border-radius: 8px;
-            padding: 8px 18px;
-            font-weight: 600;
-            margin-left: 10px;
-        }
-        .nav-link.btn-primary { background-color: var(--primary-color); border-color: var(--primary-color); }
-        .nav-link.btn-primary:hover { background-color: #0056b3; border-color: #0056b3; }
-        .nav-link.btn-danger { background-color: var(--danger-color); border-color: var(--danger-color); }
-        .nav-link.btn-danger:hover { background-color: #b30000; border-color: #b30000; }
-
-        h2 {
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        
-        /* History List Styling */
-        .history-item {
-            cursor: pointer;
-            padding: 12px 20px;
-            margin-bottom: 8px;
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.2s ease-in-out;
-        }
-        .history-item:hover {
-            background-color: var(--background-light);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-        .history-item-content {
-            font-size: 1em;
-            color: var(--text-dark);
-            flex-grow: 1;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            font-weight: 500;
-        }
-        .history-item-actions {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .history-item-delete {
-            margin-left: 15px;
-            color: var(--danger-color);
-            font-weight: 700;
-            font-size: 1.2em;
-            cursor: pointer;
-            transition: color 0.2s ease-in-out;
-        }
-        .history-item-delete:hover {
-            color: #a71d2a;
-        }
-        .text-info {
-            color: var(--info-color) !important;
-        }
-        .text-danger {
-            color: var(--danger-color) !important;
-        }
-        .text-muted {
-            color: var(--text-muted) !important;
-        }
-        .alert-success { background-color: var(--success-color); color: white; border-color: var(--success-color); }
-        .alert-danger { background-color: var(--danger-color); color: white; border-color: var(--danger-color); }
-        .alert-info { background-color: var(--info-color); color: white; border-color: var(--info-color); }
-
-        /* Specific styles for generated content preview in history */
-        .content-full {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            padding: 15px;
-            background-color: var(--background-light);
-            border-radius: 8px;
-            margin-top: 15px;
-            max-height: 300px;
-            overflow-y: auto;
-            border: 1px solid var(--border-color);
-        }
-
-        /* ----- 검색 및 필터 입력칸 너비 조정 (수정된 CSS) ----- */
-        .search-filter-group {
-            flex-grow: 1; 
-            max-width: 75%; 
-        }
-        .search-filter-group .form-control {
-            flex-grow: 3;
-        }
-        .search-filter-group .form-select {
-            flex-grow: 1; 
-        }
-        .input-group .form-select {
-            width: auto;
-        }
-        @media (max-width: 768px) {
-            .mb-3.d-flex.justify-content-between.align-items-center {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .search-filter-group {
-                max-width: 100%;
-                margin-top: 15px;
-            }
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+        :root { --primary-color: #0052cc; --secondary-color: #f8f9fa; --dark-color: #212529; --light-color: #ffffff; --gray-color: #6c757d; --border-color: #e9ecef; --danger-color: #dc3545; --danger-bg-hover: #fbebee; --font-family: 'Noto Sans KR', sans-serif; }
+        body { margin: 0; font-family: var(--font-family); line-height: 1.6; color: var(--dark-color); background-color: var(--secondary-color); }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 30px; }
+        header { background: var(--light-color); padding: 20px 0; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; }
+        header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 24px; font-weight: 700; color: var(--primary-color); text-decoration: none; }
+        nav ul { list-style: none; margin: 0; padding: 0; display: flex; align-items: center; }
+        nav ul li { margin-left: 25px; }
+        nav a { text-decoration: none; color: var(--dark-color); font-weight: 700; transition: color 0.2s; }
+        nav a:hover { color: var(--primary-color); }
+        nav a.active { color: var(--primary-color); }
+        .page-wrapper { max-width: 960px; margin: 50px auto; padding: 0; }
+        .page-header { text-align: left; margin-bottom: 30px; }
+        .page-header h1 { font-size: 32px; font-weight: 700; color: var(--dark-color); }
+        .page-header p { font-size: 16px; color: var(--gray-color); margin-top: 5px; }
+        .history-container { background-color: var(--light-color); border-radius: 12px; border: 1px solid #dee2e6; box-shadow: 0 4px 15px rgba(0,0,0,0.04); overflow: hidden; }
+        .action-bar { padding: 20px; background-color: #fafbfc; border-bottom: 1px solid var(--border-color); }
+        .form-control { border-radius: 8px; border-color: #dfe1e6; font-size: 14px; }
+        .form-control:focus { border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0, 82, 204, 0.15); }
+        .cta-button { display: inline-flex; align-items: center; gap: 8px; background: var(--primary-color); color: var(--light-color) !important; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-size: 15px; font-weight: 700; transition: all 0.2s ease; border: none; cursor: pointer; }
+        .cta-button:hover { background: #003e99; transform: translateY(-1px); }
+        .history-list { padding: 8px; }
+        .history-item { display: flex; align-items: center; padding: 15px; border-radius: 8px; transition: background-color 0.2s ease; cursor: pointer; }
+        .history-item:hover { background-color: var(--secondary-color); }
+        .history-item .icon { flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background-color: var(--secondary-color); display: inline-flex; align-items: center; justify-content: center; margin-right: 15px; color: var(--gray-color); }
+        .history-item .content { flex-grow: 1; }
+        .history-item .topic { font-size: 16px; font-weight: 700; color: var(--dark-color); margin: 0; }
+        .history-item .meta { font-size: 13px; color: var(--gray-color); margin: 2px 0 0; }
+        .history-item .timestamp { flex-shrink: 0; font-size: 14px; color: var(--gray-color); margin-left: 20px; }
+        .history-item .actions { opacity: 0; transition: opacity 0.2s ease; display: flex; gap: 15px; margin-left: 20px; }
+        .history-item:hover .actions { opacity: 1; }
+        .history-item:hover .timestamp { opacity: 0; }
+        .delete-btn { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: none; background: none; border-radius: 50%; cursor: pointer; opacity: 0.6; transition: all 0.2s ease; flex-shrink: 0; }
+        .delete-btn:hover { opacity: 1; background-color: var(--danger-bg-hover); color: var(--danger-color); }
+        .delete-btn svg { width: 16px; height: 16px; }
+        #noHistoryMessage { padding: 80px 40px; text-align: center; }
+        #noHistoryMessage .icon { font-size: 48px; margin-bottom: 20px; color: var(--primary-color); }
+        #noHistoryMessage h3 { font-size: 22px; font-weight: 700; }
+        #noHistoryMessage p { font-size: 16px; color: var(--gray-color); margin-bottom: 25px; }
+        .modal-content { border-radius: 12px; border: none; }
+        .modal-header { background-color: var(--primary-color); color: var(--light-color); }
+        .modal-header .btn-close { filter: invert(1) grayscale(100%) brightness(200%); }
+        .modal-body .content-full { background-color: var(--secondary-color); border-radius: 8px; }
+        footer { background: #222; color: #ccc; padding: 30px 0; text-align: center; margin-top: 60px; }
     </style>
 </head>
 <body>
-    <div class="main-wrapper">
-        <nav class="navbar navbar-expand-lg navbar-light">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="{{ url_for('auth_routes.index') }}">AI 콘텐츠</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        {% if current_user.is_authenticated %}
-                            <li class="nav-item d-flex align-items-center me-2">
-                                <span class="nav-link text-muted pe-0">환영합니다,</span>
-                                <span class="nav-link fw-bold text-dark ps-1">{{ current_user.username }}님!</span>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url_for('content_routes.get_history_page') }}">내 기록</a>
-                            </li>
-                            <li class="nav-item"> {# 지식 베이스 관리 페이지 링크 추가 #}
-                                <a class="nav-link" href="{{ url_for('knowledge_base_routes.manage_knowledge_base') }}">지식 베이스</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link btn btn-danger text-white" href="{{ url_for('auth_routes.logout') }}">로그아웃</a>
-                            </li>
-                        {% else %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url_for('auth_routes.register') }}">회원가입</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link btn btn-primary text-white" href="{{ url_for('auth_routes.login') }}">로그인</a>
-                            </li>
-                        {% endif %}
-                    </ul>
+    <header>
+        <div class="container">
+            <a class="logo" href="{{ url_for('auth_routes.index') }}">Contento</a>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('content_routes.content_page') }}">콘텐츠 워크스페이스</a></li>
+                    <li><a href="{{ url_for('content_routes.get_history_page') }}" class="active">콘텐츠 아카이브</a></li>
+                    <li><a href="{{ url_for('knowledge_base_routes.manage_knowledge_base') }}">지식 베이스</a></li>
+                    <li><a href="{{ url_for('auth_routes.logout') }}">로그아웃</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="page-wrapper">
+        <div class="page-header">
+            <h1>콘텐츠 아카이브</h1>
+            <p>생성된 모든 콘텐츠 기록을 확인하고 관리하세요.</p>
+        </div>
+        <div id="alert-container"></div>
+        {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}{% for category, message in messages %}<div class="alert alert-{{ category }} m-4">{{ message }}</div>{% endfor %}{% endif %}{% endwith %}
+        <div class="history-container">
+            <div class="action-bar">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                    <a href="{{ url_for('content_routes.content_page') }}" class="cta-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2z"/></svg>
+                        새 콘텐츠 생성
+                    </a>
+                    <div class="input-group" style="max-width: 350px;">
+                        <input type="text" id="searchInput" class="form-control" placeholder="기록 검색...">
+                        <button class="btn btn-outline-secondary" type="button" id="resetFiltersBtn">초기화</button>
+                    </div>
                 </div>
             </div>
-        </nav>
-        
-        <h2 class="mb-4 text-center">내 콘텐츠 기록</h2>
-        
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }} mt-3">{{ message }}</div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-
-        <div class="mb-3 d-flex justify-content-between align-items-center">
-            <a href="{{ url_for('auth_routes.index') }}" class="btn btn-primary">새 콘텐츠 생성</a>
-            <div class="input-group search-filter-group">
-                <select id="filterContentType" class="form-select"> 
-                    <option value="">모든 종류</option>
-                    <option value="블로그 게시글">블로그 게시글</option>
-                    <option value="SNS 게시물">SNS 게시물</option>
-                    <option value="이메일 뉴스레터">이메일 뉴스레터</option>
-                </select>
-                <input type="text" id="searchInput" class="form-control" placeholder="검색어 입력"> <button class="btn btn-outline-secondary" type="button" id="resetFiltersBtn">초기화</button>
-            </div>
-        </div>
-
-        <div id="historyList" class="list-group">
-            <p class="text-muted text-center" id="noHistoryMessage">아직 생성된 콘텐츠가 없습니다.</p>
-        </div>
-        <button class="btn btn-danger mt-3" id="clearHistoryBtn" style="display: none;">기록 전체 삭제</button>
-
-        <div class="modal fade" id="contentDetailModal" tabindex="-1" aria-labelledby="contentDetailModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="contentDetailModalLabel">콘텐츠 상세 정보</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <h6>주제: <span id="modalTopic"></span></h6>
-                        <p>업종: <span id="modalIndustry"></span> | 종류: <span id="modalContentType"></span> | 톤앤매너: <span id="modalTone"></span> | 길이: <span id="modalLength"></span></p>
-                        <p>SEO 키워드: <span id="modalSeoKeywords"></span></p>
-                        <p id="modalEmailSubjectArea">이메일 제목: <span id="modalEmailSubject"></span></p>
-                        <hr>
-                        <div id="modalGeneratedContent" class="content-full"></div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                        <button type="button" class="btn btn-primary" id="modalCopyBtn">클립보드에 복사</button>
-                        <button type="button" class="btn btn-info" id="modalLoadForEditBtn">불러오기</button> 
-                    </div>
-                </div>
+            <div id="historyList" class="history-list"></div>
+            <div id="noHistoryMessage" style="display: none;">
+                <div class="icon">📂</div>
+                <h3>아직 생성된 기록이 없어요</h3>
+                <p>새로운 콘텐츠를 만들고 첫 기록을 남겨보세요.</p>
+                <a href="{{ url_for('content_routes.content_page') }}" class="cta-button">콘텐츠 만들러 가기</a>
             </div>
         </div>
     </div>
-
+    <div class="modal fade" id="contentDetailModal" tabindex="-1"><div class="modal-dialog modal-xl"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="contentDetailModalLabel">콘텐츠 상세 정보</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"><h6>주제: <span id="modalTopic"></span></h6><p><span class="badge bg-secondary" id="modalIndustry"></span> <span class="badge bg-info" id="modalContentType"></span> <span class="badge bg-success" id="modalTone"></span> <span class="badge bg-warning text-dark" id="modalLength"></span></p><p id="modalSeoKeywordsArea" class="mt-2"><b>SEO 키워드:</b> <span id="modalSeoKeywords"></span></p><p id="modalEmailSubjectArea" class="mt-2"><b>이메일 제목:</b> <span id="modalEmailSubject"></span></p><hr><div id="modalGeneratedContent" class="content-full"></div></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button><button type="button" class="btn btn-primary" id="modalCopyBtn">클립보드에 복사</button><button type="button" class="btn btn-info" id="modalLoadForEditBtn">이 내용으로 수정하기</button></div></div></div></div>
+    <footer><div class="container"><p>&copy; 2025 Contento Inc. All Rights Reserved.</p></div></footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
     <script>
-        // Flask URL을 JavaScript 변수로 정의 (history.js 로드 전에 정의되어야 함)
-        const flaskIndexUrl = "{{ url_for('auth_routes.index') }}"; 
-        const flaskLoginUrl = "{{ url_for('auth_routes.login') }}"; 
+        const flaskIndexUrl = "{{ url_for('content_routes.content_page') }}";
         const flaskHistoryApiUrl = "{{ url_for('content_routes.get_history_api') }}"; 
-        const flaskContentDetailUrlBase = "{{ url_for('content_routes.get_content_detail', content_id=0) }}".slice(0, -1); 
         const flaskDeleteContentUrlBase = "{{ url_for('content_routes.delete_content', content_id=0) }}".slice(0, -1); 
-        const flaskUpdateContentUrlBase = "{{ url_for('content_routes.update_content', content_id=0) }}".slice(0, -1); 
     </script>
-
     <script src="{{ url_for('static', filename='js/history.js') }}"></script>
 </body>
 </html>

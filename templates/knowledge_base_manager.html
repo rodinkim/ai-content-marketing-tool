@@ -3,124 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>지식 베이스 관리 - AI 콘텐츠 생성기</title>
+    <title>지식 베이스 - Contento</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
-        .main-wrapper { max-width: 960px; margin: auto; padding: 40px; background-color: var(--card-bg); border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); flex-grow: 1; }
-        .admin-content-area { display: flex; gap: 20px; margin-top: 20px; }
-        .user-list-container { flex: 1; background-color: var(--light-bg); border-radius: 8px; padding: 20px; box-shadow: inset 0 0 5px rgba(0,0,0,0.05); overflow-y: auto; max-height: 500px; }
-        .file-list-container { flex: 2; background-color: var(--light-bg); border-radius: 8px; padding: 20px; box-shadow: inset 0 0 5px rgba(0,0,0,0.05); overflow-y: auto; max-height: 500px; }
-        .user-item { padding: 10px 15px; border-bottom: 1px solid var(--border-color); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-        .user-item:last-child { border-bottom: none; }
-        .user-item:hover { background-color: var(--hover-bg); }
-        .user-item-name { font-weight: 500; }
-        .section-header { margin-top: 40px; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
-        .kb-group { border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; }
-        .kb-group-header { background-color: var(--hover-bg); padding: 10px 15px; font-size: 1.1rem; margin: 0; }
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+        :root { --primary-color: #0052cc; --secondary-color: #f8f9fa; --dark-color: #212529; --light-color: #ffffff; --gray-color: #6c757d; --border-color: #e9ecef; --danger-color: #dc3545; --danger-bg-hover: #fbebee; --font-family: 'Noto Sans KR', sans-serif; }
+        body { margin: 0; font-family: var(--font-family); line-height: 1.6; color: var(--dark-color); background-color: var(--secondary-color); }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 30px; }
+        header { background: var(--light-color); padding: 20px 0; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; }
+        header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 24px; font-weight: 700; color: var(--primary-color); text-decoration: none; }
+        nav ul { list-style: none; margin: 0; padding: 0; display: flex; align-items: center; }
+        nav ul li { margin-left: 25px; }
+        nav a { text-decoration: none; color: var(--dark-color); font-weight: 700; transition: color 0.2s; }
+        nav a:hover { color: var(--primary-color); }
+        nav a.active { color: var(--primary-color); }
+        .page-wrapper { max-width: 1024px; margin: 50px auto; padding: 0; }
+        .page-header { text-align: left; margin-bottom: 30px; }
+        .page-header h1 { font-size: 32px; font-weight: 700; color: var(--dark-color); }
+        .page-header p { font-size: 16px; color: var(--gray-color); margin-top: 5px; }
+        .kb-container { background-color: var(--light-color); border: 1px solid #dee2e6; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); overflow: hidden; }
+        .add-url-bar { padding: 20px; background-color: var(--light-color); border-bottom: 1px solid var(--border-color); }
+        .add-url-bar .form-label { font-weight: 700; margin-bottom: 10px; display: block; }
+        .add-url-bar .input-group { align-items: center; }
+        .add-url-bar .input-group .form-control, .add-url-bar .input-group .form-select { border-color: #ced4da; font-size: 16px; padding: 10px 15px; border-radius: 8px; }
+        .add-url-bar .input-group .form-control:focus, .add-url-bar .input-group .form-select:focus { border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0, 82, 204, 0.15); z-index: 3; }
+        .add-url-bar .input-group .form-select { width: 200px; flex: 0 0 200px; }
+        .add-url-bar .input-group .form-control { flex: 1 1 auto; }
+        .add-icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; background-color: transparent; border: none; color: var(--gray-color); cursor: pointer; border-radius: 50%; transition: all 0.2s ease; }
+        .add-icon-btn:hover { background-color: var(--secondary-color); color: var(--primary-color); transform: scale(1.1); }
+        .add-icon-btn svg { width: 24px; height: 24px; }
+        .kb-management-grid { display: grid; grid-template-columns: 280px 1fr; }
+        .kb-sidebar { padding: 20px; border-right: 1px solid var(--border-color); }
+        .kb-sidebar h5 { font-size: 14px; text-transform: uppercase; color: var(--gray-color); font-weight: 700; padding: 0 10px 10px; }
+        .sidebar-item { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; padding: 10px 15px; border-radius: 6px; border: none; background: none; font-weight: 500; font-size: 15px; color: #344054; transition: background-color 0.2s, color 0.2s; }
+        .sidebar-item:hover { background-color: var(--secondary-color); }
+        .sidebar-item.active { background-color: #eef4ff; color: var(--primary-color); font-weight: 700; }
+        .sidebar-item .icon { color: var(--gray-color); }
+        .sidebar-item.active .icon { color: var(--primary-color); }
+        .kb-file-pane { padding: 20px; }
+        .kb-file-list-header { font-size: 18px; font-weight: 700; margin-bottom: 15px; color: var(--dark-color); }
+        .kb-file-item { display: flex; align-items: center; padding: 16px 10px; border-bottom: 1px solid var(--border-color); }
+        .kb-file-item:last-child { border-bottom: none; }
+        .kb-file-item .icon { font-size: 20px; margin-right: 15px; color: var(--gray-color); }
+        .kb-file-item .filename { flex-grow: 1; font-weight: 500; font-size: 16px; }
+        .delete-btn { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: none; background: none; border-radius: 50%; cursor: pointer; opacity: 0.6; transition: all 0.2s ease; flex-shrink: 0; }
+        .delete-btn:hover { opacity: 1; background-color: var(--danger-bg-hover); color: var(--danger-color); }
+        .delete-btn svg { width: 16px; height: 16px; }
+        .kb-group-title { font-size: 20px; font-weight: 700; padding: 25px 25px 15px; border-bottom: 1px solid var(--border-color); margin: 0; }
+        .list-container { padding: 8px 15px; }
+        footer { background: #222; color: #ccc; padding: 30px 0; text-align: center; margin-top: 60px; }
     </style>
 </head>
 <body>
-    <div class="main-wrapper">
-        <nav class="navbar navbar-expand-lg navbar-light">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="{{ url_for('auth_routes.index') }}">AI 콘텐츠</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        {% if current_user.is_authenticated %}
-                            <li class="nav-item d-flex align-items-center me-2">
-                                <span class="nav-link text-muted pe-0">환영합니다,</span>
-                                <span class="nav-link fw-bold text-dark ps-1">{{ current_user.username }}님!</span>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url_for('content_routes.get_history_page') }}">내 기록</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url_for('knowledge_base_routes.manage_knowledge_base') }}">지식 베이스</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link btn btn-danger text-white" href="{{ url_for('auth_routes.logout') }}">로그아웃</a>
-                            </li>
-                        {% else %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url_for('auth_routes.register') }}">회원가입</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link btn btn-primary text-white" href="{{ url_for('auth_routes.login') }}">로그인</a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
-        <h2 class="mb-4 text-center">지식 베이스 관리</h2>
-
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }} mt-3">{{ message }}</div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-
-        <h4 class="section-header">URL에서 지식 추가</h4>
-        <div class="card p-3 mb-4">
-            <form id="addUrlForm">
-                <div class="input-group">
-                    <input type="url" class="form-control" id="urlInput" placeholder="지식으로 추가할 URL을 입력하세요" required style="flex-grow: 2;">
-                    <select class="form-select" id="industrySelect" required style="flex-grow: 1;">
-                        <option value="">-- 산업 분야 선택 --</option>
-                    </select>
-                    <button class="btn btn-primary" type="submit" id="addUrlBtn">
-                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
-                        추가
-                    </button>
-                </div>
-            </form>
+    <header>
+        <div class="container">
+            <a class="logo" href="{{ url_for('auth_routes.index') }}">Contento</a>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('content_routes.content_page') }}">콘텐츠 워크스페이스</a></li>
+                    <li><a href="{{ url_for('content_routes.get_history_page') }}">콘텐츠 아카이브</a></li>
+                    <li><a href="{{ url_for('knowledge_base_routes.manage_knowledge_base') }}" class="active">지식 베이스</a></li>
+                    <li><a href="{{ url_for('auth_routes.logout') }}">로그아웃</a></li>
+                </ul>
+            </nav>
         </div>
-
-        {% if is_admin %}
-        <h4 class="section-header">모든 사용자 및 산업별 지식 베이스 관리</h4>
-        <div class="admin-content-area">
-            <div class="user-list-container">
-                <h5 class="mb-3">사용자/산업 목록</h5>
-                <div id="userList">
-                    <p class="text-muted text-center" id="noUsersMessage">사용자가 없습니다.</p>
-                </div>
-            </div>
-            <div class="file-list-container">
-                <h5 class="mb-3" id="fileListHeader">전체 지식 베이스</h5>
-                <div id="fileList">
-                    <p class="text-muted text-center" id="noFilesMessage">지식 베이스에 파일이 없습니다.</p>
-                </div>
-            </div>
+    </header>
+    <div class="page-wrapper">
+        <div class="page-header">
+            <h1>지식 베이스</h1>
+            <p>AI의 답변 품질을 높이기 위해, 브랜드와 관련된 최신 정보를 제공해주세요.</p>
         </div>
-        {% else %}
-        <h4 class="section-header">전체 지식 베이스</h4>
-        <div class="card p-3">
-            <h5 class="mb-3" id="fileListHeader">전체 지식 베이스 (산업별)</h5>
-            <div id="fileList">
-                <p class="text-muted text-center" id="noFilesMessage">지식 베이스에 파일이 없습니다.</p>
+        <div id="alert-container"></div>
+        {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}{% for category, message in messages %}<div class="alert alert-{{ category }}">{{ message }}</div>{% endfor %}{% endif %}{% endwith %}
+        <div class="kb-container">
+            <div class="add-url-bar">
+                <label for="urlInput" class="form-label">URL에서 지식 추가</label>
+                <form id="addUrlForm"><div class="input-group"><input type="url" class="form-control" id="urlInput" placeholder="https://example.com/my-brand-story" required><select class="form-select" id="industrySelect" required><option value="">-- 산업 분야 --</option></select><button class="add-icon-btn" type="submit" id="addUrlBtn" title="URL 추가"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span><svg class="add-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button></div></form>
             </div>
+            {% if is_admin %}<div class="kb-management-grid"><div class="kb-sidebar"><div id="userList" class="list-unstyled"></div></div><div class="kb-file-pane"><h5 class="kb-file-list-header" id="fileListHeader">파일 목록</h5><div id="fileList"><p class="text-muted small p-3">왼쪽에서 대상을 선택하세요.</p></div></div></div>{% else %}<div id="fileList"><p class="text-muted text-center p-5">아직 추가된 지식 베이스가 없습니다.</p></div>{% endif %}
         </div>
-        {% endif %}
     </div>
-
+    <footer><div class="container"><p>&copy; 2025 Contento Inc. All Rights Reserved.</p></div></footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const isAdminUser = {{ is_admin | tojson }};
         const flaskAddUrlUrl = "{{ url_for('knowledge_base_routes.add_knowledge_base_from_url') }}";
         const flaskKnowledgeBaseFilesUrl = "{{ url_for('knowledge_base_routes.list_knowledge_base_files') }}"; 
-        const flaskDeleteFileUrlBase = "{{ url_for('knowledge_base_routes.delete_knowledge_base_file', filename='') }}";
+        const flaskDeleteFileUrlBase = "{{ url_for('knowledge_base_routes.delete_knowledge_base_file', s3_key='') }}";
         const flaskIndustriesListUrl = "{{ url_for('knowledge_base_routes.get_industries') }}";
         const flaskUsersListUrl = "{{ url_for('knowledge_base_routes.list_all_users_for_admin') }}";
-        const flaskAdminTargetFilesUrlBase = "{{ url_for('knowledge_base_routes.list_knowledge_base_files', target_username='DUMMY') }}".replace('DUMMY', ''); 
-        const flaskAuthLoginUrl = "{{ url_for('auth_routes.login') }}";
+        const flaskAdminTargetFilesUrlBase = "{{ url_for('knowledge_base_routes.list_knowledge_base_files', target_username='DUMMY', target_type='user') }}".replace('DUMMY', '');
     </script>
     <script src="{{ url_for('static', filename='js/knowledge_base_manager.js') }}"></script>
 </body>
