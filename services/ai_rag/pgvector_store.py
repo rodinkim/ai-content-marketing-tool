@@ -5,7 +5,7 @@ from typing import List, Tuple, Optional
 from sqlalchemy import text, func 
 from sqlalchemy.engine import Engine 
 from sqlalchemy import inspect 
-
+import numpy as np
 
 logger = logging.getLogger(__name__)
 
@@ -135,6 +135,33 @@ class PgVectorStore:
             logger.error(f"Failed to retrieve vectors for user_id {user_id} from PgVector DB: {e}", exc_info=True)
             return []
     
+    def get_vector_metadata_by_s3_key(self, s3_key: str) -> Optional[dict]:
+        """
+        특정 s3_key에 해당하는 벡터의 메타데이터(특히 user_id)를 PgVector DB에서 가져옵니다.
+        """
+        from extensions import db
+        from models_vector import KnowledgeBaseVector # KnowledgeBaseVector 모델 임포트
+
+        try:
+            # s3_key로 필터링하여 첫 번째 벡터를 조회합니다.
+            vector_obj = KnowledgeBaseVector.query.filter_by(s3_key=s3_key).first()
+            if vector_obj:
+                # 필요한 메타데이터만 반환합니다. (예: user_id, industry, original_filename)
+                return {
+                    "user_id": vector_obj.user_id,
+                    "industry": vector_obj.industry,
+                    "original_filename": vector_obj.original_filename,
+                    "s3_key": vector_obj.s3_key,
+                    # 기타 필요한 메타데이터_ 필드는 metadata_ 딕셔너리에서 가져올 수 있습니다.
+                    "metadata": vector_obj.metadata_ 
+                }
+            else:
+                logger.warning(f"S3 키 '{s3_key}'에 해당하는 벡터를 PgVector DB에서 찾을 수 없습니다.")
+                return None
+        except Exception as e:
+            logger.error(f"PgVector DB에서 S3 키 '{s3_key}'의 메타데이터 조회 중 오류 발생: {e}", exc_info=True)
+            return None
+
     def get_all_vectors(self):
         """
         PgVector DB에 저장된 모든 KnowledgeBaseVector 객체를 가져옵니다.
@@ -149,11 +176,12 @@ class PgVectorStore:
         except Exception as e:
             logger.error(f"Failed to retrieve all vectors from PgVector DB: {e}", exc_info=True)
             return []
-
+        
     def search(self, query_embedding: List[float], k: int = 3, user_id: int = None) -> List[Tuple[str, float, dict]]:
         """
-        쿼리 임베딩과 유사한 상위 k개의 문서 청크를 pgvector DB에서 검색합니다.
+        PgVector DB에서 쿼리 임베딩과 가장 유사한 k개의 벡터를 검색합니다.
         user_id가 제공되면 해당 user_id와 연결된 문서만 검색합니다.
+        정렬 및 유사도 계산에는 코사인 유사도를 사용합니다.
         """
         from extensions import db
         from models_vector import KnowledgeBaseVector 
@@ -162,28 +190,58 @@ class PgVectorStore:
         try:
             query = KnowledgeBaseVector.query
 
-            # user_id 필터링 추가
             if user_id is not None:
                 query = query.filter(KnowledgeBaseVector.user_id == user_id)
                 logger.debug(f"PgVector 검색 시 user_id 필터링 적용: {user_id}")
             else:
                 logger.debug("PgVector 검색 시 user_id 필터링 없음.")
 
-            # 유사도 검색 및 결과 제한
+            # 코사인 유사도(cosine_distance)를 기준으로 정렬
+            # cosine_distance는 0에 가까울수록 유사함 (0: 동일, 1: 직교, 2: 반대).
+            # 따라서 order_by에서 distance를 오름차순으로 정렬하면 가장 유사한 결과가 나옵니다.
             nearest_vectors = query.order_by(
-                KnowledgeBaseVector.embedding.l2_distance(query_embedding)
+                KnowledgeBaseVector.embedding.cosine_distance(query_embedding) # <-- L2_distance 대신 cosine_distance 사용
             ).limit(k).all()
             
             for vector_obj in nearest_vectors:
-                distance = vector_obj.embedding.l2_distance(query_embedding)
-                # 유사도 점수 계산 (선택 사항, L2 거리를 직접 사용할 수도 있음)
-                similarity_score = 1 / (1 + distance) 
+                # DB에서 이미 코사인 유사도 기준으로 정렬되었으므로,
+                # 여기서 다시 코사인 유사도(값 1에 가까울수록 유사)를 계산하거나,
+                # 아니면 pgvector의 cosine_distance가 반환하는 '거리' 값을 직접 사용합니다.
+                # pgvector의 cosine_distance는 0(동일) ~ 2(반대) 범위를 가집니다.
+                # 이를 일반적인 유사도 점수(0~1, 1이 유사)로 변환하는 공식: 1 - distance / 2
+                
+                # 코사인 '거리' 값을 가져옴 (DB에서 계산된 값)
+                # 이 값을 직접 가져올 방법이 없으므로, 파이썬에서 다시 계산합니다.
+                # (SQLAlchemy에서 select(컬럼, 컬럼.distance(..) as dist) 처럼 가져오면 좋겠지만,
+                #  간단하게 ORM 객체 로드 후 파이썬에서 계산합니다.)
+                query_np = np.array(query_embedding)
+                vector_np = np.array(vector_obj.embedding)
+                
+                # numpy를 사용하여 코사인 유사도 계산
+                # 1. 벡터 내적 계산 (dot product)
+                dot_product = np.dot(query_np, vector_np)
+                # 2. 각 벡터의 L2 노름(크기) 계산
+                norm_query = np.linalg.norm(query_np)
+                norm_vector = np.linalg.norm(vector_np)
 
+                # 0으로 나누는 오류 방지
+                if norm_query == 0 or norm_vector == 0:
+                    cosine_similarity = 0.0
+                else:
+                    cosine_similarity = dot_product / (norm_query * norm_vector)
+                
+                # 코사인 유사도는 -1 ~ 1 범위, 1에 가까울수록 유사.
+                # 이를 그대로 similarity_score로 사용합니다.
+                similarity_score = float(cosine_similarity) # float로 캐스팅하여 저장
+
+                # 반환 형식: (chunk_text, 유사도 점수, 메타데이터)
                 results.append((vector_obj.text_content, similarity_score, vector_obj.metadata_))
             
-            logger.info(f"pgvector DB에서 {len(results)}개의 유사 문서 검색 완료 (User ID: {user_id if user_id is not None else 'None'}).")
+            logger.info(f"PgVector DB에서 {len(results)}개의 유사 문서 검색 완료 (User ID: {user_id if user_id is not None else 'None'}).")
+            
         except Exception as e:
-            logger.error(f"pgvector DB 검색 중 오류 발생: {e}", exc_info=True)
+            logger.error(f"Pgvector DB 검색 중 오류 발생: {e}", exc_info=True)
+            return [] 
         
         return results
 

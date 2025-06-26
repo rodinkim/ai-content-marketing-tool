@@ -2,16 +2,17 @@
 
 from flask import request, jsonify, Blueprint, current_app, render_template
 from flask_login import login_required, current_user 
+from models import User
 import logging
 import re
 import boto3
+
 
 # services/ 디렉토리 내의 모듈들을 임포트합니다.
 from services.ai_rag.rag_system import get_rag_system 
 from services.web_crawling.web_content_extractor import extract_text_from_url
 from services.web_crawling.web_utils import sanitize_filename
 from services.ai_rag.ai_constants import INDUSTRIES
-from models import User
 from services.ai_rag.pgvector_store import PgVectorStore
 
 logger = logging.getLogger(__name__)
@@ -183,16 +184,36 @@ def list_knowledge_base_files():
 def delete_knowledge_base_file(s3_key):
     """
     지식 베이스 파일 삭제 라우트.
-    관리자만 S3에서 파일을 삭제하고, 연결된 벡터 DB 데이터(PgVector, FAISS)를 제거할 수 있습니다.
+    관리자 또는 파일 업로드 사용자 본인이 S3 및 벡터 DB에서 파일을 삭제할 수 있습니다.
     """
     is_admin = current_user.username == current_app.config.get('ADMIN_USERNAME')
     
-    if not is_admin:
-        logger.warning(f"권한 없음: 비관리자 '{current_user.username}'이(가) S3 키 '{s3_key}' 삭제 시도.")
-        return jsonify({"error": "파일을 삭제할 권한이 없습니다."}), 403
+    # 1. 삭제하려는 파일의 user_id를 PgVector DB에서 조회합니다.
+    pg_store = PgVectorStore() # PgVectorStore 인스턴스 생성
+    file_metadata = pg_store.get_vector_metadata_by_s3_key(s3_key)
+
+    authorized_to_delete = False
+    if is_admin:
+        authorized_to_delete = True # 관리자는 항상 삭제 권한이 있습니다.
+        logger.info(f"관리자 '{current_user.username}'이(가) S3 키 '{s3_key}' 삭제를 시도합니다. (관리자 권한)")
+    elif file_metadata and file_metadata.get('user_id') == current_user.id:
+        # 파일이 존재하고, 파일의 user_id가 현재 로그인한 사용자의 ID와 일치하는 경우
+        authorized_to_delete = True
+        logger.info(f"사용자 '{current_user.username}' (ID: {current_user.id})이(가) 자신의 파일 S3 키 '{s3_key}' 삭제를 시도합니다. (본인 권한)")
+    else:
+        # 파일이 없거나, 권한이 없는 경우
+        if not file_metadata:
+            logger.warning(f"S3 키 '{s3_key}'에 해당하는 파일을 DB에서 찾을 수 없습니다. (삭제 실패 또는 이미 삭제됨)")
+            # 파일이 DB에 없더라도, S3에는 있을 수 있으니 S3 삭제는 시도해야 합니다.
+            # 하지만 권한 확인 로직에서는 일단 '없음'으로 처리합니다.
+            pass # 이후 S3 삭제는 try 블록에서 처리
+
+    if not authorized_to_delete:
+        logger.warning(f"권한 없음: '{current_user.username}'이(가) S3 키 '{s3_key}' 삭제 시도. (파일 소유자 아님 또는 관리자 아님)")
+        return jsonify({"error": "이 파일을 삭제할 권한이 없습니다. 파일 소유자 또는 관리자만 삭제할 수 있습니다."}), 403
+
 
     s3_client, bucket_name = get_s3_info()
-    logger.info(f"관리자 '{current_user.username}'이(가) S3 키 '{s3_key}' 삭제를 시도합니다.")
 
     try:
         # 1. S3에서 파일 삭제
