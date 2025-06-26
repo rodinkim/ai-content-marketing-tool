@@ -16,6 +16,7 @@ logger = logging.getLogger(__name__)
 
 knowledge_base_bp = Blueprint('knowledge_base_routes', __name__)
 
+
 def sanitize_industry_name(raw_industry_name):
     if not raw_industry_name: 
         return "default_industry"
