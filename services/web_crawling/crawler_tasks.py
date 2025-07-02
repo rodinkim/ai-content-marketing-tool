@@ -187,7 +187,7 @@ def perform_marketing_crawl_task(system_user_id: int): # user_id 인자 추가
                     logger.warning(f"'{url_to_crawl_entry}'에서 추출할 기사 URL이 없습니다.")
                     continue
 
-                for url in article_urls_to_crawl_from_list[:2]: # 테스트 용도: 처음 2개만 처리
+                for url in article_urls_to_crawl_from_list[:5]: # 테스트 용도: 처음 5개만 처리
                     total_urls_processed += 1
                     
                     extracted_data = None

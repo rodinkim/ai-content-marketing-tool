@@ -25,7 +25,6 @@ class Content(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     user = db.relationship('User', backref='contents', lazy=True)
-
     topic = db.Column(db.String(200), nullable=False)
     industry = db.Column(db.String(100), nullable=False)
     content_type = db.Column(db.String(50), nullable=False)

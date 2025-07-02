@@ -34,8 +34,7 @@ class PromptManager:
                               tone: str, 
                               length: str, 
                               context: str, 
-                              seo_keywords: str = None, 
-                              email_subject_input: str = None) -> str:
+                              seo_keywords: str = None ) -> str:
         """Constructs the final prompt using the given parameters."""
         # Generate length_instruction_text
         length_instruction_text = ""
@@ -49,14 +48,6 @@ class PromptManager:
         # Generate seo_instruction_text
         seo_instruction_text = f"다음 키워드를 자연스럽게 포함: {seo_keywords}" if seo_keywords else "별도의 SEO 키워드 지시 없음."
 
-        # Generate email_instruction_text
-        email_instruction_text = ""
-        if content_type == "이메일 뉴스레터":
-            if email_subject_input:
-                email_instruction_text = f"다음 제목으로 이메일을 작성해주세요: '{email_subject_input}'"
-            else:
-                email_instruction_text = "적절한 이메일 제목을 2~3개 제안하고, 그중 하나를 본문에 사용해주세요."
-        
         prompt_parts = {
             "topic": topic,
             "industry": industry,
@@ -64,8 +55,7 @@ class PromptManager:
             "tone": tone,
             "context": context,
             "length_instruction": length_instruction_text,
-            "seo_instruction": seo_instruction_text,
-            "email_instruction": email_instruction_text
+            "seo_instruction": seo_instruction_text
         }
         
         final_prompt = self.prompt_template.format(**prompt_parts)

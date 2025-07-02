@@ -35,7 +35,7 @@ class AIContentGenerator:
         
         logger.info("AIContentGenerator 인스턴스가 성공적으로 초기화되었습니다.")
         
-    def generate_content(self, topic, industry, content_type, tone, length, seo_keywords=None, email_subject_input=None):
+    def generate_content(self, topic, industry, content_type, tone, length, seo_keywords=None):
         """
         주어진 파라미터와 RAG를 사용하여 AI 콘텐츠를 생성합니다.
         """
@@ -57,8 +57,7 @@ class AIContentGenerator:
             tone=tone,
             length=length,
             context=context_str,
-            seo_keywords=seo_keywords,
-            email_subject_input=email_subject_input
+            seo_keywords=seo_keywords
         )
         
         # 3. LLM 호출 (llm_invoker.py 사용)

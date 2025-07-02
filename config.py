@@ -12,7 +12,7 @@ class Config:
     
     # LLM 관련 설정
     SECRET_KEY = os.getenv("SECRET_KEY")
-    CLAUDE_MODEL_ID = os.getenv("CLAUDE_MODEL_ID", "anthropic.claude-3-5-sonnet-20240620-v1:0")
+    CLAUDE_MODEL_ID = os.getenv("CLAUDE_MODEL_ID")
     
     # 관리자 계정 설정
     ADMIN_USERNAME = os.getenv('ADMIN_USERNAME')

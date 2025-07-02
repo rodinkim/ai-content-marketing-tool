@@ -33,7 +33,6 @@ def generate_content_api():
     tone = data.get('tone')
     length = data.get('length')
     seo_keywords = data.get('seo_keywords')
-    email_subject_input = data.get('email_subject')
 
     if not all([topic, industry, content_type, tone, length]):
         logger.warning(f"콘텐츠 생성 필수 필드 누락: {data}")
@@ -52,8 +51,7 @@ def generate_content_api():
             content_type=content_type,
             tone=tone,
             length=length,
-            seo_keywords=seo_keywords,
-            email_subject_input=email_subject_input
+            seo_keywords=seo_keywords
         )
         
         new_content = Content(
@@ -64,7 +62,6 @@ def generate_content_api():
             tone=tone,
             length_option=length,
             seo_keywords=seo_keywords,
-            email_subject=email_subject_input if content_type == "이메일 뉴스레터" else None,
             generated_text=generated_text
         )
         db.session.add(new_content)
@@ -107,7 +104,6 @@ def get_history_api():
             "tone": content.tone,
             "length": content.length_option,
             "seo_keywords": content.seo_keywords,
-            "email_subject": content.email_subject,
             "content": content.generated_text,
             "timestamp": content.timestamp.isoformat()
         })
@@ -163,7 +159,6 @@ def get_content_detail(content_id):
         "tone": content.tone,
         "length": content.length_option,
         "seo_keywords": content.seo_keywords,
-        "email_subject": content.email_subject,
         "content": content.generated_text,
         "timestamp": content.timestamp.isoformat()
     })
