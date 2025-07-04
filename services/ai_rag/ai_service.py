@@ -13,7 +13,7 @@ from .ai_constants import (
     INDUSTRIES, PROMPT_TEMPLATE_RELATIVE_PATH
 )
 from .prompt_manager import PromptManager 
-from .llm_invoker import invoke_claude_llm 
+from .llm_invoker import BedrockClaudeProvider 
 from .embedding_generator import EmbeddingManager 
 
 logger = logging.getLogger(__name__)
@@ -23,19 +23,30 @@ _ai_content_generator_instance = None
 
 class AIContentGenerator:
     def __init__(self, bedrock_runtime_client, rag_system_instance, app_root_path):
-        self.bedrock_runtime = bedrock_runtime_client
         self.rag_system = rag_system_instance
-        
-        # PromptManager 초기화: 프롬프트 템플릿 로드 및 관리를 담당
         self.prompt_manager = PromptManager(app_root_path, PROMPT_TEMPLATE_RELATIVE_PATH)
 
         # EmbeddingManager 초기화 및 업종 임베딩 사전 계산: 임베딩 관련 로직을 담당
         self.embedding_manager = EmbeddingManager(self.rag_system)
         self.embedding_manager.precompute_industry_embeddings(INDUSTRIES)
+
+        # --- 추가: Provider 및 작업 매핑 설정 ---
+        # 1. 사용 가능한 전문가(Provider) 목록 정의
+        self.providers = {
+            'text': BedrockClaudeProvider(bedrock_runtime_client)
+            # 나중에 여기에 'image': DallEProvider(openai_client) 등이 추가될 것
+        }
+        # 2. 콘텐츠 유형을 어떤 작업(Provider)에 연결할지 정의하는 라우팅 테이블
+        self.task_mapping = {
+            'blog': 'text' # 블로그는 'text' 작업을 사용
+            # 나중에 'sns': 'image', 'email': 'text' 등이 추가될 것
+        }
+        # -----------------------------------------
         
         logger.info("AIContentGenerator 인스턴스가 성공적으로 초기화되었습니다.")
-        
-    def generate_content(self, topic, industry, content_type, tone, length, seo_keywords=None):
+    
+    # 'blog_style' 파라미터 추가
+    def generate_content(self, topic, industry, content_type, blog_style, tone, length, seo_keywords=None):
         """
         주어진 파라미터와 RAG를 사용하여 AI 콘텐츠를 생성합니다.
         """
@@ -54,26 +65,37 @@ class AIContentGenerator:
             topic=topic,
             industry=industry,
             content_type=content_type,
+            blog_style=blog_style,
             tone=tone,
             length=length,
             context=context_str,
             seo_keywords=seo_keywords
         )
         
-        # 3. LLM 호출 (llm_invoker.py 사용)
-        # invoke_claude_llm 함수를 호출하여 Bedrock LLM으로부터 콘텐츠 생성
-        generated_text = invoke_claude_llm(
-            bedrock_runtime_client=self.bedrock_runtime,
+        # 3. 어떤 작업을 할지 결정 (예: 'text' 또는 'image')
+        task_type = self.task_mapping.get(content_type)
+        if not task_type:
+            raise ValueError(f"지원하지 않는 콘텐츠 유형입니다: {content_type}")
+            
+        # 4. 해당 작업의 전문가(Provider) 선택
+        provider = self.providers.get(task_type)
+        if not provider:
+            raise ValueError(f"'{task_type}' 작업을 처리할 Provider를 찾을 수 없습니다.")
+
+        # 5. 선택된 Provider를 통해 LLM 호출
+        # (모델 ID 등은 나중에 content_type에 따라 동적으로 변경 가능)
+        generated_text = provider.invoke(
             prompt=final_prompt,
             model_id=DEFAULT_LLM_MODEL_ID,
             max_tokens=DEFAULT_LLM_MAX_TOKENS
         )
         return generated_text
 
-def init_ai_service(bedrock_runtime_client, rag_system_instance):
+# DALL-E를 나중에 추가할 것이므로, app_factory_utils.py와 시그니처를 맞춰주는 것이 좋습니다.
+# 만약 app_factory_utils.py를 이전으로 되돌렸다면, openai_client 파라미터를 빼도 됩니다.
+def init_ai_service(bedrock_runtime_client, rag_system_instance):  # openai_client는 나중에 추가
     """
     AIContentGenerator 인스턴스를 초기화하고 싱글톤으로 설정합니다.
-    애플리케이션 전반에서 단 하나의 AIContentGenerator 인스턴스만 사용하도록 보장합니다.
     """
     global _ai_content_generator_instance
     if _ai_content_generator_instance is None:
@@ -81,7 +103,7 @@ def init_ai_service(bedrock_runtime_client, rag_system_instance):
             _ai_content_generator_instance = AIContentGenerator(
                 bedrock_runtime_client, 
                 rag_system_instance,
-                current_app.root_path # Flask 앱의 루트 경로를 생성자로 전달
+                current_app.root_path
             )
         except Exception as e:
             logger.critical(f"AIContentGenerator 인스턴스 초기화 중 오류 발생: {e}", exc_info=True)
