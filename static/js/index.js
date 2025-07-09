@@ -82,7 +82,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const responseData = await response.json();
 
             if (response.ok) {
-                generatedContentDiv.innerHTML = marked.parse(responseData.content);
+                let htmlContent = marked.parse(responseData.content); 
+                generatedContentDiv.innerHTML = htmlContent; 
                 copyBtn.style.display = 'inline-block';
             } else {
                 generatedContentDiv.innerHTML = `<div class="alert alert-danger">오류: ${responseData.error}</div>`;
