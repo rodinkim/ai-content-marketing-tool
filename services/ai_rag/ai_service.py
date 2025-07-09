@@ -100,6 +100,7 @@ def init_ai_service(bedrock_runtime_client, rag_system_instance):  # openai_clie
     global _ai_content_generator_instance
     if _ai_content_generator_instance is None:
         try:
+            project_root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
             _ai_content_generator_instance = AIContentGenerator(
                 bedrock_runtime_client, 
                 rag_system_instance,

@@ -11,14 +11,11 @@ logger = logging.getLogger(__name__)
 
 content_bp = Blueprint('content_routes', __name__) 
 
-### ▼▼▼ 여기에 새로운 라우트 추가 ▼▼▼ ###
 @content_bp.route('/content')
 @login_required
 def content_page():
     """로그인한 사용자를 위한 메인 콘텐츠 생성 페이지를 렌더링합니다."""
     return render_template('content.html')
-### ▲▲▲ 추가된 라우트 끝 ▲▲▲ ###
-
 
 @content_bp.route('/generate_content', methods=['POST'])
 @login_required
@@ -30,6 +27,7 @@ def generate_content_api():
     topic = data.get('topic')
     industry = data.get('industry')
     content_type = data.get('content_type')
+    blog_style = data.get('blog_style')
     tone = data.get('tone')
     length = data.get('length')
     seo_keywords = data.get('seo_keywords')
@@ -37,6 +35,10 @@ def generate_content_api():
     if not all([topic, industry, content_type, tone, length]):
         logger.warning(f"콘텐츠 생성 필수 필드 누락: {data}")
         return jsonify({"error": "모든 필수 필드를 입력해주세요."}), 400
+    
+    if content_type == 'blog' and not blog_style:
+        logger.warning(f"blog_style is required for content_type 'blog': {data}")
+        return jsonify({"error": "Please select a blog style."}), 400
 
     try:
         ai_generator = get_ai_content_generator()
@@ -49,6 +51,7 @@ def generate_content_api():
             topic=topic,
             industry=industry,
             content_type=content_type,
+            blog_style=blog_style,
             tone=tone,
             length=length,
             seo_keywords=seo_keywords
@@ -59,6 +62,7 @@ def generate_content_api():
             topic=topic,
             industry=industry,
             content_type=content_type,
+            blog_style=blog_style,
             tone=tone,
             length_option=length,
             seo_keywords=seo_keywords,
@@ -101,6 +105,7 @@ def get_history_api():
             "topic": content.topic,
             "industry": content.industry,
             "content_type": content.content_type,
+            "blog_style": content.blog_style,
             "tone": content.tone,
             "length": content.length_option,
             "seo_keywords": content.seo_keywords,
@@ -156,6 +161,7 @@ def get_content_detail(content_id):
         "topic": content.topic,
         "industry": content.industry,
         "content_type": content.content_type,
+        "blog_style": content.blog_style,
         "tone": content.tone,
         "length": content.length_option,
         "seo_keywords": content.seo_keywords,

@@ -29,4 +29,5 @@ INDUSTRIES = [
 
 # --- 프롬프트 템플릿 파일 경로 ---
 # ROOT_PATH는 앱 실행 시 동적으로 설정되므로, 여기서는 상대 경로만 정의
-PROMPT_TEMPLATE_RELATIVE_PATH = os.path.join('templates', 'prompts', 'claude_marketing_prompt.md')
+#PROMPT_TEMPLATE_RELATIVE_PATH = os.path.join('templates', 'prompts', 'claude_marketing_prompt.md')
+PROMPT_TEMPLATE_RELATIVE_PATH = os.path.join('templates', 'prompts')

@@ -28,10 +28,10 @@ class Content(db.Model):
     topic = db.Column(db.String(200), nullable=False)
     industry = db.Column(db.String(100), nullable=False)
     content_type = db.Column(db.String(50), nullable=False)
+    blog_style = db.Column(db.String(50), nullable=True)
     tone = db.Column(db.String(50), nullable=False)
     length_option = db.Column(db.String(20), nullable=False)
     seo_keywords = db.Column(db.Text)
-    email_subject = db.Column(db.String(255))
     generated_text = db.Column(db.Text, nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 

@@ -20,7 +20,6 @@ class PromptManager:
         try:
             for filename in os.listdir(self.templates_dir):
                 if filename.endswith(".md"):
-                    # 파일 이름(확장자 제외)을 템플릿의 키로 사용 (예: 'blog_info')
                     template_key = os.path.splitext(filename)[0]
                     file_path = os.path.join(self.templates_dir, filename)
                     with open(file_path, 'r', encoding='utf-8') as f:
@@ -38,7 +37,6 @@ class PromptManager:
 
     def generate_final_prompt(self, 
                               content_type: str,
-                              # --- 추가: blog_style 파라미터 ---
                               blog_style: str = None, 
                               topic: str = None, 
                               industry: str = None, 
@@ -52,14 +50,14 @@ class PromptManager:
         # --- 수정: 템플릿 선택 로직 ---
         template_key = None
         if content_type == 'blog':
-            if blog_style == 'info':
-                template_key = 'blog_info'
+            if blog_style == 'list':
+                template_key = 'blog_list'
             elif blog_style == 'review':
                 template_key = 'blog_review'
             else:
                 # blog_style이 지정되지 않았을 경우 기본값 또는 에러 처리
-                logger.warning(f"Blog style not specified for blog content type. Using 'blog_info' as default.")
-                template_key = 'blog_info'
+                logger.warning(f"Blog style not specified for blog content type. Using 'blog_list' as default.")
+                template_key = 'blog_list'
         # 나중에 다른 content_type에 대한 분기 추가
         # elif content_type == 'email':
         #     template_key = 'email' 
