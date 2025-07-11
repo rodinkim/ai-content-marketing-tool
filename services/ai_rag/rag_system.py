@@ -186,7 +186,7 @@ class RAGSystem:
                 # FAISS 인덱스 구축 시 metadata를 함께 저장했다면 여기서 추출 가능합니다.
                 # 현재 FAISS는 텍스트만 저장하므로, 메타데이터는 PgVector에서 다시 가져오거나 FAISS에 저장해야 합니다.
                 # 임시로 메타데이터를 빈 딕셔너리로 반환합니다.
-                return [(chunk, score, {}) for chunk, score in faiss_results]
+                return [(doc.page_content, score, {}) for doc, score in faiss_results]
             else:
                 logger.warning("No relevant chunks found in FAISS either.")
                 return []

@@ -16,6 +16,7 @@ class PromptManager:
 
     def _load_all_templates(self) -> Dict[str, str]:
         """지정된 디렉토리에서 모든 .md 프롬프트 템플릿 파일을 로드합니다."""
+
         templates = {}
         try:
             for filename in os.listdir(self.templates_dir):
@@ -44,26 +45,21 @@ class PromptManager:
                               length: str = None, 
                               context: str = None, 
                               seo_keywords: str = None,
+                              email_subject: str = None,
+                              target_audience: str = None,
+                              email_type: str = None,
+                              key_points: str = None,
+                              landing_page_url: str = None,
                               **kwargs) -> str:
         """주어진 파라미터에 맞는 템플릿을 선택하고 최종 프롬프트를 구성합니다."""
         
-        # --- 수정: 템플릿 선택 로직 ---
-        template_key = None
-        if content_type == 'blog':
-            if blog_style == 'list':
-                template_key = 'blog_list'
-            elif blog_style == 'review':
-                template_key = 'blog_review'
-            else:
-                # blog_style이 지정되지 않았을 경우 기본값 또는 에러 처리
-                logger.warning(f"Blog style not specified for blog content type. Using 'blog_list' as default.")
-                template_key = 'blog_list'
-        # 나중에 다른 content_type에 대한 분기 추가
-        # elif content_type == 'email':
-        #     template_key = 'email' 
+        # content_type 자체가 바로 template_key가 됩니다.
+        template_key = content_type
 
-        if not template_key or template_key not in self.templates:
-            raise ValueError(f"No valid prompt template found for content_type='{content_type}' and blog_style='{blog_style}'")
+        # 해당 키의 템플릿이 로드되었는지 확인합니다.
+        if template_key not in self.templates:
+            # 에러 메시지를 더 명확하게 변경합니다.
+            raise ValueError(f"'{template_key}'에 해당하는 프롬프트 템플릿(.md) 파일을 찾을 수 없습니다. templates 폴더에 파일이 있는지 확인하세요.")
         
         selected_template = self.templates[template_key]
         # --------------------------------
@@ -83,7 +79,12 @@ class PromptManager:
         prompt_parts = {
             "topic": topic, "industry": industry, "content_type": content_type,
             "tone": tone, "context": context, "length_instruction": length_instruction_text,
-            "seo_instruction": seo_instruction_text, "blog_style": blog_style
+            "seo_instruction": seo_instruction_text, "blog_style": blog_style,
+            "email_subject": email_subject,
+            "target_audience": target_audience,
+            "email_type": email_type,
+            "key_points": key_points,
+            "landing_page_url": landing_page_url
         }
         # **kwargs를 통해 추가적인 변수도 전달 가능
         prompt_parts.update(kwargs)
@@ -91,5 +92,12 @@ class PromptManager:
         # .format()이 실패하지 않도록 없는 키는 빈 문자열로 대체
         final_prompt = selected_template.format_map({k: v for k, v in prompt_parts.items() if v is not None})
         
-        logger.info(f"LLM Prompt for '{topic}' ({content_type}, {blog_style}) generated.")
+        if content_type == 'blog':
+            log_detail = f"{content_type}, {blog_style}"
+        elif content_type == 'email':
+            log_detail = f"{content_type}, {email_type}"
+        else:
+            log_detail = content_type
+
+        logger.info(f"LLM Prompt for '{topic}' ({log_detail}) generated.")
         return final_prompt

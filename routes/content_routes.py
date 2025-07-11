@@ -27,18 +27,41 @@ def generate_content_api():
     topic = data.get('topic')
     industry = data.get('industry')
     content_type = data.get('content_type')
-    blog_style = data.get('blog_style')
     tone = data.get('tone')
     length = data.get('length')
     seo_keywords = data.get('seo_keywords')
+
+    # 블로그 전용 필드 가져오기
+    blog_style = data.get('blog_style')
+    
+    # 이메일 관련 필드를 가져옵니다 
+    email_subject = data.get('email_subject')
+    target_audience = data.get('target_audience')
+    email_type = data.get('email_type')
+    key_points = data.get('key_points')
+    landing_page_url = data.get('landing_page_url')
 
     if not all([topic, industry, content_type, tone, length]):
         logger.warning(f"콘텐츠 생성 필수 필드 누락: {data}")
         return jsonify({"error": "모든 필수 필드를 입력해주세요."}), 400
     
-    if content_type == 'blog' and not blog_style:
-        logger.warning(f"blog_style is required for content_type 'blog': {data}")
-        return jsonify({"error": "Please select a blog style."}), 400
+    # 1. 최종적으로 사용할 content_type 변수를 하나 더 만듭니다.
+    final_content_type = content_type 
+
+    # 2. content_type이 'email'일 경우, email_type에 따라 final_content_type을 구체화합니다.
+    if content_type == 'email':
+        if not email_type:
+            logger.warning(f"email_type is required for content_type 'email': {data}")
+            return jsonify({"error": "이메일 유형(뉴스레터/프로모션)을 선택해주세요."}), 400
+        
+        # 'email_newsletter' 또는 'email_promotion'으로 값을 구체화
+        final_content_type = f"email_{email_type}"
+        
+    elif content_type == 'blog':
+        if not blog_style:
+            return jsonify({"error": "블로그 스타일을 선택해주세요."}), 400
+        # 'blog_professional', 'blog_entertaining' 등으로 값을 구체화
+        final_content_type = f"blog_{blog_style}"
 
     try:
         ai_generator = get_ai_content_generator()
@@ -47,16 +70,23 @@ def generate_content_api():
             logger.critical("AI Content Generator is not initialized. Cannot generate content.")
             return jsonify({"error": "AI 서비스 초기화 오류. 관리자에게 문의하세요."}), 503
 
+        #  ai_generator.generate_content 호출 시 새 인자들을 전달합니다 
         generated_text = ai_generator.generate_content(
             topic=topic,
             industry=industry,
-            content_type=content_type,
+            content_type=final_content_type,
             blog_style=blog_style,
             tone=tone,
             length=length,
-            seo_keywords=seo_keywords
+            seo_keywords=seo_keywords,
+            email_subject=email_subject,
+            target_audience=target_audience,
+            email_type=email_type,
+            key_points=key_points,
+            landing_page_url=landing_page_url
         )
         
+        # DB 저장 시 새 필드들을 포함합니다 
         new_content = Content(
             user_id=user_id,
             topic=topic,
@@ -66,8 +96,14 @@ def generate_content_api():
             tone=tone,
             length_option=length,
             seo_keywords=seo_keywords,
-            generated_text=generated_text
+            generated_text=generated_text,
+            email_subject=email_subject,
+            target_audience=target_audience,
+            email_type=email_type,
+            key_points=key_points,
+            landing_page_url=landing_page_url
         )
+
         db.session.add(new_content)
         db.session.commit()
         logger.info(f"Content successfully saved to DB: ID {new_content.id}, Topic '{new_content.topic}' by User ID {user_id}")
@@ -100,6 +136,7 @@ def get_history_api():
     
     history_data = []
     for content in all_contents:
+        #  히스토리 반환 시 새 필드들을 포함합니다 
         history_data.append({
             "id": content.id,
             "topic": content.topic,
@@ -110,7 +147,12 @@ def get_history_api():
             "length": content.length_option,
             "seo_keywords": content.seo_keywords,
             "content": content.generated_text,
-            "timestamp": content.timestamp.isoformat()
+            "timestamp": content.timestamp.isoformat(),
+            "email_subject": content.email_subject,
+            "target_audience": content.target_audience,
+            "email_type": content.email_type,
+            "key_points": content.key_points,
+            "landing_page_url": content.landing_page_url
         })
     return jsonify(history_data)
 
@@ -156,6 +198,7 @@ def get_content_detail(content_id):
     if not content:
         return jsonify({"error": "콘텐츠를 찾을 수 없거나 접근 권한이 없습니다."}), 404
     
+    # 상세 조회 반환 시 새 필드들을 포함합니다 
     return jsonify({
         "id": content.id,
         "topic": content.topic,
@@ -166,7 +209,12 @@ def get_content_detail(content_id):
         "length": content.length_option,
         "seo_keywords": content.seo_keywords,
         "content": content.generated_text,
-        "timestamp": content.timestamp.isoformat()
+        "timestamp": content.timestamp.isoformat(),
+        "email_subject": content.email_subject,
+        "target_audience": content.target_audience,
+        "email_type": content.email_type,
+        "key_points": content.key_points,
+        "landing_page_url": content.landing_page_url
     })
 
 @content_bp.route('/history/<int:content_id>', methods=['PUT'])

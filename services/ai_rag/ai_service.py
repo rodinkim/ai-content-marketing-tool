@@ -38,15 +38,20 @@ class AIContentGenerator:
         }
         # 2. 콘텐츠 유형을 어떤 작업(Provider)에 연결할지 정의하는 라우팅 테이블
         self.task_mapping = {
-            'blog': 'text' # 블로그는 'text' 작업을 사용
-            # 나중에 'sns': 'image', 'email': 'text' 등이 추가될 것
+            'email_newsletter': 'text',
+            'email_promotion': 'text',
+            'blog_list': 'text',  # 블로그 스타일 추가
+            'blog_review': 'text'   # 블로그 스타일 추가
+            # 다른 블로그 스타일이나 콘텐츠 타입이 있다면 여기에 추가
         }
         # -----------------------------------------
         
         logger.info("AIContentGenerator 인스턴스가 성공적으로 초기화되었습니다.")
     
     # 'blog_style' 파라미터 추가
-    def generate_content(self, topic, industry, content_type, blog_style, tone, length, seo_keywords=None):
+    def generate_content(self, topic, industry, content_type, blog_style, tone, length, 
+                         seo_keywords=None, email_subject=None, target_audience=None, 
+                         email_type=None, key_points=None, landing_page_url=None):
         """
         주어진 파라미터와 RAG를 사용하여 AI 콘텐츠를 생성합니다.
         """
@@ -69,7 +74,12 @@ class AIContentGenerator:
             tone=tone,
             length=length,
             context=context_str,
-            seo_keywords=seo_keywords
+            seo_keywords=seo_keywords,
+            email_subject=email_subject,
+            target_audience=target_audience,
+            email_type=email_type,
+            key_points=key_points,
+            landing_page_url=landing_page_url
         )
         
         # 3. 어떤 작업을 할지 결정 (예: 'text' 또는 'image')
