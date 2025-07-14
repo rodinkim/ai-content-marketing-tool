@@ -3,10 +3,9 @@
 import os
 import logging
 import boto3
-from flask import Flask
+from flask import Flask, current_app
 from flask_apscheduler import APScheduler
 
-# extensions, models, config는 계속 필요합니다.
 from extensions import db, login_manager, migrate, scheduler
 from models import User
 from config import Config
@@ -143,6 +142,14 @@ def schedule_app_tasks(app: Flask):
     )
     logger.info("Scheduler: Weekly marketing news crawling job registered with system user ID.")
 
+# --- 이미지 저장 디렉토리 생성 함수 ---
+def create_image_dir_at_app_start(app: Flask):
+    """애플리케이션 시작 시 이미지 저장 디렉토리를 생성합니다."""
+    # IMAGE_SAVE_PATH는 config.py에 정의되어 있으므로, app.config에서 가져옵니다.
+    image_path = os.path.join(app.root_path, app.config.get('IMAGE_SAVE_PATH', 'generated_images'))
+    os.makedirs(image_path, exist_ok=True)
+    logger.info(f"Image save directory created at app start: {image_path}")
+
 # --- 앱의 모든 초기화 단계를 통합하는 함수 ---
 def initialize_full_app(app: Flask):
     """
@@ -171,5 +178,9 @@ def initialize_full_app(app: Flask):
     # 6. 스케줄러 작업 등록
     with app.app_context(): # schedule_app_tasks 내부에 app_context()가 있지만, 안전을 위해 밖에서도 한 번 더.
         schedule_app_tasks(app)
+
+    # 7. 이미지 디렉토리 생성 등록
+    create_image_dir_at_app_start(app)
+    logger_instance.info("Image directory creation executed directly during app initialization.")
 
     logger_instance.info("Flask application fully initialized and ready to serve!")
