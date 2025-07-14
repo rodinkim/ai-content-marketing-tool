@@ -55,6 +55,16 @@ def generate_text_content():
     key_points = data.get('key_points')
     landing_page_url = data.get('landing_page_url')
 
+    # SNS 관련 필드 (텍스트 콘텐츠 생성 시에는 사용되지 않음)
+    # models.py에서 nullable=True로 변경되었으므로 여기에 None으로 명시적으로 전달할 필요는 없습니다.
+    # ad_purpose = data.get('ad_purpose')
+    # product_category = data.get('product_category')
+    # brand_style_tone = data.get('brand_style_tone')
+    # cut_count = data.get('cut_count')
+    # aspect_ratio_sns = data.get('aspect_ratio_sns')
+    # other_requirements = data.get('other_requirements')
+
+
     if not all([topic, industry, content_type, tone, length]):
         logger.warning(f"콘텐츠 생성 필수 필드 누락: {data}")
         return jsonify({"error": "모든 필수 필드를 입력해주세요."}), 400
@@ -84,43 +94,56 @@ def generate_text_content():
             logger.critical("AI Content Generator is not initialized. Cannot generate content.")
             return jsonify({"error": "AI 서비스 초기화 오류. 관리자에게 문의하세요."}), 503
 
-        # Bedrock Claude Provider 인스턴스 생성 및 호출
-        bedrock_runtime_client = current_app.extensions.get('rag_bedrock_runtime')
-        if not bedrock_runtime_client:
-            return jsonify({"error": "Bedrock client is not initialized. Please check server logs."}), 500
-        
-        claude_provider = BedrockClaudeProvider(bedrock_runtime_client)
-        model_id = current_app.config.get('BEDROCK_CLAUDE_SONNET_MODEL_ID', 'anthropic.claude-3-5-sonnet-20240620-v1:0')
-
-        generated_text = claude_provider.invoke(
-            prompt=ai_generator.generate_prompt( # ai_generator의 프롬프트 생성 로직 사용
-                topic=topic, industry=industry, content_type=final_content_type,
-                blog_style=blog_style, tone=tone, length=length,
-                seo_keywords=seo_keywords, email_subject=email_subject,
-                target_audience=target_audience, email_type=email_type,
-                key_points=key_points, landing_page_url=landing_page_url
-            ),
-            model_id=model_id,
-            max_tokens=2000,
-            temperature=0.7,
-            top_p=0.9
-        )
-        
-        new_content = Content(
-            user_id=user_id,
+        # #### START MODIFICATION ####
+        # ai_generator.generate_prompt 대신 ai_generator.generate_content를 호출합니다.
+        # generate_content 메서드가 모든 필요한 파라미터를 받아 내부적으로 프롬프트 생성 및 LLM 호출을 처리합니다.
+        generated_text = ai_generator.generate_content(
             topic=topic,
             industry=industry,
-            content_type=content_type, 
+            content_type=final_content_type, # ai_service.py의 generate_content에 전달
             blog_style=blog_style,
             tone=tone,
-            length_option=length,
+            length=length,
             seo_keywords=seo_keywords,
-            generated_text=generated_text,
             email_subject=email_subject,
             target_audience=target_audience,
             email_type=email_type,
             key_points=key_points,
             landing_page_url=landing_page_url
+            # SNS 관련 필드는 텍스트 생성 시에는 전달하지 않습니다 (generate_content 함수 시그니처에 없음).
+            # 해당 필드들은 이미지 생성 시에만 사용됩니다.
+        )
+        # #### END MODIFICATION ####
+        
+        new_content = Content(
+            user_id=user_id,
+            topic=topic,
+            industry=industry,
+            content_type=content_type, # DB에는 원본 content_type 저장
+
+            # 텍스트 콘텐츠 공통 설정
+            tone=tone,
+            length_option=length,
+            seo_keywords=seo_keywords,
+            generated_text=generated_text,
+            key_points=key_points,
+            landing_page_url=landing_page_url,
+
+            # 블로그 전용 필드
+            blog_style=blog_style,
+
+            # 이메일 전용 필드
+            email_subject=email_subject,
+            target_audience=target_audience,
+            email_type=email_type,
+            # SNS 관련 필드는 텍스트 생성 시에는 None으로 저장됩니다.
+            ad_purpose=None,
+            product_category=None,
+            brand_style_tone=None,
+            cut_count=None,
+            aspect_ratio_sns=None,
+            other_requirements=None,
+            generated_image_url=None
         )
 
         db.session.add(new_content)
@@ -140,6 +163,7 @@ def generate_text_content():
         db.session.rollback()
         logger.error(f"콘텐츠 생성 API 호출 실패 또는 DB 저장 오류: {e}", exc_info=True)
         return jsonify({"error": "콘텐츠 생성 또는 저장 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요."}), 500
+
 
 @content_bp.route('/generate-image', methods=['POST'])
 @login_required 
