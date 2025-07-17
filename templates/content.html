@@ -8,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <style>
+        /* CSS는 변경 사항이 없으므로 기존 코드를 그대로 사용합니다. */
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
         :root {
             --primary-color: #0052cc; --secondary-color: #f4f5f7; --dark-color: #172b4d;
@@ -38,43 +39,13 @@
         .cta-button { display: inline-block; background: var(--primary-color); color: var(--light-color) !important; padding: 15px 35px; border-radius: 8px; text-decoration: none; font-size: 18px; font-weight: 700; transition: all 0.3s ease; border: none; cursor: pointer; text-align: center; box-shadow: 0 4px 15px rgba(0, 82, 204, 0.2); }
         .cta-button:hover { background: #003e99; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 82, 204, 0.3); }
         .result-area { margin-top: 50px; }
-        #result-placeholder {
-            text-align: center; 
-            padding: 0; 
-            background-color: var(--secondary-color); 
-            border: 2px dashed var(--border-color); 
-            border-radius: 12px;
-            width: 720px;
-            height: 350px;
-            margin: 0 auto;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column; /* 아이콘과 텍스트를 세로로 정렬 */
-        }
-        #result-placeholder img {
-            max-width: 100%; /* 이미지 크기 조정 */
-            max-height: 100%; /* 이미지 크기 조정 */
-            object-fit: contain; /* 이미지 비율 유지 */
-        }
-        #result-placeholder .icon { font-size: 48px; color: var(--primary-color); margin-bottom: 15px; }
+        #result-placeholder { text-align: center; padding: 0; background-color: var(--secondary-color); border: 2px dashed var(--border-color); border-radius: 12px; width: 720px; height: 350px; margin: 0 auto; overflow: hidden; display: flex; justify-content: center; align-items: center; flex-direction: column; }
+        #result-placeholder img { max-width: 100%; max-height: 100%; object-fit: contain; }
         #result-placeholder p { font-size: 18px; font-weight: 500; color: var(--gray-color); }
         footer { background: #222; color: #ccc; padding: 30px 0; text-align: center; margin-top: 60px; }
         .toast-container { z-index: 1100; }
         .toast-header .me-auto { font-weight: 700; }
         #generatedContent { white-space: normal; line-height: 1.8; background-color: #fdfdfd; border: 1px solid var(--border-color); border-radius: 8px; padding: 30px; min-height: 200px; font-size: 16px; }
-        #generatedContent h1, #generatedContent h2, #generatedContent h3, #generatedContent h4 { margin-top: 1.5em; margin-bottom: 0.8em; font-weight: 700; line-height: 1.3; }
-        #generatedContent h1 { font-size: 2em; }
-        #generatedContent h2 { font-size: 1.75em; border-bottom: 2px solid var(--border-color); padding-bottom: 0.3em; }
-        #generatedContent h3 { font-size: 1.5em; }
-        #generatedContent p { margin-bottom: 1.2em; white-space: pre-line; }
-        #generatedContent hr { border: none; border-top: 2px solid var(--border-color); margin: 2.5em 0; }
-        #generatedContent blockquote { border-left: 5px solid var(--primary-color); background-color: var(--secondary-color); padding: 15px 20px; margin: 20px 0; font-style: normal; color: #555; }
-        #generatedContent blockquote p { margin-bottom: 0; }
-        #generatedContent table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-radius: 8px; overflow: hidden; }
-        #generatedContent th, #generatedContent td { border: 1px solid var(--border-color); text-align: left; padding: 14px; }
-        #generatedContent th { background-color: #f4f5f7; font-weight: 700; color: var(--dark-color); }
     </style>
 </head>
 <body>
@@ -103,13 +74,28 @@
             <p>AI와 함께 당신의 아이디어를 전문가 수준의 콘텐츠로 완성하세요.</p>
         </div>
         <div class="page-wrapper">
-            <div id="flash-messages" style="display: none;">{% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}{% for category, message in messages %}<div data-category="{{ category }}">{{ message }}</div>{% endfor %}{% endif %}{% endwith %}</div>
+            <!-- 안내용 커스텀 모달 -->
+            <div class="modal fade" id="guideModal" tabindex="-1" aria-labelledby="guideModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content" style="border-radius: 18px; box-shadow: 0 8px 32px rgba(0,82,204,0.18); border: none;">
+                  <div class="modal-header" style="border-bottom: none; background: #f4f8ff; border-radius: 18px 18px 0 0;">
+                    <h5 class="modal-title" id="guideModalLabel" style="font-weight: 700; color: #0052cc; letter-spacing: -1px;">
+                      <span style="font-size: 1.6rem; margin-right: 8px;">💡</span> 안내
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
+                  </div>
+                  <div class="modal-body" id="guideModalBody" style="font-size: 1.15rem; color: #222; padding: 28px 24px 24px 24px; line-height: 1.8; text-align: center;">
+                    <!-- 안내 메시지 내용이 여기에 들어갑니다 -->
+                  </div>
+                </div>
+              </div>
+            </div>
             <form id="contentForm">
                 <div class="form-section">
                     <h3 class="form-section-title">기본 정보</h3>
                     <div class="mb-3 input-with-icon">
                         <span class="icon">🎯</span>
-                        <input type="text" class="form-control" id="topic" name="topic" placeholder="콘텐츠의 핵심 주제를 알려주세요 (예: 신제품 '스마트워치 X' 리뷰)" required>
+                        <input type="text" class="form-control" id="topic" name="topic" placeholder="콘텐츠의 핵심 주제 (SNS의 경우 이미지 프롬프트)" required>
                     </div>
                     <div class="mb-3 input-with-icon">
                         <span class="icon">🏢</span>
@@ -136,34 +122,93 @@
                             </select>
                         </div>
                     </div>
+                </div>
 
-                    <div id="snsImageOptionsGroup" style="display: none;" class="row mt-4">
-                        <h4 class="form-section-title">SNS 이미지 고급 설정 (선택)</h4>
-                        <div class="col-md-12 mb-3 input-with-icon">
-                            <span class="icon">🎯</span>
-                            <input type="text" class="form-control" id="adPurposeSns" name="ad_purpose" placeholder="광고 목적 (예: 제품 판매, 앱 설치, 브랜드 인지도)">
+                <div class="form-section" id="advancedOptions" style="display: none;">
+                    <h3 class="form-section-title">고급 설정 (선택 사항)</h3>
+                    
+                    <div class="mb-3 input-with-icon" id="blogStyleGroup" style="display: none;">
+                        <span class="icon">✍️</span>
+                        <select class="form-select" id="blogStyle" name="blog_style">
+                            <option value="">블로그 스타일</option>
+                            <option value="추천/리스트 글">추천/리스트 글</option>
+                            <option value="리뷰/후기 글">리뷰/후기 글</option>
+                        </select>
+                    </div>
+                    
+                    <div id="emailOptions" style="display: none;">
+                        <div class="mb-3 input-with-icon">
+                            <span class="icon">📝</span>
+                            <select class="form-select" id="emailType" name="email_type">
+                                <option value="">이메일 유형</option>
+                                <option value="newsletter">뉴스레터</option>
+                                <option value="promotion">프로모션</option>
+                            </select>
                         </div>
-                        <div class="col-md-12 mb-3 input-with-icon">
-                            <span class="icon">🛍️</span>
-                            <input type="text" class="form-control" id="productCategorySns" name="product_category" placeholder="제품 카테고리 (예: 화장품, SaaS, 패션)">
+                         <div class="mb-3 input-with-icon">
+                            <span class="icon">✉️</span>
+                            <input type="text" class="form-control" id="emailSubject" name="email_subject" placeholder="이메일 제목 (AI 추천 가능)">
                         </div>
-                        <div class="col-md-12 mb-3 input-with-icon">
-                            <span class="icon">👥</span>
-                            <input type="text" class="form-control" id="targetAudienceSns" name="target_audience" placeholder="타겟 고객 (예: 20-30대 직장인 여성)">
+                    </div>
+                    
+                    <div class="mb-3 input-with-icon">
+                        <span class="icon">👥</span>
+                        <input type="text" class="form-control" id="targetAudience" name="target_audience" placeholder="타겟 고객 (예: 20-30대 개발자, 여행을 좋아하는 커플)">
+                    </div>
+                    <div class="mb-3 input-with-icon">
+                        <span class="icon">✨</span>
+                        <input type="text" class="form-control" id="brandStyleTone" name="brand_style_tone" placeholder="브랜드 스타일/톤 (예: 고급, 감성, 트렌디, 미니멀)">
+                    </div>
+                    <div class="mb-3 input-with-icon">
+                        <span class="icon">🛍️</span>
+                        <input type="text" class="form-control" id="productCategory" name="product_category" placeholder="제품 카테고리 (예: 화장품, SaaS, 패션)">
+                    </div>
+                    <div class="mb-3 input-with-icon">
+                        <span class="icon">🎯</span>
+                        <input type="text" class="form-control" id="adPurpose" name="ad_purpose" placeholder="광고 목적 (예: 제품 판매, 브랜드 인지도)">
+                    </div>
+                    <div class="mb-3 input-with-icon">
+                        <span class="icon">🔑</span>
+                        <textarea class="form-control" id="keyPoints" name="key_points" rows="2" placeholder="콘텐츠에 강조하고 싶은 핵심 내용/메시지"></textarea>
+                    </div>
+                    
+                    <div class="advanced-text-only" style="display: none;">
+                        <div class="mb-3 input-with-icon">
+                            <span class="icon">🎨</span>
+                            <select class="form-select" id="tone" name="tone">
+                                <option value="">콘텐츠 톤앤매너</option>
+                                <option value="전문적이고 공식적인">전문적</option>
+                                <option value="친근하고 캐주얼한">친근함</option>
+                                <option value="유머러스하고 재치있는">유머러스</option>
+                                <option value="감성적이고 따뜻한">감성적</option>
+                                <option value="정보 전달 위주의">정보 중심</option>
+                            </select>
                         </div>
-                        <div class="col-md-12 mb-3 input-with-icon">
-                            <span class="icon">✨</span>
-                            <input type="text" class="form-control" id="brandStyleToneSns" name="brand_style_tone" placeholder="브랜드 스타일 톤 (예: 고급, 감성, 트렌디, 미니멀)">
+                        <div class="mb-3 input-with-icon">
+                            <span class="icon">📏</span>
+                            <select class="form-select" id="lengthOption" name="length_option">
+                                <option value="">콘텐츠 분량</option>
+                                <option value="short">짧게</option>
+                                <option value="medium">중간</option>
+                                <option value="long">길게</option>
+                            </select>
                         </div>
-                        <div class="col-md-12 mb-3 input-with-icon">
-                            <span class="icon">🔥</span>
-                            <textarea class="form-control" id="keyPointsSns" name="key_points" rows="2" placeholder="콘텐츠에 강조하고 싶은 핵심 내용/메시지 (예: 지금 무료 체험, 50% 할인 중)"></textarea>
+                        <div class="mb-3 input-with-icon">
+                            <span class="icon">📈</span>
+                            <input type="text" class="form-control" id="seoKeywords" name="seo_keywords" placeholder="SEO 키워드 (쉼표로 구분)">
                         </div>
+                        <div class="mb-3 input-with-icon">
+                            <span class="icon">🌐</span>
+                            <input type="url" class="form-control" id="landingPageUrl" name="landing_page_url" placeholder="CTA 랜딩 페이지 URL">
+                        </div>
+                    </div>
+                    
+                    <div id="snsOptions" style="display: none;" class="row">
                         <div class="col-md-6 mb-3 input-with-icon">
                             <span class="icon">🖼️</span>
                             <select class="form-select" id="cutCount" name="cut_count">
                                 <option value="">생성할 이미지 컷 수</option>
-                                <option value="1">1컷</option>
+                                <option value="1" selected>1컷</option>
                                 <option value="3">3컷</option>
                                 <option value="5">5컷</option>
                             </select>
@@ -179,94 +224,9 @@
                             </select>
                         </div>
                         <div class="col-md-12 mb-3 input-with-icon">
-                            <span class="icon">📝</span>
-                            <textarea class="form-control" id="imagePrompt" name="image_prompt" rows="3" placeholder="생성할 이미지의 핵심 내용 (예: 푸른 하늘 아래 벚꽃과 한국 전통 한옥이 있는 고요한 풍경, 사실적인)"></textarea>
-                        </div>
-                        <div class="col-md-12 mb-3 input-with-icon">
                             <span class="icon">📌</span>
-                            <textarea class="form-control" id="otherRequirementsSns" name="other_requirements" rows="2" placeholder="기타 이미지 생성 요구사항 (예: 인물 제외, 특정 색상, 텍스트 위치 등)"></textarea>
+                            <textarea class="form-control" id="otherRequirements" name="other_requirements" rows="2" placeholder="기타 이미지 생성 요구사항 (예: 인물 제외, 특정 색상 등)"></textarea>
                         </div>
-                    </div>
-                </div>
-
-                <div class="form-section" id="textContentAdvancedOptions" style="display: none;">
-                    <h3 class="form-section-title">블로그, 이메일 고급 설정 (선택)</h3>
-                    <div class="row">
-                        <div class="col-md-6 mb-3 input-with-icon" id="blogStyleGroup">
-                            <span class="icon">✍️</span>
-                            <select class="form-select" id="blogStyle" name="blog_style">
-                                <option value="">블로그 스타일</option>
-                                <option value="추천/리스트 글">추천/리스트 글</option>
-                                <option value="리뷰/후기 글">리뷰/후기 글</option>
-                            </select>
-                        </div>
-                        
-                        <div class="col-md-6 mb-3 input-with-icon" id="emailTypeGroup">
-                            <span class="icon">📝</span>
-                            <select class="form-select" id="emailType" name="email_type">
-                                <option value="">이메일 유형</option>
-                                <option value="newsletter">뉴스레터</option>
-                                <option value="promotion">프로모션</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="mb-3 input-with-icon">
-                        <span class="icon">🎨</span>
-                        <select class="form-select" id="tone" name="tone">
-                            <option value="">콘텐츠 톤앤매너 (선택)</option>
-                            <option value="전문적이고 공식적인">전문적</option>
-                            <option value="친근하고 캐주얼한">친근함</option>
-                            <option value="유머러스하고 재치있는">유머러스</option>
-                            <option value="감성적이고 따뜻한">감성적</option>
-                            <option value="정보 전달 위주의">정보 중심</option>
-                        </select>
-                    </div>
-                    <div class="mb-3 input-with-icon">
-                        <span class="icon">📏</span>
-                        <select class="form-select" id="lengthOption" name="length_option">
-                            <option value="">콘텐츠 분량 (선택)</option>
-                            <option value="short">짧게</option>
-                            <option value="medium">중간</option>
-                            <option value="long">길게</option>
-                        </select>
-                    </div>
-
-                    <div class="mb-3 input-with-icon">
-                        <span class="icon">👥</span>
-                        <input type="text" class="form-control" id="targetAudience" name="target_audience" placeholder="타겟 고객 (예: 20-30대 개발자)">
-                    </div>
-                    <div class="mb-3 input-with-icon">
-                        <span class="icon">🎯</span>
-                        <input type="text" class="form-control" id="adPurpose" name="ad_purpose" placeholder="광고 목적 (예: 제품 판매, 앱 설치, 브랜드 인지도)">
-                    </div>
-                    <div class="mb-3 input-with-icon">
-                        <span class="icon">🛍️</span>
-                        <input type="text" class="form-control" id="productCategory" name="product_category" placeholder="제품 카테고리 (예: 화장품, SaaS, 패션)">
-                    </div>
-                    <div class="mb-3 input-with-icon">
-                        <span class="icon">✨</span>
-                        <input type="text" class="form-control" id="brandStyleTone" name="brand_style_tone" placeholder="브랜드 스타일 톤 (예: 고급, 감성, 트렌디, 미니멀)">
-                    </div>
-                    <div class="mb-3 input-with-icon">
-                        <span class="icon">🔑</span>
-                        <textarea class="form-control" id="keyPoints" name="key_points" rows="2" placeholder="콘텐츠에 강조하고 싶은 핵심 내용/메시지"></textarea>
-                    </div>
-                    <div class="mb-3 input-with-icon" id="emailSubjectGroup">
-                         <span class="icon">✉️</span>
-                         <input type="text" class="form-control" id="emailSubject" name="email_subject" placeholder="이메일 제목 (AI 추천 가능)">
-                    </div>
-                    <div class="mb-3 input-with-icon">
-                        <span class="icon">🌐</span>
-                        <input type="url" class="form-control" id="landingPageUrl" name="landing_page_url" placeholder="CTA(Call To Action)가 연결될 랜딩 페이지 URL (예: https://your-brand.com/promo)">
-                    </div>
-                    <div class="mb-3 input-with-icon">
-                        <span class="icon">📈</span>
-                        <input type="text" class="form-control" id="seoKeywords" name="seo_keywords" placeholder="SEO 키워드 (쉼표로 구분)">
-                    </div>
-                    <div class="mb-3 input-with-icon">
-                        <span class="icon">📌</span>
-                        <textarea class="form-control" id="otherRequirements" name="other_requirements" rows="2" placeholder="기타 콘텐츠 생성 요구사항 (예: 특정 인물/요소 제외, 특정 문구 포함 등)"></textarea>
                     </div>
                 </div>
 
@@ -289,102 +249,43 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const flashMessagesDiv = document.getElementById('flash-messages');
-            if (flashMessagesDiv) {
-                const messages = flashMessagesDiv.querySelectorAll('div[data-category]');
-                if (messages.length > 0) {
-                    const toastElement = document.getElementById('flashToast');
-                    const toastBody = toastElement.querySelector('.toast-body');
-                    const toastBootstrap = new bootstrap.Toast(toastElement);
-                    const firstMessage = messages[0];
-                    const messageText = firstMessage.textContent;
-                    const category = firstMessage.dataset.category;
-                    const toastHeaderRect = toastElement.querySelector('.toast-header rect');
-                    if (category === 'success') { toastHeaderRect.setAttribute('fill', '#198754'); } else { toastHeaderRect.setAttribute('fill', '#0052cc'); }
-                    toastBody.textContent = messageText;
-                    toastBootstrap.show();
-                }
-            }
-
-            // 콘텐츠 종류 선택 시 필드 가시성 제어
             const contentTypeSelect = document.getElementById('contentType');
-            const snsImageOptionsGroup = document.getElementById('snsImageOptionsGroup');
-            const textContentAdvancedOptions = document.getElementById('textContentAdvancedOptions'); // 새로운 고급 설정 그룹
+            const advancedOptions = document.getElementById('advancedOptions');
+            const textOnlyGroup = document.querySelector('.advanced-text-only');
             const blogStyleGroup = document.getElementById('blogStyleGroup');
-            const emailTypeGroup = document.getElementById('emailTypeGroup');
-            const emailSubjectGroup = document.getElementById('emailSubjectGroup');
+            const emailOptions = document.getElementById('emailOptions');
+            const snsOptions = document.getElementById('snsOptions');
 
-            // 텍스트 콘텐츠 관련 필드들 (고급 설정 내)
-            const textFields = [
-                'blogStyle', 'emailType', 'emailSubject', 'tone', 'lengthOption', 'targetAudience',
-                'adPurpose', 'productCategory', 'brandStyleTone', 'keyPoints', 'landingPageUrl', 'seoKeywords', 'otherRequirements'
-            ];
-
-            // SNS 이미지 관련 필드들
-            const snsFields = [
-                'adPurposeSns', 'productCategorySns', 'targetAudienceSns', 'brandStyleToneSns',
-                'keyPointsSns', 'cutCount', 'aspectRatioSns', 'imagePrompt', 'otherRequirementsSns'
-            ];
-
-            function setRequiredAttribute(fieldId, isRequired) {
-                const field = document.getElementById(fieldId);
-                if (field) {
-                    if (isRequired) {
-                        field.setAttribute('required', 'true');
-                    } else {
-                        field.removeAttribute('required');
-                    }
-                }
-            }
-
-            function toggleContentSpecificFields() {
+            function toggleAdvancedFields() {
                 const selectedType = contentTypeSelect.value;
-
-                // 모든 그룹과 필드를 기본적으로 숨기고 required 속성 제거
-                snsImageOptionsGroup.style.display = 'none';
-                textContentAdvancedOptions.style.display = 'none';
-
-                textFields.forEach(fieldId => setRequiredAttribute(fieldId, false));
-                snsFields.forEach(fieldId => setRequiredAttribute(fieldId, false));
                 
-                // 블로그/이메일 유형 선택 필드는 고급 설정 내에 있지만, 항상 해당 타입에 맞춰 표시되므로 개별 제어
+                if (!selectedType) {
+                    advancedOptions.style.display = 'none';
+                    return;
+                }
+                
+                advancedOptions.style.display = 'block';
+                textOnlyGroup.style.display = 'none';
                 blogStyleGroup.style.display = 'none';
-                emailTypeGroup.style.display = 'none';
-                emailSubjectGroup.style.display = 'none';
+                emailOptions.style.display = 'none';
+                snsOptions.style.display = 'none';
 
                 if (selectedType === 'blog') {
-                    textContentAdvancedOptions.style.display = 'block';
+                    textOnlyGroup.style.display = 'block';
                     blogStyleGroup.style.display = 'block';
-                    setRequiredAttribute('blogStyle', true);
-                    setRequiredAttribute('tone', true); // 톤앤매너 필수
-                    setRequiredAttribute('lengthOption', true); // 분량 필수
-
                 } else if (selectedType === 'email') {
-                    textContentAdvancedOptions.style.display = 'block';
-                    emailTypeGroup.style.display = 'block';
-                    emailSubjectGroup.style.display = 'block';
-                    setRequiredAttribute('emailType', true);
-                    setRequiredAttribute('emailSubject', true);
-                    setRequiredAttribute('tone', true); // 톤앤매너 필수
-                    setRequiredAttribute('lengthOption', true); // 분량 필수
-
+                    textOnlyGroup.style.display = 'block';
+                    emailOptions.style.display = 'block';
                 } else if (selectedType === 'sns') {
-                    snsImageOptionsGroup.style.display = 'flex'; // row로 설정했으므로 flex로 표시
-                    setRequiredAttribute('cutCount', true);
-                    setRequiredAttribute('aspectRatioSns', true);
-                    setRequiredAttribute('imagePrompt', true);
-                    // SNS는 텍스트 고급 설정은 사용하지 않으므로, 톤앤매너, 분량은 required 해제
-                    setRequiredAttribute('tone', false);
-                    setRequiredAttribute('lengthOption', false);
+                    snsOptions.style.display = 'flex';
                 }
             }
 
-            contentTypeSelect.addEventListener('change', toggleContentSpecificFields);
-
-            // 페이지 로드 시 초기 상태 설정
-            toggleContentSpecificFields();
+            contentTypeSelect.addEventListener('change', toggleAdvancedFields);
+            toggleAdvancedFields();
         });
     </script>
 </body>
