@@ -9,7 +9,7 @@ import re
 from services.ai_rag.rag_system import get_rag_system 
 from services.web_crawling.web_content_extractor import extract_text_from_url
 from services.web_crawling.web_utils import sanitize_filename
-from services.ai_rag.ai_constants import INDUSTRIES
+from services.utils.constants import INDUSTRIES
 from services.ai_rag.pgvector_store import PgVectorStore
 
 logger = logging.getLogger(__name__)

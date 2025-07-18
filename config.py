@@ -36,9 +36,6 @@ class Config:
     # S3 Bucket
     S3_BUCKET_NAME = os.getenv('S3_BUCKET_NAME')
 
-    # File Paths
-    IMAGE_SAVE_PATH = os.getenv('IMAGE_SAVE_PATH', 'generated_images')
-
     # Credentials
     ADMIN_USERNAME = os.getenv('ADMIN_USERNAME')
     CRAWLER_UPLOADER_USERNAME = os.getenv('CRAWLER_UPLOADER_USERNAME')
@@ -56,8 +53,7 @@ class Config:
             "IMAGE_GENERATION_REGION_NAME", 
             "EMBEDDING_MODEL_ID", 
             "PGVECTOR_DATABASE_URL",
-            "S3_BUCKET_NAME",
-            "IMAGE_SAVE_PATH"
+            "S3_BUCKET_NAME"
         ]
         missing_vars = [var for var in required_vars if not getattr(cls, var)]
         if missing_vars:

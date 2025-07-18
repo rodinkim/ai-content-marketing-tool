@@ -9,6 +9,7 @@ from .scheduler import initialize_scheduler_tasks
 from extensions import db, login_manager, migrate, scheduler
 from models import User
 from config import Config
+from services.utils.constants import PROMPT_TEMPLATE_RELATIVE_PATH, IMAGE_SAVE_PATH
 
 logger = logging.getLogger(__name__)
 
@@ -112,40 +113,50 @@ def initialize_rag_system(app: Flask):
     return rag_system
 
 def initialize_text_generator(app: Flask):
-    """텍스트 생성기를 초기화하고 app.extensions에 등록합니다."""
-    from services.ai_rag.text_generator import init_text_generator
+    """
+    텍스트 생성기를 초기화하고 app.extensions에 등록합니다.
+    """
+    from services.generation.text_generator import create_text_generator
+    from config import config
     rag_system = app.extensions.get('rag_system')
     bedrock_runtime_client = app.extensions.get('rag_bedrock_runtime')
     with app.app_context():
-        text_generator = init_text_generator(bedrock_runtime_client, rag_system)
+        text_generator = create_text_generator(bedrock_runtime_client, rag_system, app.root_path, config.CLAUDE_MODEL_ID)
         app.extensions['text_generator'] = text_generator
         logger.info("Text generator initialized.")
     return text_generator
 
 def initialize_translation_generator(app: Flask):
-    """번역 생성기를 초기화하고 app.extensions에 등록합니다."""
-    from services.ai_rag.translation_generator import init_translation_generator
-    from services.ai_rag.prompt_manager import PromptManager
-    from services.ai_rag.ai_constants import PROMPT_TEMPLATE_RELATIVE_PATH
+    """
+    번역 생성기를 초기화하고 app.extensions에 등록합니다.
+    """
+    from services.generation.translation_generator import create_translation_generator
+    from services.utils.prompt_manager import PromptManager
+    from services.utils.constants import PROMPT_TEMPLATE_RELATIVE_PATH
+    from config import config
     text_generator = app.extensions.get('text_generator')
     with app.app_context():
         prompt_manager = PromptManager(app.root_path, PROMPT_TEMPLATE_RELATIVE_PATH)
-        text_provider = text_generator.providers['text']
-        translation_generator = init_translation_generator(prompt_manager, text_provider)
+        # text_provider는 이미 TextGenerator에서 config.CLAUDE_MODEL_ID로 생성됨
+        text_provider = text_generator.provider_instances['text']
+        translation_generator = create_translation_generator(prompt_manager, text_provider)
         app.extensions['translation_generator'] = translation_generator
         logger.info("Translation generator initialized.")
     return translation_generator
 
 def initialize_image_generator(app: Flask):
-    """이미지 생성기를 초기화하고 app.extensions에 등록합니다."""
-    from services.ai_rag.image_generator import init_image_generator
-    from services.ai_rag.prompt_manager import PromptManager
-    from services.ai_rag.ai_constants import PROMPT_TEMPLATE_RELATIVE_PATH
+    """
+    이미지를 생성기를 초기화하고 app.extensions에 등록합니다.
+    """
+    from services.generation.image_generator import create_image_generator
+    from services.utils.prompt_manager import PromptManager
+    from services.utils.constants import PROMPT_TEMPLATE_RELATIVE_PATH
+    from config import config
     image_bedrock_client = app.extensions.get('image_bedrock_client')
     s3_client = app.extensions.get('s3_client')
     with app.app_context():
         prompt_manager = PromptManager(app.root_path, PROMPT_TEMPLATE_RELATIVE_PATH)
-        image_generator = init_image_generator(app, prompt_manager, image_bedrock_client, s3_client)
+        image_generator = create_image_generator(prompt_manager, image_bedrock_client, s3_client, config.IMAGE_GENERATION_MODEL_ID)
         app.extensions['image_generator'] = image_generator
         logger.info("Image generator initialized.")
     return image_generator
@@ -181,7 +192,7 @@ def register_app_blueprints(app: Flask):
 
 def create_image_dir_at_app_start(app: Flask):
     """애플리케이션 시작 시 이미지 저장 디렉토리를 생성합니다."""
-    image_path = os.path.join(app.root_path, app.config.get('IMAGE_SAVE_PATH', 'generated_images'))
+    image_path = os.path.join(app.root_path, IMAGE_SAVE_PATH)
     os.makedirs(image_path, exist_ok=True)
     logger.info(f"Image save directory created at app start: {image_path}")
 

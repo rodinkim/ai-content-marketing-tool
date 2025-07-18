@@ -5,9 +5,10 @@ import logging
 
 from models import Content 
 from extensions import db
-from services.ai_rag.text_generator import get_text_generator
-from services.ai_rag.image_generator import get_image_generator
-from services.ai_rag.translation_generator import get_translation_generator
+from services.utils.constants import IMAGE_SAVE_PATH
+from services.generation.translation_generator import TranslationPromptInput
+from services.generation.image_generator import ImageGenerationInput
+from services.generation.text_generator import TextGenerationInput
 
 logger = logging.getLogger(__name__)
 content_bp = Blueprint('content_routes', __name__) 
@@ -15,7 +16,7 @@ content_bp = Blueprint('content_routes', __name__)
 @content_bp.route('/generated_images/<path:filename>')
 def serve_generated_image(filename):
     """생성된 이미지를 정적 파일로 서빙합니다."""
-    image_dir = os.path.join(current_app.root_path, current_app.config.get('IMAGE_SAVE_PATH'))
+    image_dir = os.path.join(current_app.root_path, IMAGE_SAVE_PATH)
     return send_from_directory(image_dir, filename)
 
 
@@ -39,11 +40,12 @@ def generate_text_content():
             return jsonify({"error": f"{field}는 필수 입력값입니다."}), 400
 
     try:
-        text_generator = get_text_generator()
+        text_generator = current_app.extensions['text_generator']
         if not text_generator:
             raise RuntimeError("TextGenerator 서비스가 초기화되지 않았습니다.")
         
-        generated_text = text_generator.generate_content(**data)
+        input_data = TextGenerationInput(**data)
+        generated_text = text_generator.generate_content(input_data)
 
         new_content = Content(
             user_id=current_user.id,
@@ -89,17 +91,18 @@ def generate_image_content():
 
     try:
         # 3. 번역 서비스 준비 및 번역 프롬프트 생성
-        translation_generator = get_translation_generator()
+        translation_generator = current_app.extensions['translation_generator']
         if not translation_generator:
             raise RuntimeError("TranslationGenerator 서비스가 초기화되지 않았습니다.")
 
         # 번역에 필요한 필드만 추출
         translation_keys = [
             "topic", "brand_style_tone", "product_category", "target_audience",
-            "ad_purpose", "key_points", "cut_count", "aspect_ratio_sns", "other_requirements"
+            "ad_purpose", "key_points", "other_requirements"
         ]
-        translation_input = {key: data.get(key, "") for key in translation_keys}
-        translation_result = translation_generator.translate_for_image_prompt(**translation_input)
+        translation_input_dict = {key: data.get(key, "") for key in translation_keys}
+        translation_input = TranslationPromptInput(**translation_input_dict)
+        translation_result = translation_generator.translate_for_image_prompt(translation_input)
         image_prompt = translation_result['image_prompt']
 
         # 4. 고급 설정 입력값 개수 체크 (사용자 안내)
@@ -120,14 +123,19 @@ def generate_image_content():
             }), 200
 
         # 5. 이미지 생성 서비스 준비
-        image_generator = get_image_generator()
+        image_generator = current_app.extensions['image_generator']
         if not image_generator:
             raise RuntimeError("ImageGenerator 서비스가 초기화되지 않았습니다.")
 
         # 6. 이미지 생성 요청 (프롬프트는 번역 결과 사용)
         image_request_data = data.copy()
         image_request_data['topic'] = image_prompt
-        image_urls = image_generator.create_image(**image_request_data)
+        # ImageGenerationInput 데이터 클래스 사용
+        image_input = ImageGenerationInput(
+            topic=image_request_data['topic'],
+            cut_count=int(image_request_data.get('cut_count', 1))
+        )
+        image_urls = image_generator.create_image(image_input)
 
         if not image_urls:
             return jsonify({
