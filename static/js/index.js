@@ -62,6 +62,28 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
+        // SNS 고급 입력값 개수 체크 (프론트엔드에서 안내)
+        if (payload.content_type === 'sns') {
+            const advancedFields = [
+                "brand_style_tone", "product_category", "target_audience", "ad_purpose", "key_points"
+            ];
+            const filled = advancedFields.filter(field => payload[field] !== null && payload[field] !== undefined && String(payload[field]).trim() !== "").length;
+            if (filled < 2) {
+                showGuideMessage(
+                    `<div style='font-family: "Noto Sans KR", sans-serif; font-size:17px; line-height:1.9; color:#222;'>
+                    조금 더 구체적으로 입력해 주시면,<br>
+                    <span style='color:#0052cc; font-weight:600;'>AI가 더욱 완성도 높은 이미지를 만들어 드릴 수 있어요 🌿</span><br><br>
+                    <b>아래 항목 중 2개 이상</b> 입력해 주세요:<br>
+                    <span style='color:#1976d2;'>· 타겟 고객 · 브랜드 스타일 · 제품 카테고리<br>· 광고 목적 · 핵심 메시지</span><br><br>
+                    <span style='font-size:14px; color:#888;'>* 정보가 풍부할수록 이미지도 더 좋아집니다 :)</span>
+                    </div>`
+                );
+                generateBtn.disabled = false;
+                spinner.style.display = 'none';
+                return;
+            }
+        }
+
         // 콘텐츠 종류에 따라 API URL을 설정하고 불필요한 필드를 제거합니다.
         let apiUrl = '';
         if (payload.content_type === 'blog' || payload.content_type === 'email') {
@@ -195,6 +217,20 @@ document.addEventListener('DOMContentLoaded', function() {
 function showGuideMessage(message) {
     const modalBody = document.getElementById('guideModalBody');
     modalBody.innerHTML = message;
-    const guideModal = new bootstrap.Modal(document.getElementById('guideModal'));
+    const guideModalEl = document.getElementById('guideModal');
+    const guideModal = new bootstrap.Modal(guideModalEl);
     guideModal.show();
+
+    // 팝업이 닫힐 때 UI를 초기 상태로 복구
+    guideModalEl.addEventListener('hidden.bs.modal', function handler() {
+        // 결과 영역/이미지/복사 버튼/로딩 스피너 모두 숨김
+        generatedContentDiv.style.display = 'none';
+        generatedImage.style.display = 'none';
+        copyBtn.style.display = 'none';
+        spinner.style.display = 'none';
+        resultPlaceholder.style.display = 'flex'; // 필요하다면
+        generateBtn.disabled = false;
+        // 이벤트 중복 등록 방지
+        guideModalEl.removeEventListener('hidden.bs.modal', handler);
+    });
 }

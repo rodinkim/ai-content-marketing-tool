@@ -1,7 +1,6 @@
 import os
 import logging
-from typing import Dict, Any, Set
-import re
+from typing import Dict, Any
 
 logger = logging.getLogger(__name__)
 
@@ -50,12 +49,6 @@ class PromptManager:
         else:
             return content_type
 
-    def _extract_template_vars(self, template: str) -> Set[str]:
-        """
-        템플릿에서 {var} 패턴의 변수명을 모두 추출합니다.
-        """
-        return set(re.findall(r'{([a-zA-Z0-9_]+)}', template))
-
     def generate_text_prompt(
         self,
         content_type: str,
@@ -93,7 +86,6 @@ class PromptManager:
         elif length == "long":
             length_instruction_text = "콘텐츠 길이는 길게(약 2000-4000자) 작성하십시오."
 
-        # 템플릿 변수에 맞는 값만 추출
         all_vars = {
             "topic": topic,
             "industry": industry,
@@ -112,9 +104,7 @@ class PromptManager:
             "product_category": product_category or "",
             "ad_purpose": ad_purpose or "",
         }
-        template_vars = self._extract_template_vars(selected_template)
-        prompt_parts = {k: all_vars.get(k, "") for k in template_vars}
-        final_prompt = selected_template.format(**prompt_parts)
+        final_prompt = selected_template.format(**all_vars)
         logger.info(f"Text-based LLM Prompt for '{topic}' ({content_type}) generated.")
         return final_prompt
 

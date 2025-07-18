@@ -19540,3 +19540,905 @@ services.generation.translation_generator.TranslationPromptError: LLM 번역 호
 2025-07-18 15:21:37,622 - INFO - services.app_core.app_factory_utils - Image save directory created at app start: C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\generated_images
 2025-07-18 15:21:37,622 - INFO - __init__ - Flask application fully initialized and ready to serve!
 2025-07-18 15:21:37,622 - INFO - __init__ - Starting Flask development server...
+2025-07-18 15:34:10,094 - INFO - services.app_core.app_factory_utils - S3 client initialized and registered successfully.
+2025-07-18 15:34:10,098 - INFO - services.app_core.app_factory_utils - Bedrock (text) client initialized successfully!
+2025-07-18 15:34:10,099 - INFO - services.app_core.app_factory_utils - Bedrock (image) client initialized successfully!
+2025-07-18 15:34:10,099 - INFO - services.ai_rag.pgvector_store - PgVectorStore 초기화 완료. DB 연결 및 모델은 런타임에 이루어집니다.
+2025-07-18 15:34:10,424 - INFO - services.ai_rag.pgvector_store - 'knowledge_base_vectors' 테이블이 이미 존재합니다.
+2025-07-18 15:34:10,442 - INFO - services.ai_rag.pgvector_store - 'idx_knowledge_base_vectors_embedding_hnsw' 벡터 인덱스가 이미 존재합니다.
+2025-07-18 15:34:10,451 - INFO - services.ai_rag.rag_system - PgVector DB에서 FAISS 인덱스로 청크들을 로드합니다.
+2025-07-18 15:34:10,567 - INFO - services.ai_rag.pgvector_store - Retrieved 77 vectors from PgVector DB.
+2025-07-18 15:34:10,576 - INFO - services.ai_rag.faiss_indexer - FAISS index built. Total indexed chunks: 77, Embedding dimension: 1024
+2025-07-18 15:34:10,576 - INFO - services.ai_rag.rag_system - FAISS 인덱스 구축 완료. 총 청크 수: 77
+2025-07-18 15:34:10,576 - INFO - services.ai_rag.rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:34:10,576 - INFO - services.app_core.app_factory_utils - RAG system initialized.
+2025-07-18 15:34:10,581 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 15:34:10,582 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 15:34:10,582 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 15:34:10,582 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 15:34:10,583 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 15:34:10,583 - INFO - services.ai_rag.embedding_generator - Precomputing industry embeddings...
+2025-07-18 15:34:11,488 - INFO - services.ai_rag.embedding_generator - Finished precomputing 5 industry embeddings.
+2025-07-18 15:34:11,488 - INFO - services.generation.text_generator - TextGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:34:11,488 - INFO - services.app_core.app_factory_utils - Text generator initialized.
+2025-07-18 15:34:11,488 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 15:34:11,489 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 15:34:11,489 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 15:34:11,489 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 15:34:11,489 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 15:34:11,489 - INFO - services.generation.translation_generator - TranslationGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:34:11,490 - INFO - services.app_core.app_factory_utils - Translation generator initialized.
+2025-07-18 15:34:11,490 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 15:34:11,490 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 15:34:11,491 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 15:34:11,491 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 15:34:11,491 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 15:34:11,491 - INFO - services.generation.image_generator - ImageGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:34:11,491 - INFO - services.app_core.app_factory_utils - Image generator initialized.
+2025-07-18 15:34:11,491 - INFO - services.app_core.app_factory_utils - All AI services initialized.
+2025-07-18 15:34:11,555 - INFO - services.app_core.app_factory_utils - Blueprints registered.
+2025-07-18 15:34:11,556 - INFO - apscheduler.scheduler - Scheduler started
+2025-07-18 15:34:11,556 - INFO - services.app_core.scheduler - Scheduler started.
+2025-07-18 15:34:12,112 - INFO - apscheduler.scheduler - Added job "scheduled_marketing_crawl" to job store "default"
+2025-07-18 15:34:12,112 - INFO - services.app_core.scheduler - Scheduler: Weekly marketing news crawling job registered with system user ID.
+2025-07-18 15:34:12,113 - INFO - services.app_core.scheduler - Scheduler tasks initialized.
+2025-07-18 15:34:12,113 - INFO - services.app_core.app_factory_utils - Image save directory created at app start: C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\generated_images
+2025-07-18 15:34:12,113 - INFO - __init__ - Flask application fully initialized and ready to serve!
+2025-07-18 15:34:12,113 - INFO - __init__ - Starting Flask development server...
+2025-07-18 15:34:12,120 - INFO - werkzeug - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.100.120:5000
+2025-07-18 15:34:12,120 - INFO - werkzeug - [33mPress CTRL+C to quit[0m
+2025-07-18 15:34:12,121 - INFO - werkzeug -  * Restarting with stat
+2025-07-18 15:34:13,661 - INFO - services.app_core.app_factory_utils - S3 client initialized and registered successfully.
+2025-07-18 15:34:13,665 - INFO - services.app_core.app_factory_utils - Bedrock (text) client initialized successfully!
+2025-07-18 15:34:13,666 - INFO - services.app_core.app_factory_utils - Bedrock (image) client initialized successfully!
+2025-07-18 15:34:13,666 - INFO - services.ai_rag.pgvector_store - PgVectorStore 초기화 완료. DB 연결 및 모델은 런타임에 이루어집니다.
+2025-07-18 15:34:14,346 - INFO - services.ai_rag.pgvector_store - 'knowledge_base_vectors' 테이블이 이미 존재합니다.
+2025-07-18 15:34:14,415 - INFO - services.ai_rag.pgvector_store - 'idx_knowledge_base_vectors_embedding_hnsw' 벡터 인덱스가 이미 존재합니다.
+2025-07-18 15:34:14,449 - INFO - services.ai_rag.rag_system - PgVector DB에서 FAISS 인덱스로 청크들을 로드합니다.
+2025-07-18 15:34:14,642 - INFO - services.ai_rag.pgvector_store - Retrieved 77 vectors from PgVector DB.
+2025-07-18 15:34:14,676 - INFO - services.ai_rag.faiss_indexer - FAISS index built. Total indexed chunks: 77, Embedding dimension: 1024
+2025-07-18 15:34:14,676 - INFO - services.ai_rag.rag_system - FAISS 인덱스 구축 완료. 총 청크 수: 77
+2025-07-18 15:34:14,676 - INFO - services.ai_rag.rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:34:14,677 - INFO - services.app_core.app_factory_utils - RAG system initialized.
+2025-07-18 15:34:14,680 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 15:34:14,680 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 15:34:14,681 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 15:34:14,681 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 15:34:14,681 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 15:34:14,681 - INFO - services.ai_rag.embedding_generator - Precomputing industry embeddings...
+2025-07-18 15:34:15,480 - INFO - services.ai_rag.embedding_generator - Finished precomputing 5 industry embeddings.
+2025-07-18 15:34:15,480 - INFO - services.generation.text_generator - TextGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:34:15,480 - INFO - services.app_core.app_factory_utils - Text generator initialized.
+2025-07-18 15:34:15,481 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 15:34:15,481 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 15:34:15,481 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 15:34:15,481 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 15:34:15,481 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 15:34:15,482 - INFO - services.generation.translation_generator - TranslationGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:34:15,482 - INFO - services.app_core.app_factory_utils - Translation generator initialized.
+2025-07-18 15:34:15,482 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 15:34:15,482 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 15:34:15,482 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 15:34:15,482 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 15:34:15,482 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 15:34:15,482 - INFO - services.generation.image_generator - ImageGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:34:15,483 - INFO - services.app_core.app_factory_utils - Image generator initialized.
+2025-07-18 15:34:15,483 - INFO - services.app_core.app_factory_utils - All AI services initialized.
+2025-07-18 15:34:15,532 - INFO - services.app_core.app_factory_utils - Blueprints registered.
+2025-07-18 15:34:15,532 - INFO - apscheduler.scheduler - Scheduler started
+2025-07-18 15:34:15,533 - INFO - services.app_core.scheduler - Scheduler started.
+2025-07-18 15:34:15,986 - INFO - apscheduler.scheduler - Added job "scheduled_marketing_crawl" to job store "default"
+2025-07-18 15:34:15,986 - INFO - services.app_core.scheduler - Scheduler: Weekly marketing news crawling job registered with system user ID.
+2025-07-18 15:34:15,986 - INFO - services.app_core.scheduler - Scheduler tasks initialized.
+2025-07-18 15:34:15,986 - INFO - services.app_core.app_factory_utils - Image save directory created at app start: C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\generated_images
+2025-07-18 15:34:15,987 - INFO - __init__ - Flask application fully initialized and ready to serve!
+2025-07-18 15:34:15,987 - INFO - __init__ - Starting Flask development server...
+2025-07-18 15:34:32,672 - INFO - services.utils.prompt_manager - Translation LLM Prompt for '서울 여행지' generated.
+2025-07-18 15:34:39,390 - INFO - services.generation.translation_generator - Translated '서울 여행지' to English prompt: A serene and minimalist Instagram post showcasing Seoul's hidden gem parks, tailored for adventurous 20-somethings seeking urban oases. The image, in a 4:5 vertical ratio, captures a tranquil corner of a lesser-known Seoul park at golden hour. A sleek, modern bench sits in the foreground, its clean lines contrasting with the lush greenery behind. Soft, warm light filters through the leaves, creating a dappled effect on a winding stone path. In the background, glimpses of Seoul's iconic skyline peek through the foliage, subtly blending nature with urban sophistication. The composition emphasizes negative space, allowing for text overlay, and uses a muted color palette to evoke a sense of calm and escape within the bustling city. This visually appealing scene invites young travelers to discover Seoul's peaceful retreats amidst its vibrant urban landscape.
+2025-07-18 15:34:43,779 - INFO - services.generation.image_generator - Image saved to generated_images\sns_image_4bfa5697616a4d33b6435587e268695f.png
+2025-07-18 15:34:43,904 - INFO - werkzeug - 127.0.0.1 - - [18/Jul/2025 15:34:43] "POST /content/generate-image HTTP/1.1" 200 -
+2025-07-18 15:34:43,943 - INFO - werkzeug - 127.0.0.1 - - [18/Jul/2025 15:34:43] "GET /content/generated_images/sns_image_4bfa5697616a4d33b6435587e268695f.png HTTP/1.1" 200 -
+2025-07-18 15:34:54,988 - INFO - services.ai_rag.rag_system - 사용자 ID None에 대해 PgVector DB에서 검색합니다.
+2025-07-18 15:34:55,438 - INFO - services.ai_rag.pgvector_store - PgVector DB에서 5개의 유사 문서 검색 완료 (User ID: None).
+2025-07-18 15:34:55,438 - INFO - services.ai_rag.rag_system - PgVector DB에서 5개 청크를 검색했습니다.
+2025-07-18 15:34:55,438 - INFO - services.utils.prompt_manager - Text-based LLM Prompt for '서울 여행지' (email_newsletter) generated.
+2025-07-18 15:35:23,719 - INFO - werkzeug - 127.0.0.1 - - [18/Jul/2025 15:35:23] "POST /content/generate_content HTTP/1.1" 200 -
+2025-07-18 15:35:23,740 - INFO - werkzeug - 127.0.0.1 - - [18/Jul/2025 15:35:23] "[36mGET /static/images/unnamed.jpg HTTP/1.1[0m" 304 -
+2025-07-18 15:38:40,645 - INFO - werkzeug -  * Detected change in 'C:\\Users\\김오성OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\services\\utils\\prompt_manager.py', reloading
+2025-07-18 15:38:40,929 - INFO - werkzeug -  * Restarting with stat
+2025-07-18 15:38:42,366 - INFO - services.app_core.app_factory_utils - S3 client initialized and registered successfully.
+2025-07-18 15:38:42,371 - INFO - services.app_core.app_factory_utils - Bedrock (text) client initialized successfully!
+2025-07-18 15:38:42,377 - INFO - services.app_core.app_factory_utils - Bedrock (image) client initialized successfully!
+2025-07-18 15:38:42,377 - INFO - services.ai_rag.pgvector_store - PgVectorStore 초기화 완료. DB 연결 및 모델은 런타임에 이루어집니다.
+2025-07-18 15:38:43,022 - INFO - services.ai_rag.pgvector_store - 'knowledge_base_vectors' 테이블이 이미 존재합니다.
+2025-07-18 15:38:43,095 - INFO - services.ai_rag.pgvector_store - 'idx_knowledge_base_vectors_embedding_hnsw' 벡터 인덱스가 이미 존재합니다.
+2025-07-18 15:38:43,108 - INFO - services.ai_rag.rag_system - PgVector DB에서 FAISS 인덱스로 청크들을 로드합니다.
+2025-07-18 15:38:43,313 - INFO - services.ai_rag.pgvector_store - Retrieved 77 vectors from PgVector DB.
+2025-07-18 15:38:43,324 - INFO - services.ai_rag.faiss_indexer - FAISS index built. Total indexed chunks: 77, Embedding dimension: 1024
+2025-07-18 15:38:43,325 - INFO - services.ai_rag.rag_system - FAISS 인덱스 구축 완료. 총 청크 수: 77
+2025-07-18 15:38:43,325 - INFO - services.ai_rag.rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:38:43,325 - INFO - services.app_core.app_factory_utils - RAG system initialized.
+2025-07-18 15:38:43,328 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 15:38:43,329 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 15:38:43,329 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 15:38:43,329 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 15:38:43,329 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 15:38:43,330 - INFO - services.ai_rag.embedding_generator - Precomputing industry embeddings...
+2025-07-18 15:38:43,979 - INFO - services.ai_rag.embedding_generator - Finished precomputing 5 industry embeddings.
+2025-07-18 15:38:43,980 - INFO - services.generation.text_generator - TextGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:38:43,980 - INFO - services.app_core.app_factory_utils - Text generator initialized.
+2025-07-18 15:38:43,980 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 15:38:43,981 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 15:38:43,981 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 15:38:43,981 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 15:38:43,981 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 15:38:43,981 - INFO - services.generation.translation_generator - TranslationGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:38:43,981 - INFO - services.app_core.app_factory_utils - Translation generator initialized.
+2025-07-18 15:38:43,982 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 15:38:43,982 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 15:38:43,982 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 15:38:43,982 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 15:38:43,982 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 15:38:43,982 - INFO - services.generation.image_generator - ImageGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:38:43,982 - INFO - services.app_core.app_factory_utils - Image generator initialized.
+2025-07-18 15:38:43,982 - INFO - services.app_core.app_factory_utils - All AI services initialized.
+2025-07-18 15:38:44,035 - INFO - services.app_core.app_factory_utils - Blueprints registered.
+2025-07-18 15:38:44,035 - INFO - apscheduler.scheduler - Scheduler started
+2025-07-18 15:38:44,036 - INFO - services.app_core.scheduler - Scheduler started.
+2025-07-18 15:38:44,581 - INFO - apscheduler.scheduler - Added job "scheduled_marketing_crawl" to job store "default"
+2025-07-18 15:38:44,581 - INFO - services.app_core.scheduler - Scheduler: Weekly marketing news crawling job registered with system user ID.
+2025-07-18 15:38:44,581 - INFO - services.app_core.scheduler - Scheduler tasks initialized.
+2025-07-18 15:38:44,581 - INFO - services.app_core.app_factory_utils - Image save directory created at app start: C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\generated_images
+2025-07-18 15:38:44,582 - INFO - __init__ - Flask application fully initialized and ready to serve!
+2025-07-18 15:38:44,582 - INFO - __init__ - Starting Flask development server...
+2025-07-18 15:41:45,108 - INFO - werkzeug -  * Detected change in 'C:\\Users\\김오성OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\services\\utils\\prompt_manager.py', reloading
+2025-07-18 15:41:45,329 - INFO - werkzeug -  * Restarting with stat
+2025-07-18 15:41:47,109 - INFO - services.app_core.app_factory_utils - S3 client initialized and registered successfully.
+2025-07-18 15:41:47,113 - INFO - services.app_core.app_factory_utils - Bedrock (text) client initialized successfully!
+2025-07-18 15:41:47,114 - INFO - services.app_core.app_factory_utils - Bedrock (image) client initialized successfully!
+2025-07-18 15:41:47,114 - INFO - services.ai_rag.pgvector_store - PgVectorStore 초기화 완료. DB 연결 및 모델은 런타임에 이루어집니다.
+2025-07-18 15:41:47,499 - INFO - services.ai_rag.pgvector_store - 'knowledge_base_vectors' 테이블이 이미 존재합니다.
+2025-07-18 15:41:47,523 - INFO - services.ai_rag.pgvector_store - 'idx_knowledge_base_vectors_embedding_hnsw' 벡터 인덱스가 이미 존재합니다.
+2025-07-18 15:41:47,536 - INFO - services.ai_rag.rag_system - PgVector DB에서 FAISS 인덱스로 청크들을 로드합니다.
+2025-07-18 15:41:47,680 - INFO - services.ai_rag.pgvector_store - Retrieved 77 vectors from PgVector DB.
+2025-07-18 15:41:47,689 - INFO - services.ai_rag.faiss_indexer - FAISS index built. Total indexed chunks: 77, Embedding dimension: 1024
+2025-07-18 15:41:47,690 - INFO - services.ai_rag.rag_system - FAISS 인덱스 구축 완료. 총 청크 수: 77
+2025-07-18 15:41:47,690 - INFO - services.ai_rag.rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:41:47,690 - INFO - services.app_core.app_factory_utils - RAG system initialized.
+2025-07-18 15:41:47,694 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 15:41:47,695 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 15:41:47,696 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 15:41:47,697 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 15:41:47,697 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 15:41:47,697 - INFO - services.ai_rag.embedding_generator - Precomputing industry embeddings...
+2025-07-18 15:41:48,472 - INFO - services.ai_rag.embedding_generator - Finished precomputing 5 industry embeddings.
+2025-07-18 15:41:48,472 - INFO - services.generation.text_generator - TextGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:41:48,473 - INFO - services.app_core.app_factory_utils - Text generator initialized.
+2025-07-18 15:41:48,473 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 15:41:48,473 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 15:41:48,474 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 15:41:48,474 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 15:41:48,474 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 15:41:48,474 - INFO - services.generation.translation_generator - TranslationGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:41:48,475 - INFO - services.app_core.app_factory_utils - Translation generator initialized.
+2025-07-18 15:41:48,475 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 15:41:48,475 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 15:41:48,475 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 15:41:48,476 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 15:41:48,476 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 15:41:48,476 - INFO - services.generation.image_generator - ImageGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:41:48,476 - INFO - services.app_core.app_factory_utils - Image generator initialized.
+2025-07-18 15:41:48,477 - INFO - services.app_core.app_factory_utils - All AI services initialized.
+2025-07-18 15:41:48,541 - INFO - services.app_core.app_factory_utils - Blueprints registered.
+2025-07-18 15:41:48,541 - INFO - apscheduler.scheduler - Scheduler started
+2025-07-18 15:41:48,542 - INFO - services.app_core.scheduler - Scheduler started.
+2025-07-18 15:41:49,057 - INFO - apscheduler.scheduler - Added job "scheduled_marketing_crawl" to job store "default"
+2025-07-18 15:41:49,057 - INFO - services.app_core.scheduler - Scheduler: Weekly marketing news crawling job registered with system user ID.
+2025-07-18 15:41:49,057 - INFO - services.app_core.scheduler - Scheduler tasks initialized.
+2025-07-18 15:41:49,058 - INFO - services.app_core.app_factory_utils - Image save directory created at app start: C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\generated_images
+2025-07-18 15:41:49,058 - INFO - __init__ - Flask application fully initialized and ready to serve!
+2025-07-18 15:41:49,058 - INFO - __init__ - Starting Flask development server...
+2025-07-18 15:42:41,490 - INFO - werkzeug -  * Detected change in 'C:\\Users\\김오성OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\services\\utils\\prompt_manager.py', reloading
+2025-07-18 15:42:41,708 - INFO - werkzeug -  * Restarting with stat
+2025-07-18 15:42:43,210 - INFO - services.app_core.app_factory_utils - S3 client initialized and registered successfully.
+2025-07-18 15:42:43,214 - INFO - services.app_core.app_factory_utils - Bedrock (text) client initialized successfully!
+2025-07-18 15:42:43,216 - INFO - services.app_core.app_factory_utils - Bedrock (image) client initialized successfully!
+2025-07-18 15:42:43,216 - INFO - services.ai_rag.pgvector_store - PgVectorStore 초기화 완료. DB 연결 및 모델은 런타임에 이루어집니다.
+2025-07-18 15:42:43,538 - INFO - services.ai_rag.pgvector_store - 'knowledge_base_vectors' 테이블이 이미 존재합니다.
+2025-07-18 15:42:43,564 - INFO - services.ai_rag.pgvector_store - 'idx_knowledge_base_vectors_embedding_hnsw' 벡터 인덱스가 이미 존재합니다.
+2025-07-18 15:42:43,575 - INFO - services.ai_rag.rag_system - PgVector DB에서 FAISS 인덱스로 청크들을 로드합니다.
+2025-07-18 15:42:43,678 - INFO - services.ai_rag.pgvector_store - Retrieved 77 vectors from PgVector DB.
+2025-07-18 15:42:43,705 - INFO - services.ai_rag.faiss_indexer - FAISS index built. Total indexed chunks: 77, Embedding dimension: 1024
+2025-07-18 15:42:43,705 - INFO - services.ai_rag.rag_system - FAISS 인덱스 구축 완료. 총 청크 수: 77
+2025-07-18 15:42:43,705 - INFO - services.ai_rag.rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:42:43,706 - INFO - services.app_core.app_factory_utils - RAG system initialized.
+2025-07-18 15:42:43,711 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 15:42:43,711 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 15:42:43,711 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 15:42:43,712 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 15:42:43,712 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 15:42:43,712 - INFO - services.ai_rag.embedding_generator - Precomputing industry embeddings...
+2025-07-18 15:42:44,377 - INFO - services.ai_rag.embedding_generator - Finished precomputing 5 industry embeddings.
+2025-07-18 15:42:44,377 - INFO - services.generation.text_generator - TextGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:42:44,377 - INFO - services.app_core.app_factory_utils - Text generator initialized.
+2025-07-18 15:42:44,378 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 15:42:44,378 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 15:42:44,378 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 15:42:44,378 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 15:42:44,379 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 15:42:44,379 - INFO - services.generation.translation_generator - TranslationGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:42:44,379 - INFO - services.app_core.app_factory_utils - Translation generator initialized.
+2025-07-18 15:42:44,379 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 15:42:44,379 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 15:42:44,380 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 15:42:44,380 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 15:42:44,380 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 15:42:44,380 - INFO - services.generation.image_generator - ImageGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:42:44,380 - INFO - services.app_core.app_factory_utils - Image generator initialized.
+2025-07-18 15:42:44,380 - INFO - services.app_core.app_factory_utils - All AI services initialized.
+2025-07-18 15:42:44,440 - INFO - services.app_core.app_factory_utils - Blueprints registered.
+2025-07-18 15:42:44,440 - INFO - apscheduler.scheduler - Scheduler started
+2025-07-18 15:42:44,441 - INFO - services.app_core.scheduler - Scheduler started.
+2025-07-18 15:42:44,935 - INFO - apscheduler.scheduler - Added job "scheduled_marketing_crawl" to job store "default"
+2025-07-18 15:42:44,935 - INFO - services.app_core.scheduler - Scheduler: Weekly marketing news crawling job registered with system user ID.
+2025-07-18 15:42:44,936 - INFO - services.app_core.scheduler - Scheduler tasks initialized.
+2025-07-18 15:42:44,936 - INFO - services.app_core.app_factory_utils - Image save directory created at app start: C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\generated_images
+2025-07-18 15:42:44,936 - INFO - __init__ - Flask application fully initialized and ready to serve!
+2025-07-18 15:42:44,936 - INFO - __init__ - Starting Flask development server...
+2025-07-18 15:42:54,027 - INFO - werkzeug -  * Detected change in 'C:\\Users\\김오성OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\services\\utils\\prompt_manager.py', reloading
+2025-07-18 15:42:54,250 - INFO - werkzeug -  * Restarting with stat
+2025-07-18 15:42:55,724 - INFO - services.app_core.app_factory_utils - S3 client initialized and registered successfully.
+2025-07-18 15:42:55,728 - INFO - services.app_core.app_factory_utils - Bedrock (text) client initialized successfully!
+2025-07-18 15:42:55,729 - INFO - services.app_core.app_factory_utils - Bedrock (image) client initialized successfully!
+2025-07-18 15:42:55,729 - INFO - services.ai_rag.pgvector_store - PgVectorStore 초기화 완료. DB 연결 및 모델은 런타임에 이루어집니다.
+2025-07-18 15:42:56,077 - INFO - services.ai_rag.pgvector_store - 'knowledge_base_vectors' 테이블이 이미 존재합니다.
+2025-07-18 15:42:56,138 - INFO - services.ai_rag.pgvector_store - 'idx_knowledge_base_vectors_embedding_hnsw' 벡터 인덱스가 이미 존재합니다.
+2025-07-18 15:42:56,152 - INFO - services.ai_rag.rag_system - PgVector DB에서 FAISS 인덱스로 청크들을 로드합니다.
+2025-07-18 15:42:56,289 - INFO - services.ai_rag.pgvector_store - Retrieved 77 vectors from PgVector DB.
+2025-07-18 15:42:56,310 - INFO - services.ai_rag.faiss_indexer - FAISS index built. Total indexed chunks: 77, Embedding dimension: 1024
+2025-07-18 15:42:56,311 - INFO - services.ai_rag.rag_system - FAISS 인덱스 구축 완료. 총 청크 수: 77
+2025-07-18 15:42:56,311 - INFO - services.ai_rag.rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:42:56,311 - INFO - services.app_core.app_factory_utils - RAG system initialized.
+2025-07-18 15:42:56,315 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 15:42:56,315 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 15:42:56,315 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 15:42:56,315 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 15:42:56,316 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 15:42:56,316 - INFO - services.ai_rag.embedding_generator - Precomputing industry embeddings...
+2025-07-18 15:42:56,987 - INFO - services.ai_rag.embedding_generator - Finished precomputing 5 industry embeddings.
+2025-07-18 15:42:56,988 - INFO - services.generation.text_generator - TextGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:42:56,988 - INFO - services.app_core.app_factory_utils - Text generator initialized.
+2025-07-18 15:42:56,988 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 15:42:56,989 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 15:42:56,989 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 15:42:56,989 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 15:42:56,989 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 15:42:56,989 - INFO - services.generation.translation_generator - TranslationGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:42:56,990 - INFO - services.app_core.app_factory_utils - Translation generator initialized.
+2025-07-18 15:42:56,990 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 15:42:56,990 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 15:42:56,990 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 15:42:56,990 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 15:42:56,991 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 15:42:56,991 - INFO - services.generation.image_generator - ImageGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:42:56,991 - INFO - services.app_core.app_factory_utils - Image generator initialized.
+2025-07-18 15:42:56,991 - INFO - services.app_core.app_factory_utils - All AI services initialized.
+2025-07-18 15:42:57,056 - INFO - services.app_core.app_factory_utils - Blueprints registered.
+2025-07-18 15:42:57,057 - INFO - apscheduler.scheduler - Scheduler started
+2025-07-18 15:42:57,057 - INFO - services.app_core.scheduler - Scheduler started.
+2025-07-18 15:42:57,470 - INFO - apscheduler.scheduler - Added job "scheduled_marketing_crawl" to job store "default"
+2025-07-18 15:42:57,470 - INFO - services.app_core.scheduler - Scheduler: Weekly marketing news crawling job registered with system user ID.
+2025-07-18 15:42:57,471 - INFO - services.app_core.scheduler - Scheduler tasks initialized.
+2025-07-18 15:42:57,471 - INFO - services.app_core.app_factory_utils - Image save directory created at app start: C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\generated_images
+2025-07-18 15:42:57,471 - INFO - __init__ - Flask application fully initialized and ready to serve!
+2025-07-18 15:42:57,471 - INFO - __init__ - Starting Flask development server...
+2025-07-18 15:43:47,207 - INFO - werkzeug -  * Detected change in 'C:\\Users\\김오성OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\services\\utils\\prompt_manager.py', reloading
+2025-07-18 15:43:47,437 - INFO - werkzeug -  * Restarting with stat
+2025-07-18 15:43:48,864 - INFO - services.app_core.app_factory_utils - S3 client initialized and registered successfully.
+2025-07-18 15:43:48,869 - INFO - services.app_core.app_factory_utils - Bedrock (text) client initialized successfully!
+2025-07-18 15:43:48,871 - INFO - services.app_core.app_factory_utils - Bedrock (image) client initialized successfully!
+2025-07-18 15:43:48,871 - INFO - services.ai_rag.pgvector_store - PgVectorStore 초기화 완료. DB 연결 및 모델은 런타임에 이루어집니다.
+2025-07-18 15:43:49,310 - INFO - services.ai_rag.pgvector_store - 'knowledge_base_vectors' 테이블이 이미 존재합니다.
+2025-07-18 15:43:49,327 - INFO - services.ai_rag.pgvector_store - 'idx_knowledge_base_vectors_embedding_hnsw' 벡터 인덱스가 이미 존재합니다.
+2025-07-18 15:43:49,336 - INFO - services.ai_rag.rag_system - PgVector DB에서 FAISS 인덱스로 청크들을 로드합니다.
+2025-07-18 15:43:49,443 - INFO - services.ai_rag.pgvector_store - Retrieved 77 vectors from PgVector DB.
+2025-07-18 15:43:49,453 - INFO - services.ai_rag.faiss_indexer - FAISS index built. Total indexed chunks: 77, Embedding dimension: 1024
+2025-07-18 15:43:49,454 - INFO - services.ai_rag.rag_system - FAISS 인덱스 구축 완료. 총 청크 수: 77
+2025-07-18 15:43:49,454 - INFO - services.ai_rag.rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:43:49,454 - INFO - services.app_core.app_factory_utils - RAG system initialized.
+2025-07-18 15:43:49,459 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 15:43:49,461 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 15:43:49,462 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 15:43:49,462 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 15:43:49,462 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 15:43:49,462 - INFO - services.ai_rag.embedding_generator - Precomputing industry embeddings...
+2025-07-18 15:43:50,150 - INFO - services.ai_rag.embedding_generator - Finished precomputing 5 industry embeddings.
+2025-07-18 15:43:50,150 - INFO - services.generation.text_generator - TextGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:43:50,150 - INFO - services.app_core.app_factory_utils - Text generator initialized.
+2025-07-18 15:43:50,151 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 15:43:50,151 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 15:43:50,151 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 15:43:50,152 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 15:43:50,152 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 15:43:50,152 - INFO - services.generation.translation_generator - TranslationGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:43:50,152 - INFO - services.app_core.app_factory_utils - Translation generator initialized.
+2025-07-18 15:43:50,152 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 15:43:50,153 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 15:43:50,153 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 15:43:50,153 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 15:43:50,153 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 15:43:50,153 - INFO - services.generation.image_generator - ImageGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:43:50,153 - INFO - services.app_core.app_factory_utils - Image generator initialized.
+2025-07-18 15:43:50,153 - INFO - services.app_core.app_factory_utils - All AI services initialized.
+2025-07-18 15:43:50,209 - INFO - services.app_core.app_factory_utils - Blueprints registered.
+2025-07-18 15:43:50,209 - INFO - apscheduler.scheduler - Scheduler started
+2025-07-18 15:43:50,210 - INFO - services.app_core.scheduler - Scheduler started.
+2025-07-18 15:43:50,802 - INFO - apscheduler.scheduler - Added job "scheduled_marketing_crawl" to job store "default"
+2025-07-18 15:43:50,803 - INFO - services.app_core.scheduler - Scheduler: Weekly marketing news crawling job registered with system user ID.
+2025-07-18 15:43:50,804 - INFO - services.app_core.scheduler - Scheduler tasks initialized.
+2025-07-18 15:43:50,804 - INFO - services.app_core.app_factory_utils - Image save directory created at app start: C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\generated_images
+2025-07-18 15:43:50,804 - INFO - __init__ - Flask application fully initialized and ready to serve!
+2025-07-18 15:43:50,804 - INFO - __init__ - Starting Flask development server...
+2025-07-18 15:45:37,674 - INFO - werkzeug -  * Detected change in 'C:\\Users\\김오성OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\routes\\content_routes.py', reloading
+2025-07-18 15:45:37,900 - INFO - werkzeug -  * Restarting with stat
+2025-07-18 15:45:39,515 - INFO - services.app_core.app_factory_utils - S3 client initialized and registered successfully.
+2025-07-18 15:45:39,519 - INFO - services.app_core.app_factory_utils - Bedrock (text) client initialized successfully!
+2025-07-18 15:45:39,520 - INFO - services.app_core.app_factory_utils - Bedrock (image) client initialized successfully!
+2025-07-18 15:45:39,520 - INFO - services.ai_rag.pgvector_store - PgVectorStore 초기화 완료. DB 연결 및 모델은 런타임에 이루어집니다.
+2025-07-18 15:45:39,833 - INFO - services.ai_rag.pgvector_store - 'knowledge_base_vectors' 테이블이 이미 존재합니다.
+2025-07-18 15:45:39,850 - INFO - services.ai_rag.pgvector_store - 'idx_knowledge_base_vectors_embedding_hnsw' 벡터 인덱스가 이미 존재합니다.
+2025-07-18 15:45:39,876 - INFO - services.ai_rag.rag_system - PgVector DB에서 FAISS 인덱스로 청크들을 로드합니다.
+2025-07-18 15:45:39,976 - INFO - services.ai_rag.pgvector_store - Retrieved 77 vectors from PgVector DB.
+2025-07-18 15:45:39,985 - INFO - services.ai_rag.faiss_indexer - FAISS index built. Total indexed chunks: 77, Embedding dimension: 1024
+2025-07-18 15:45:39,985 - INFO - services.ai_rag.rag_system - FAISS 인덱스 구축 완료. 총 청크 수: 77
+2025-07-18 15:45:39,986 - INFO - services.ai_rag.rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:45:39,986 - INFO - services.app_core.app_factory_utils - RAG system initialized.
+2025-07-18 15:45:39,990 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 15:45:39,990 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 15:45:39,991 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 15:45:39,991 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 15:45:39,991 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 15:45:39,991 - INFO - services.ai_rag.embedding_generator - Precomputing industry embeddings...
+2025-07-18 15:45:40,844 - INFO - services.ai_rag.embedding_generator - Finished precomputing 5 industry embeddings.
+2025-07-18 15:45:40,844 - INFO - services.generation.text_generator - TextGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:45:40,844 - INFO - services.app_core.app_factory_utils - Text generator initialized.
+2025-07-18 15:45:40,845 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 15:45:40,845 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 15:45:40,846 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 15:45:40,846 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 15:45:40,846 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 15:45:40,846 - INFO - services.generation.translation_generator - TranslationGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:45:40,846 - INFO - services.app_core.app_factory_utils - Translation generator initialized.
+2025-07-18 15:45:40,847 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 15:45:40,847 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 15:45:40,847 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 15:45:40,847 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 15:45:40,847 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 15:45:40,847 - INFO - services.generation.image_generator - ImageGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:45:40,847 - INFO - services.app_core.app_factory_utils - Image generator initialized.
+2025-07-18 15:45:40,848 - INFO - services.app_core.app_factory_utils - All AI services initialized.
+2025-07-18 15:45:40,907 - INFO - services.app_core.app_factory_utils - Blueprints registered.
+2025-07-18 15:45:40,908 - INFO - apscheduler.scheduler - Scheduler started
+2025-07-18 15:45:40,908 - INFO - services.app_core.scheduler - Scheduler started.
+2025-07-18 15:45:41,419 - INFO - apscheduler.scheduler - Added job "scheduled_marketing_crawl" to job store "default"
+2025-07-18 15:45:41,420 - INFO - services.app_core.scheduler - Scheduler: Weekly marketing news crawling job registered with system user ID.
+2025-07-18 15:45:41,421 - INFO - services.app_core.scheduler - Scheduler tasks initialized.
+2025-07-18 15:45:41,421 - INFO - services.app_core.app_factory_utils - Image save directory created at app start: C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\generated_images
+2025-07-18 15:45:41,421 - INFO - __init__ - Flask application fully initialized and ready to serve!
+2025-07-18 15:45:41,421 - INFO - __init__ - Starting Flask development server...
+2025-07-18 15:58:29,404 - INFO - werkzeug -  * Detected change in 'C:\\Users\\김오성OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\services\\content_service.py', reloading
+2025-07-18 15:58:29,719 - INFO - werkzeug -  * Restarting with stat
+2025-07-18 15:58:33,097 - INFO - services.app_core.app_factory_utils - S3 client initialized and registered successfully.
+2025-07-18 15:58:33,113 - INFO - services.app_core.app_factory_utils - Bedrock (text) client initialized successfully!
+2025-07-18 15:58:33,115 - INFO - services.app_core.app_factory_utils - Bedrock (image) client initialized successfully!
+2025-07-18 15:58:33,115 - INFO - services.ai_rag.pgvector_store - PgVectorStore 초기화 완료. DB 연결 및 모델은 런타임에 이루어집니다.
+2025-07-18 15:58:33,611 - INFO - services.ai_rag.pgvector_store - 'knowledge_base_vectors' 테이블이 이미 존재합니다.
+2025-07-18 15:58:33,656 - INFO - services.ai_rag.pgvector_store - 'idx_knowledge_base_vectors_embedding_hnsw' 벡터 인덱스가 이미 존재합니다.
+2025-07-18 15:58:33,664 - INFO - services.ai_rag.rag_system - PgVector DB에서 FAISS 인덱스로 청크들을 로드합니다.
+2025-07-18 15:58:33,792 - INFO - services.ai_rag.pgvector_store - Retrieved 77 vectors from PgVector DB.
+2025-07-18 15:58:33,816 - INFO - services.ai_rag.faiss_indexer - FAISS index built. Total indexed chunks: 77, Embedding dimension: 1024
+2025-07-18 15:58:33,817 - INFO - services.ai_rag.rag_system - FAISS 인덱스 구축 완료. 총 청크 수: 77
+2025-07-18 15:58:33,817 - INFO - services.ai_rag.rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:58:33,817 - INFO - services.app_core.app_factory_utils - RAG system initialized.
+2025-07-18 15:58:33,821 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 15:58:33,828 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 15:58:33,829 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 15:58:33,835 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 15:58:33,842 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 15:58:33,842 - INFO - services.ai_rag.embedding_generator - Precomputing industry embeddings...
+2025-07-18 15:58:34,734 - INFO - services.ai_rag.embedding_generator - Finished precomputing 5 industry embeddings.
+2025-07-18 15:58:34,734 - INFO - services.generation.text_generator - TextGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:58:34,735 - INFO - services.app_core.app_factory_utils - Text generator initialized.
+2025-07-18 15:58:34,735 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 15:58:34,735 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 15:58:34,735 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 15:58:34,736 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 15:58:34,736 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 15:58:34,736 - INFO - services.generation.translation_generator - TranslationGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:58:34,736 - INFO - services.app_core.app_factory_utils - Translation generator initialized.
+2025-07-18 15:58:34,736 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 15:58:34,737 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 15:58:34,737 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 15:58:34,737 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 15:58:34,737 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 15:58:34,737 - INFO - services.generation.image_generator - ImageGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:58:34,737 - INFO - services.app_core.app_factory_utils - Image generator initialized.
+2025-07-18 15:58:34,738 - INFO - services.app_core.app_factory_utils - All AI services initialized.
+2025-07-18 15:58:36,099 - INFO - services.app_core.app_factory_utils - Blueprints registered.
+2025-07-18 15:58:36,099 - INFO - apscheduler.scheduler - Scheduler started
+2025-07-18 15:58:36,100 - INFO - services.app_core.scheduler - Scheduler started.
+2025-07-18 15:58:36,735 - INFO - apscheduler.scheduler - Added job "scheduled_marketing_crawl" to job store "default"
+2025-07-18 15:58:36,735 - INFO - services.app_core.scheduler - Scheduler: Weekly marketing news crawling job registered with system user ID.
+2025-07-18 15:58:36,735 - INFO - services.app_core.scheduler - Scheduler tasks initialized.
+2025-07-18 15:58:36,736 - INFO - services.app_core.app_factory_utils - Image save directory created at app start: C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\generated_images
+2025-07-18 15:58:36,736 - INFO - __init__ - Flask application fully initialized and ready to serve!
+2025-07-18 15:58:36,736 - INFO - __init__ - Starting Flask development server...
+2025-07-18 15:59:25,120 - INFO - werkzeug -  * Detected change in 'C:\\Users\\김오성OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\routes\\content_routes.py', reloading
+2025-07-18 15:59:25,369 - INFO - werkzeug -  * Restarting with stat
+2025-07-18 15:59:26,935 - INFO - services.app_core.app_factory_utils - S3 client initialized and registered successfully.
+2025-07-18 15:59:26,938 - INFO - services.app_core.app_factory_utils - Bedrock (text) client initialized successfully!
+2025-07-18 15:59:26,940 - INFO - services.app_core.app_factory_utils - Bedrock (image) client initialized successfully!
+2025-07-18 15:59:26,940 - INFO - services.ai_rag.pgvector_store - PgVectorStore 초기화 완료. DB 연결 및 모델은 런타임에 이루어집니다.
+2025-07-18 15:59:27,284 - INFO - services.ai_rag.pgvector_store - 'knowledge_base_vectors' 테이블이 이미 존재합니다.
+2025-07-18 15:59:27,349 - INFO - services.ai_rag.pgvector_store - 'idx_knowledge_base_vectors_embedding_hnsw' 벡터 인덱스가 이미 존재합니다.
+2025-07-18 15:59:27,385 - INFO - services.ai_rag.rag_system - PgVector DB에서 FAISS 인덱스로 청크들을 로드합니다.
+2025-07-18 15:59:27,510 - INFO - services.ai_rag.pgvector_store - Retrieved 77 vectors from PgVector DB.
+2025-07-18 15:59:27,532 - INFO - services.ai_rag.faiss_indexer - FAISS index built. Total indexed chunks: 77, Embedding dimension: 1024
+2025-07-18 15:59:27,533 - INFO - services.ai_rag.rag_system - FAISS 인덱스 구축 완료. 총 청크 수: 77
+2025-07-18 15:59:27,533 - INFO - services.ai_rag.rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:59:27,533 - INFO - services.app_core.app_factory_utils - RAG system initialized.
+2025-07-18 15:59:27,537 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 15:59:27,537 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 15:59:27,537 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 15:59:27,537 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 15:59:27,538 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 15:59:27,538 - INFO - services.ai_rag.embedding_generator - Precomputing industry embeddings...
+2025-07-18 15:59:28,346 - INFO - services.ai_rag.embedding_generator - Finished precomputing 5 industry embeddings.
+2025-07-18 15:59:28,346 - INFO - services.generation.text_generator - TextGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:59:28,346 - INFO - services.app_core.app_factory_utils - Text generator initialized.
+2025-07-18 15:59:28,346 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 15:59:28,347 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 15:59:28,347 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 15:59:28,347 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 15:59:28,348 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 15:59:28,348 - INFO - services.generation.translation_generator - TranslationGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:59:28,348 - INFO - services.app_core.app_factory_utils - Translation generator initialized.
+2025-07-18 15:59:28,348 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 15:59:28,349 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 15:59:28,349 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 15:59:28,349 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 15:59:28,349 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 15:59:28,349 - INFO - services.generation.image_generator - ImageGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 15:59:28,350 - INFO - services.app_core.app_factory_utils - Image generator initialized.
+2025-07-18 15:59:28,350 - INFO - services.app_core.app_factory_utils - All AI services initialized.
+2025-07-18 15:59:28,419 - INFO - services.app_core.app_factory_utils - Blueprints registered.
+2025-07-18 15:59:28,419 - INFO - apscheduler.scheduler - Scheduler started
+2025-07-18 15:59:28,420 - INFO - services.app_core.scheduler - Scheduler started.
+2025-07-18 15:59:28,913 - INFO - apscheduler.scheduler - Added job "scheduled_marketing_crawl" to job store "default"
+2025-07-18 15:59:28,914 - INFO - services.app_core.scheduler - Scheduler: Weekly marketing news crawling job registered with system user ID.
+2025-07-18 15:59:28,914 - INFO - services.app_core.scheduler - Scheduler tasks initialized.
+2025-07-18 15:59:28,915 - INFO - services.app_core.app_factory_utils - Image save directory created at app start: C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\generated_images
+2025-07-18 15:59:28,915 - INFO - __init__ - Flask application fully initialized and ready to serve!
+2025-07-18 15:59:28,915 - INFO - __init__ - Starting Flask development server...
+2025-07-18 16:00:29,186 - INFO - services.ai_rag.rag_system - 사용자 ID None에 대해 PgVector DB에서 검색합니다.
+2025-07-18 16:00:29,232 - INFO - services.ai_rag.pgvector_store - PgVector DB에서 5개의 유사 문서 검색 완료 (User ID: None).
+2025-07-18 16:00:29,232 - INFO - services.ai_rag.rag_system - PgVector DB에서 5개 청크를 검색했습니다.
+2025-07-18 16:00:29,232 - INFO - services.utils.prompt_manager - Text-based LLM Prompt for '서울 여행지' (email_newsletter) generated.
+2025-07-18 16:00:57,072 - INFO - werkzeug - 127.0.0.1 - - [18/Jul/2025 16:00:57] "POST /content/generate_content HTTP/1.1" 200 -
+2025-07-18 16:06:28,229 - INFO - services.utils.prompt_manager - Translation LLM Prompt for '서울 여행지' generated.
+2025-07-18 16:06:34,712 - INFO - services.generation.translation_generator - Translated '서울 여행지' to English prompt: A vibrant and captivating Instagram ad image with a 4:5 aspect ratio, showcasing the enchanting beauty of Seoul for young travelers in their 20s and 30s. The scene captures a panoramic view of the city skyline at dusk, blending modern skyscrapers with traditional Korean architecture. In the foreground, a group of diverse, stylish young adults are seen enjoying street food at a bustling night market, their faces lit by the warm glow of lanterns. The image seamlessly combines the energy of urban life with the rich cultural heritage of Seoul, featuring iconic landmarks like Namsan Tower and Gyeongbokgung Palace in the background. The composition evokes a sense of adventure, discovery, and youthful excitement, enticing viewers to explore the vibrant tapestry of experiences that Seoul has to offer. Soft, dreamy lighting and a color palette of deep blues, warm oranges, and soft pinks create an inviting atmosphere that appeals to the target audience's desire for unique and Instagram-worthy travel experiences.
+2025-07-18 16:06:34,769 - INFO - werkzeug - 127.0.0.1 - - [18/Jul/2025 16:06:34] "POST /content/generate-image HTTP/1.1" 200 -
+2025-07-18 16:07:03,985 - INFO - werkzeug -  * Detected change in 'C:\\Users\\김오성OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\routes\\content_routes.py', reloading
+2025-07-18 16:07:04,220 - INFO - werkzeug -  * Restarting with stat
+2025-07-18 16:07:05,994 - INFO - services.app_core.app_factory_utils - S3 client initialized and registered successfully.
+2025-07-18 16:07:05,999 - INFO - services.app_core.app_factory_utils - Bedrock (text) client initialized successfully!
+2025-07-18 16:07:06,001 - INFO - services.app_core.app_factory_utils - Bedrock (image) client initialized successfully!
+2025-07-18 16:07:06,001 - INFO - services.ai_rag.pgvector_store - PgVectorStore 초기화 완료. DB 연결 및 모델은 런타임에 이루어집니다.
+2025-07-18 16:07:06,592 - INFO - services.ai_rag.pgvector_store - 'knowledge_base_vectors' 테이블이 이미 존재합니다.
+2025-07-18 16:07:06,632 - INFO - services.ai_rag.pgvector_store - 'idx_knowledge_base_vectors_embedding_hnsw' 벡터 인덱스가 이미 존재합니다.
+2025-07-18 16:07:06,644 - INFO - services.ai_rag.rag_system - PgVector DB에서 FAISS 인덱스로 청크들을 로드합니다.
+2025-07-18 16:07:06,806 - INFO - services.ai_rag.pgvector_store - Retrieved 77 vectors from PgVector DB.
+2025-07-18 16:07:06,832 - INFO - services.ai_rag.faiss_indexer - FAISS index built. Total indexed chunks: 77, Embedding dimension: 1024
+2025-07-18 16:07:06,832 - INFO - services.ai_rag.rag_system - FAISS 인덱스 구축 완료. 총 청크 수: 77
+2025-07-18 16:07:06,833 - INFO - services.ai_rag.rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 16:07:06,833 - INFO - services.app_core.app_factory_utils - RAG system initialized.
+2025-07-18 16:07:06,837 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 16:07:06,837 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 16:07:06,838 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 16:07:06,838 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 16:07:06,838 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 16:07:06,838 - INFO - services.ai_rag.embedding_generator - Precomputing industry embeddings...
+2025-07-18 16:07:07,689 - INFO - services.ai_rag.embedding_generator - Finished precomputing 5 industry embeddings.
+2025-07-18 16:07:07,689 - INFO - services.generation.text_generator - TextGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 16:07:07,690 - INFO - services.app_core.app_factory_utils - Text generator initialized.
+2025-07-18 16:07:07,690 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 16:07:07,690 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 16:07:07,691 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 16:07:07,691 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 16:07:07,692 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 16:07:07,692 - INFO - services.generation.translation_generator - TranslationGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 16:07:07,692 - INFO - services.app_core.app_factory_utils - Translation generator initialized.
+2025-07-18 16:07:07,693 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 16:07:07,693 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 16:07:07,693 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 16:07:07,693 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 16:07:07,694 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 16:07:07,694 - INFO - services.generation.image_generator - ImageGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 16:07:07,694 - INFO - services.app_core.app_factory_utils - Image generator initialized.
+2025-07-18 16:07:07,694 - INFO - services.app_core.app_factory_utils - All AI services initialized.
+2025-07-18 16:07:07,767 - INFO - services.app_core.app_factory_utils - Blueprints registered.
+2025-07-18 16:07:07,767 - INFO - apscheduler.scheduler - Scheduler started
+2025-07-18 16:07:07,768 - INFO - services.app_core.scheduler - Scheduler started.
+2025-07-18 16:07:08,312 - INFO - apscheduler.scheduler - Added job "scheduled_marketing_crawl" to job store "default"
+2025-07-18 16:07:08,312 - INFO - services.app_core.scheduler - Scheduler: Weekly marketing news crawling job registered with system user ID.
+2025-07-18 16:07:08,312 - INFO - services.app_core.scheduler - Scheduler tasks initialized.
+2025-07-18 16:07:08,312 - INFO - services.app_core.app_factory_utils - Image save directory created at app start: C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\generated_images
+2025-07-18 16:07:08,313 - INFO - __init__ - Flask application fully initialized and ready to serve!
+2025-07-18 16:07:08,313 - INFO - __init__ - Starting Flask development server...
+2025-07-18 16:07:18,549 - INFO - services.utils.prompt_manager - Translation LLM Prompt for '서울 여행지' generated.
+2025-07-18 16:07:25,538 - INFO - services.generation.translation_generator - Translated '서울 여행지' to English prompt: A vibrant and inviting Instagram ad image in a 4:5 vertical ratio, showcasing the enchanting beauty of Seoul's top travel destinations for adventurous millennials in their 20s and 30s. The composition features a dynamic collage of iconic Seoul landmarks, including the majestic Gyeongbokgung Palace, the futuristic Dongdaemun Design Plaza, and the serene Bukchon Hanok Village. The foreground captures a young, stylish couple exploring the bustling streets of Myeongdong, surrounded by neon signs and street food stalls. Soft, warm lighting bathes the scene, evoking a sense of golden hour magic. The image balances modern urban energy with traditional Korean charm, appealing to the target audience's desire for unique cultural experiences and Instagram-worthy moments. Negative space at the top allows for potential text overlay, perfect for highlighting travel tips or promotional offers.
+2025-07-18 16:07:30,191 - INFO - services.generation.image_generator - Image saved to generated_images\sns_image_137c7e674cd9483c8a21896de57facab.png
+2025-07-18 16:07:30,283 - INFO - werkzeug - 127.0.0.1 - - [18/Jul/2025 16:07:30] "POST /content/generate-image HTTP/1.1" 200 -
+2025-07-18 16:07:30,329 - INFO - werkzeug - 127.0.0.1 - - [18/Jul/2025 16:07:30] "GET /content/generated_images/sns_image_137c7e674cd9483c8a21896de57facab.png HTTP/1.1" 200 -
+2025-07-18 16:08:12,220 - INFO - services.app_core.app_factory_utils - S3 client initialized and registered successfully.
+2025-07-18 16:08:12,225 - INFO - services.app_core.app_factory_utils - Bedrock (text) client initialized successfully!
+2025-07-18 16:08:12,227 - INFO - services.app_core.app_factory_utils - Bedrock (image) client initialized successfully!
+2025-07-18 16:08:12,227 - INFO - services.ai_rag.pgvector_store - PgVectorStore 초기화 완료. DB 연결 및 모델은 런타임에 이루어집니다.
+2025-07-18 16:08:12,914 - INFO - services.ai_rag.pgvector_store - 'knowledge_base_vectors' 테이블이 이미 존재합니다.
+2025-07-18 16:08:12,952 - INFO - services.ai_rag.pgvector_store - 'idx_knowledge_base_vectors_embedding_hnsw' 벡터 인덱스가 이미 존재합니다.
+2025-07-18 16:08:12,963 - INFO - services.ai_rag.rag_system - PgVector DB에서 FAISS 인덱스로 청크들을 로드합니다.
+2025-07-18 16:08:13,220 - INFO - services.ai_rag.pgvector_store - Retrieved 77 vectors from PgVector DB.
+2025-07-18 16:08:13,235 - INFO - services.ai_rag.faiss_indexer - FAISS index built. Total indexed chunks: 77, Embedding dimension: 1024
+2025-07-18 16:08:13,236 - INFO - services.ai_rag.rag_system - FAISS 인덱스 구축 완료. 총 청크 수: 77
+2025-07-18 16:08:13,236 - INFO - services.ai_rag.rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 16:08:13,236 - INFO - services.app_core.app_factory_utils - RAG system initialized.
+2025-07-18 16:08:13,244 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 16:08:13,244 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 16:08:13,244 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 16:08:13,245 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 16:08:13,245 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 16:08:13,245 - INFO - services.ai_rag.embedding_generator - Precomputing industry embeddings...
+2025-07-18 16:08:14,084 - INFO - services.ai_rag.embedding_generator - Finished precomputing 5 industry embeddings.
+2025-07-18 16:08:14,085 - INFO - services.generation.text_generator - TextGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 16:08:14,085 - INFO - services.app_core.app_factory_utils - Text generator initialized.
+2025-07-18 16:08:14,085 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 16:08:14,086 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 16:08:14,086 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 16:08:14,086 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 16:08:14,086 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 16:08:14,087 - INFO - services.generation.translation_generator - TranslationGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 16:08:14,087 - INFO - services.app_core.app_factory_utils - Translation generator initialized.
+2025-07-18 16:08:14,087 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 16:08:14,088 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 16:08:14,088 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 16:08:14,088 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 16:08:14,089 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 16:08:14,089 - INFO - services.generation.image_generator - ImageGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 16:08:14,089 - INFO - services.app_core.app_factory_utils - Image generator initialized.
+2025-07-18 16:08:14,089 - INFO - services.app_core.app_factory_utils - All AI services initialized.
+2025-07-18 16:08:14,169 - INFO - services.app_core.app_factory_utils - Blueprints registered.
+2025-07-18 16:08:14,170 - INFO - apscheduler.scheduler - Scheduler started
+2025-07-18 16:08:14,171 - INFO - services.app_core.scheduler - Scheduler started.
+2025-07-18 16:08:14,668 - INFO - apscheduler.scheduler - Added job "scheduled_marketing_crawl" to job store "default"
+2025-07-18 16:08:14,668 - INFO - services.app_core.scheduler - Scheduler: Weekly marketing news crawling job registered with system user ID.
+2025-07-18 16:08:14,668 - INFO - services.app_core.scheduler - Scheduler tasks initialized.
+2025-07-18 16:08:14,669 - INFO - services.app_core.app_factory_utils - Image save directory created at app start: C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\generated_images
+2025-07-18 16:08:14,669 - INFO - __init__ - Flask application fully initialized and ready to serve!
+2025-07-18 16:08:14,669 - INFO - __init__ - Starting Flask development server...
+2025-07-18 16:08:14,674 - INFO - werkzeug - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.100.120:5000
+2025-07-18 16:08:14,675 - INFO - werkzeug - [33mPress CTRL+C to quit[0m
+2025-07-18 16:08:14,676 - INFO - werkzeug -  * Restarting with stat
+2025-07-18 16:08:16,512 - INFO - services.app_core.app_factory_utils - S3 client initialized and registered successfully.
+2025-07-18 16:08:16,515 - INFO - services.app_core.app_factory_utils - Bedrock (text) client initialized successfully!
+2025-07-18 16:08:16,517 - INFO - services.app_core.app_factory_utils - Bedrock (image) client initialized successfully!
+2025-07-18 16:08:16,518 - INFO - services.ai_rag.pgvector_store - PgVectorStore 초기화 완료. DB 연결 및 모델은 런타임에 이루어집니다.
+2025-07-18 16:08:17,275 - INFO - services.ai_rag.pgvector_store - 'knowledge_base_vectors' 테이블이 이미 존재합니다.
+2025-07-18 16:08:17,341 - INFO - services.ai_rag.pgvector_store - 'idx_knowledge_base_vectors_embedding_hnsw' 벡터 인덱스가 이미 존재합니다.
+2025-07-18 16:08:17,374 - INFO - services.ai_rag.rag_system - PgVector DB에서 FAISS 인덱스로 청크들을 로드합니다.
+2025-07-18 16:08:17,549 - INFO - services.ai_rag.pgvector_store - Retrieved 77 vectors from PgVector DB.
+2025-07-18 16:08:17,583 - INFO - services.ai_rag.faiss_indexer - FAISS index built. Total indexed chunks: 77, Embedding dimension: 1024
+2025-07-18 16:08:17,583 - INFO - services.ai_rag.rag_system - FAISS 인덱스 구축 완료. 총 청크 수: 77
+2025-07-18 16:08:17,584 - INFO - services.ai_rag.rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 16:08:17,584 - INFO - services.app_core.app_factory_utils - RAG system initialized.
+2025-07-18 16:08:17,587 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 16:08:17,587 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 16:08:17,587 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 16:08:17,588 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 16:08:17,588 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 16:08:17,588 - INFO - services.ai_rag.embedding_generator - Precomputing industry embeddings...
+2025-07-18 16:08:18,515 - INFO - services.ai_rag.embedding_generator - Finished precomputing 5 industry embeddings.
+2025-07-18 16:08:18,515 - INFO - services.generation.text_generator - TextGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 16:08:18,515 - INFO - services.app_core.app_factory_utils - Text generator initialized.
+2025-07-18 16:08:18,516 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 16:08:18,516 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 16:08:18,516 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 16:08:18,517 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 16:08:18,517 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 16:08:18,517 - INFO - services.generation.translation_generator - TranslationGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 16:08:18,517 - INFO - services.app_core.app_factory_utils - Translation generator initialized.
+2025-07-18 16:08:18,517 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 16:08:18,517 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 16:08:18,518 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 16:08:18,518 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 16:08:18,518 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 16:08:18,518 - INFO - services.generation.image_generator - ImageGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 16:08:18,518 - INFO - services.app_core.app_factory_utils - Image generator initialized.
+2025-07-18 16:08:18,518 - INFO - services.app_core.app_factory_utils - All AI services initialized.
+2025-07-18 16:08:18,576 - INFO - services.app_core.app_factory_utils - Blueprints registered.
+2025-07-18 16:08:18,577 - INFO - apscheduler.scheduler - Scheduler started
+2025-07-18 16:08:18,577 - INFO - services.app_core.scheduler - Scheduler started.
+2025-07-18 16:08:19,133 - INFO - apscheduler.scheduler - Added job "scheduled_marketing_crawl" to job store "default"
+2025-07-18 16:08:19,134 - INFO - services.app_core.scheduler - Scheduler: Weekly marketing news crawling job registered with system user ID.
+2025-07-18 16:08:19,134 - INFO - services.app_core.scheduler - Scheduler tasks initialized.
+2025-07-18 16:08:19,134 - INFO - services.app_core.app_factory_utils - Image save directory created at app start: C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\generated_images
+2025-07-18 16:08:19,134 - INFO - __init__ - Flask application fully initialized and ready to serve!
+2025-07-18 16:08:19,134 - INFO - __init__ - Starting Flask development server...
+2025-07-18 16:08:19,233 - INFO - werkzeug - 127.0.0.1 - - [18/Jul/2025 16:08:19] "GET /content/content HTTP/1.1" 200 -
+2025-07-18 16:08:19,275 - INFO - werkzeug - 127.0.0.1 - - [18/Jul/2025 16:08:19] "[36mGET /static/images/unnamed2.png HTTP/1.1[0m" 304 -
+2025-07-18 16:08:19,293 - INFO - werkzeug - 127.0.0.1 - - [18/Jul/2025 16:08:19] "GET /static/js/index.js HTTP/1.1" 200 -
+2025-07-18 16:11:33,070 - INFO - werkzeug - 127.0.0.1 - - [18/Jul/2025 16:11:33] "GET /content/content HTTP/1.1" 200 -
+2025-07-18 16:11:33,094 - INFO - werkzeug - 127.0.0.1 - - [18/Jul/2025 16:11:33] "[36mGET /static/images/unnamed2.png HTTP/1.1[0m" 304 -
+2025-07-18 16:11:33,102 - INFO - werkzeug - 127.0.0.1 - - [18/Jul/2025 16:11:33] "GET /static/js/index.js HTTP/1.1" 200 -
+2025-07-18 16:11:56,892 - INFO - services.app_core.app_factory_utils - S3 client initialized and registered successfully.
+2025-07-18 16:11:56,898 - INFO - services.app_core.app_factory_utils - Bedrock (text) client initialized successfully!
+2025-07-18 16:11:56,899 - INFO - services.app_core.app_factory_utils - Bedrock (image) client initialized successfully!
+2025-07-18 16:11:56,900 - INFO - services.ai_rag.pgvector_store - PgVectorStore 초기화 완료. DB 연결 및 모델은 런타임에 이루어집니다.
+2025-07-18 16:11:57,458 - INFO - services.ai_rag.pgvector_store - 'knowledge_base_vectors' 테이블이 이미 존재합니다.
+2025-07-18 16:11:57,475 - INFO - services.ai_rag.pgvector_store - 'idx_knowledge_base_vectors_embedding_hnsw' 벡터 인덱스가 이미 존재합니다.
+2025-07-18 16:11:57,484 - INFO - services.ai_rag.rag_system - PgVector DB에서 FAISS 인덱스로 청크들을 로드합니다.
+2025-07-18 16:11:57,629 - INFO - services.ai_rag.pgvector_store - Retrieved 77 vectors from PgVector DB.
+2025-07-18 16:11:57,640 - INFO - services.ai_rag.faiss_indexer - FAISS index built. Total indexed chunks: 77, Embedding dimension: 1024
+2025-07-18 16:11:57,640 - INFO - services.ai_rag.rag_system - FAISS 인덱스 구축 완료. 총 청크 수: 77
+2025-07-18 16:11:57,640 - INFO - services.ai_rag.rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 16:11:57,641 - INFO - services.app_core.app_factory_utils - RAG system initialized.
+2025-07-18 16:11:57,644 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 16:11:57,644 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 16:11:57,644 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 16:11:57,645 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 16:11:57,645 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 16:11:57,646 - INFO - services.ai_rag.embedding_generator - Precomputing industry embeddings...
+2025-07-18 16:11:58,630 - INFO - services.ai_rag.embedding_generator - Finished precomputing 5 industry embeddings.
+2025-07-18 16:11:58,630 - INFO - services.generation.text_generator - TextGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 16:11:58,631 - INFO - services.app_core.app_factory_utils - Text generator initialized.
+2025-07-18 16:11:58,631 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 16:11:58,631 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 16:11:58,632 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 16:11:58,632 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 16:11:58,632 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 16:11:58,632 - INFO - services.generation.translation_generator - TranslationGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 16:11:58,632 - INFO - services.app_core.app_factory_utils - Translation generator initialized.
+2025-07-18 16:11:58,633 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 16:11:58,633 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 16:11:58,634 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 16:11:58,634 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 16:11:58,634 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 16:11:58,634 - INFO - services.generation.image_generator - ImageGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 16:11:58,634 - INFO - services.app_core.app_factory_utils - Image generator initialized.
+2025-07-18 16:11:58,634 - INFO - services.app_core.app_factory_utils - All AI services initialized.
+2025-07-18 16:11:58,694 - INFO - services.app_core.app_factory_utils - Blueprints registered.
+2025-07-18 16:11:58,695 - INFO - apscheduler.scheduler - Scheduler started
+2025-07-18 16:11:58,696 - INFO - services.app_core.scheduler - Scheduler started.
+2025-07-18 16:11:59,187 - INFO - apscheduler.scheduler - Added job "scheduled_marketing_crawl" to job store "default"
+2025-07-18 16:11:59,187 - INFO - services.app_core.scheduler - Scheduler: Weekly marketing news crawling job registered with system user ID.
+2025-07-18 16:11:59,187 - INFO - services.app_core.scheduler - Scheduler tasks initialized.
+2025-07-18 16:11:59,188 - INFO - services.app_core.app_factory_utils - Image save directory created at app start: C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\generated_images
+2025-07-18 16:11:59,188 - INFO - __init__ - Flask application fully initialized and ready to serve!
+2025-07-18 16:11:59,188 - INFO - __init__ - Starting Flask development server...
+2025-07-18 16:11:59,193 - INFO - werkzeug - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.100.120:5000
+2025-07-18 16:11:59,193 - INFO - werkzeug - [33mPress CTRL+C to quit[0m
+2025-07-18 16:11:59,196 - INFO - werkzeug -  * Restarting with stat
+2025-07-18 16:12:00,816 - INFO - services.app_core.app_factory_utils - S3 client initialized and registered successfully.
+2025-07-18 16:12:00,819 - INFO - services.app_core.app_factory_utils - Bedrock (text) client initialized successfully!
+2025-07-18 16:12:00,822 - INFO - services.app_core.app_factory_utils - Bedrock (image) client initialized successfully!
+2025-07-18 16:12:00,822 - INFO - services.ai_rag.pgvector_store - PgVectorStore 초기화 완료. DB 연결 및 모델은 런타임에 이루어집니다.
+2025-07-18 16:12:01,552 - INFO - services.ai_rag.pgvector_store - 'knowledge_base_vectors' 테이블이 이미 존재합니다.
+2025-07-18 16:12:01,623 - INFO - services.ai_rag.pgvector_store - 'idx_knowledge_base_vectors_embedding_hnsw' 벡터 인덱스가 이미 존재합니다.
+2025-07-18 16:12:01,657 - INFO - services.ai_rag.rag_system - PgVector DB에서 FAISS 인덱스로 청크들을 로드합니다.
+2025-07-18 16:12:01,889 - INFO - services.ai_rag.pgvector_store - Retrieved 77 vectors from PgVector DB.
+2025-07-18 16:12:01,924 - INFO - services.ai_rag.faiss_indexer - FAISS index built. Total indexed chunks: 77, Embedding dimension: 1024
+2025-07-18 16:12:01,925 - INFO - services.ai_rag.rag_system - FAISS 인덱스 구축 완료. 총 청크 수: 77
+2025-07-18 16:12:01,925 - INFO - services.ai_rag.rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 16:12:01,925 - INFO - services.app_core.app_factory_utils - RAG system initialized.
+2025-07-18 16:12:01,930 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 16:12:01,930 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 16:12:01,930 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 16:12:01,931 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 16:12:01,931 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 16:12:01,931 - INFO - services.ai_rag.embedding_generator - Precomputing industry embeddings...
+2025-07-18 16:12:02,786 - INFO - services.ai_rag.embedding_generator - Finished precomputing 5 industry embeddings.
+2025-07-18 16:12:02,787 - INFO - services.generation.text_generator - TextGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 16:12:02,787 - INFO - services.app_core.app_factory_utils - Text generator initialized.
+2025-07-18 16:12:02,787 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 16:12:02,788 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 16:12:02,788 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 16:12:02,788 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 16:12:02,788 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 16:12:02,788 - INFO - services.generation.translation_generator - TranslationGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 16:12:02,788 - INFO - services.app_core.app_factory_utils - Translation generator initialized.
+2025-07-18 16:12:02,789 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 16:12:02,789 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 16:12:02,789 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 16:12:02,789 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 16:12:02,789 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 16:12:02,789 - INFO - services.generation.image_generator - ImageGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 16:12:02,789 - INFO - services.app_core.app_factory_utils - Image generator initialized.
+2025-07-18 16:12:02,790 - INFO - services.app_core.app_factory_utils - All AI services initialized.
+2025-07-18 16:12:02,849 - INFO - services.app_core.app_factory_utils - Blueprints registered.
+2025-07-18 16:12:02,850 - INFO - apscheduler.scheduler - Scheduler started
+2025-07-18 16:12:02,850 - INFO - services.app_core.scheduler - Scheduler started.
+2025-07-18 16:12:03,295 - INFO - apscheduler.scheduler - Added job "scheduled_marketing_crawl" to job store "default"
+2025-07-18 16:12:03,296 - INFO - services.app_core.scheduler - Scheduler: Weekly marketing news crawling job registered with system user ID.
+2025-07-18 16:12:03,296 - INFO - services.app_core.scheduler - Scheduler tasks initialized.
+2025-07-18 16:12:03,296 - INFO - services.app_core.app_factory_utils - Image save directory created at app start: C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\generated_images
+2025-07-18 16:12:03,296 - INFO - __init__ - Flask application fully initialized and ready to serve!
+2025-07-18 16:12:03,297 - INFO - __init__ - Starting Flask development server...
+2025-07-18 16:12:07,051 - INFO - services.utils.prompt_manager - Translation LLM Prompt for '서울 여행지 추천' generated.
+2025-07-18 16:12:13,267 - INFO - services.generation.translation_generator - Translated '서울 여행지 추천' to English prompt: A trendy and vibrant Instagram post optimized for a 4:5 aspect ratio, showcasing the best travel spots in Seoul for tech-savvy 30-something developers. The image features a collage of iconic Seoul landmarks, including the futuristic Dongdaemun Design Plaza, the serene Bukchon Hanok Village, and the bustling Gangnam district. In the foreground, a stylish young professional is seen working on a laptop in a modern coffee shop, symbolizing the perfect blend of work and leisure. The color palette is dominated by cool blues and warm oranges, reflecting Seoul's dynamic energy and technological prowess. Sleek typography overlays highlight popular coding cafes and co-working spaces, while subtle icons of Wi-Fi symbols and coffee cups are scattered throughout. The composition strikes a balance between Seoul's rich cultural heritage and its cutting-edge technology scene, appealing to the target audience's desire for an inspiring and productive travel experience.
+2025-07-18 16:12:16,921 - INFO - werkzeug - 127.0.0.1 - - [18/Jul/2025 16:12:16] "GET /content/content HTTP/1.1" 200 -
+2025-07-18 16:12:16,986 - INFO - werkzeug - 127.0.0.1 - - [18/Jul/2025 16:12:16] "[36mGET /static/js/index.js HTTP/1.1[0m" 304 -
+2025-07-18 16:12:16,987 - INFO - werkzeug - 127.0.0.1 - - [18/Jul/2025 16:12:16] "[36mGET /static/images/unnamed2.png HTTP/1.1[0m" 304 -
+2025-07-18 16:12:17,756 - INFO - services.generation.image_generator - Image saved to generated_images\sns_image_99d1953f19d0470194a443e046cc1066.png
+2025-07-18 16:12:17,867 - INFO - werkzeug - 127.0.0.1 - - [18/Jul/2025 16:12:17] "POST /content/generate-image HTTP/1.1" 200 -
+2025-07-18 16:12:33,071 - INFO - services.utils.prompt_manager - Translation LLM Prompt for '서울 여행지 추천' generated.
+2025-07-18 16:12:39,676 - INFO - services.generation.translation_generator - Translated '서울 여행지 추천' to English prompt: A vibrant and trendy Instagram post optimized for a 4:5 ratio, showcasing the best of Seoul's travel destinations for tech-savvy 30-something developers. The image features a split-screen composition with four distinct quadrants, each highlighting a different aspect of Seoul: a modern skyline view from Namsan Tower, a serene traditional hanok village, a bustling night market scene, and a cutting-edge tech hub or co-working space. The color palette is dominated by cool blues and warm oranges, reflecting both the city's technological advancement and its rich cultural heritage. Overlaid with sleek, minimalist icons representing various activities (coding, sightseeing, dining), the image conveys a perfect blend of work and play. The overall aesthetic is clean and modern, with sharp lines and high contrast, appealing to the design-conscious developer crowd. A subtle filter adds a contemporary, Instagram-worthy finish to the entire composition.
+2025-07-18 16:12:42,710 - INFO - services.generation.image_generator - Image saved to generated_images\sns_image_ccde2cdb871e4d228989409531b6b1fe.png
+2025-07-18 16:12:42,775 - INFO - werkzeug - 127.0.0.1 - - [18/Jul/2025 16:12:42] "POST /content/generate-image HTTP/1.1" 200 -
+2025-07-18 16:12:42,797 - INFO - werkzeug - 127.0.0.1 - - [18/Jul/2025 16:12:42] "GET /content/generated_images/sns_image_ccde2cdb871e4d228989409531b6b1fe.png HTTP/1.1" 200 -
+2025-07-18 16:24:58,478 - INFO - werkzeug -  * Detected change in 'C:\\Users\\김오성OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\routes\\content_routes.py', reloading
+2025-07-18 16:24:58,715 - INFO - werkzeug -  * Restarting with stat
+2025-07-18 16:25:00,486 - INFO - services.app_core.app_factory_utils - S3 client initialized and registered successfully.
+2025-07-18 16:25:00,489 - INFO - services.app_core.app_factory_utils - Bedrock (text) client initialized successfully!
+2025-07-18 16:25:00,491 - INFO - services.app_core.app_factory_utils - Bedrock (image) client initialized successfully!
+2025-07-18 16:25:00,491 - INFO - services.ai_rag.pgvector_store - PgVectorStore 초기화 완료. DB 연결 및 모델은 런타임에 이루어집니다.
+2025-07-18 16:25:00,978 - INFO - services.ai_rag.pgvector_store - 'knowledge_base_vectors' 테이블이 이미 존재합니다.
+2025-07-18 16:25:01,007 - INFO - services.ai_rag.pgvector_store - 'idx_knowledge_base_vectors_embedding_hnsw' 벡터 인덱스가 이미 존재합니다.
+2025-07-18 16:25:01,020 - INFO - services.ai_rag.rag_system - PgVector DB에서 FAISS 인덱스로 청크들을 로드합니다.
+2025-07-18 16:25:01,167 - INFO - services.ai_rag.pgvector_store - Retrieved 77 vectors from PgVector DB.
+2025-07-18 16:25:01,183 - INFO - services.ai_rag.faiss_indexer - FAISS index built. Total indexed chunks: 77, Embedding dimension: 1024
+2025-07-18 16:25:01,183 - INFO - services.ai_rag.rag_system - FAISS 인덱스 구축 완료. 총 청크 수: 77
+2025-07-18 16:25:01,183 - INFO - services.ai_rag.rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 16:25:01,183 - INFO - services.app_core.app_factory_utils - RAG system initialized.
+2025-07-18 16:25:01,188 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 16:25:01,188 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 16:25:01,188 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 16:25:01,189 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 16:25:01,189 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 16:25:01,189 - INFO - services.ai_rag.embedding_generator - Precomputing industry embeddings...
+2025-07-18 16:25:01,971 - INFO - services.ai_rag.embedding_generator - Finished precomputing 5 industry embeddings.
+2025-07-18 16:25:01,972 - INFO - services.generation.text_generator - TextGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 16:25:01,972 - INFO - services.app_core.app_factory_utils - Text generator initialized.
+2025-07-18 16:25:01,973 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 16:25:01,973 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 16:25:01,973 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 16:25:01,973 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 16:25:01,973 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 16:25:01,973 - INFO - services.generation.translation_generator - TranslationGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 16:25:01,974 - INFO - services.app_core.app_factory_utils - Translation generator initialized.
+2025-07-18 16:25:01,974 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 16:25:01,975 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 16:25:01,975 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 16:25:01,975 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 16:25:01,975 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 16:25:01,975 - INFO - services.generation.image_generator - ImageGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 16:25:01,975 - INFO - services.app_core.app_factory_utils - Image generator initialized.
+2025-07-18 16:25:01,975 - INFO - services.app_core.app_factory_utils - All AI services initialized.
+2025-07-18 16:25:02,041 - INFO - services.app_core.app_factory_utils - Blueprints registered.
+2025-07-18 16:25:02,042 - INFO - apscheduler.scheduler - Scheduler started
+2025-07-18 16:25:02,042 - INFO - services.app_core.scheduler - Scheduler started.
+2025-07-18 16:25:03,345 - INFO - apscheduler.scheduler - Added job "scheduled_marketing_crawl" to job store "default"
+2025-07-18 16:25:03,346 - INFO - services.app_core.scheduler - Scheduler: Weekly marketing news crawling job registered with system user ID.
+2025-07-18 16:25:03,346 - INFO - services.app_core.scheduler - Scheduler tasks initialized.
+2025-07-18 16:25:03,346 - INFO - services.app_core.app_factory_utils - Image save directory created at app start: C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\generated_images
+2025-07-18 16:25:03,347 - INFO - __init__ - Flask application fully initialized and ready to serve!
+2025-07-18 16:25:03,347 - INFO - __init__ - Starting Flask development server...
+2025-07-18 16:30:53,523 - INFO - werkzeug -  * Detected change in 'C:\\Users\\김오성OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\routes\\content_routes.py', reloading
+2025-07-18 16:30:53,928 - INFO - werkzeug -  * Restarting with stat
+2025-07-18 16:30:55,654 - INFO - services.app_core.app_factory_utils - S3 client initialized and registered successfully.
+2025-07-18 16:30:55,658 - INFO - services.app_core.app_factory_utils - Bedrock (text) client initialized successfully!
+2025-07-18 16:30:55,659 - INFO - services.app_core.app_factory_utils - Bedrock (image) client initialized successfully!
+2025-07-18 16:30:55,660 - INFO - services.ai_rag.pgvector_store - PgVectorStore 초기화 완료. DB 연결 및 모델은 런타임에 이루어집니다.
+2025-07-18 16:30:56,210 - INFO - services.ai_rag.pgvector_store - 'knowledge_base_vectors' 테이블이 이미 존재합니다.
+2025-07-18 16:30:56,250 - INFO - services.ai_rag.pgvector_store - 'idx_knowledge_base_vectors_embedding_hnsw' 벡터 인덱스가 이미 존재합니다.
+2025-07-18 16:30:56,282 - INFO - services.ai_rag.rag_system - PgVector DB에서 FAISS 인덱스로 청크들을 로드합니다.
+2025-07-18 16:30:56,398 - INFO - services.ai_rag.pgvector_store - Retrieved 77 vectors from PgVector DB.
+2025-07-18 16:30:56,433 - INFO - services.ai_rag.faiss_indexer - FAISS index built. Total indexed chunks: 77, Embedding dimension: 1024
+2025-07-18 16:30:56,433 - INFO - services.ai_rag.rag_system - FAISS 인덱스 구축 완료. 총 청크 수: 77
+2025-07-18 16:30:56,433 - INFO - services.ai_rag.rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 16:30:56,433 - INFO - services.app_core.app_factory_utils - RAG system initialized.
+2025-07-18 16:30:56,438 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 16:30:56,438 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 16:30:56,439 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 16:30:56,439 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 16:30:56,439 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 16:30:56,439 - INFO - services.ai_rag.embedding_generator - Precomputing industry embeddings...
+2025-07-18 16:30:57,328 - INFO - services.ai_rag.embedding_generator - Finished precomputing 5 industry embeddings.
+2025-07-18 16:30:57,329 - INFO - services.generation.text_generator - TextGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 16:30:57,329 - INFO - services.app_core.app_factory_utils - Text generator initialized.
+2025-07-18 16:30:57,330 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 16:30:57,330 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 16:30:57,330 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 16:30:57,331 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 16:30:57,331 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 16:30:57,331 - INFO - services.generation.translation_generator - TranslationGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 16:30:57,331 - INFO - services.app_core.app_factory_utils - Translation generator initialized.
+2025-07-18 16:30:57,331 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 16:30:57,332 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 16:30:57,332 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 16:30:57,332 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 16:30:57,332 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 16:30:57,333 - INFO - services.generation.image_generator - ImageGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 16:30:57,333 - INFO - services.app_core.app_factory_utils - Image generator initialized.
+2025-07-18 16:30:57,333 - INFO - services.app_core.app_factory_utils - All AI services initialized.
+2025-07-18 16:30:57,393 - INFO - services.app_core.app_factory_utils - Blueprints registered.
+2025-07-18 16:30:57,394 - INFO - apscheduler.scheduler - Scheduler started
+2025-07-18 16:30:57,394 - INFO - services.app_core.scheduler - Scheduler started.
+2025-07-18 16:30:57,898 - INFO - apscheduler.scheduler - Added job "scheduled_marketing_crawl" to job store "default"
+2025-07-18 16:30:57,899 - INFO - services.app_core.scheduler - Scheduler: Weekly marketing news crawling job registered with system user ID.
+2025-07-18 16:30:57,899 - INFO - services.app_core.scheduler - Scheduler tasks initialized.
+2025-07-18 16:30:57,899 - INFO - services.app_core.app_factory_utils - Image save directory created at app start: C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\generated_images
+2025-07-18 16:30:57,899 - INFO - __init__ - Flask application fully initialized and ready to serve!
+2025-07-18 16:30:57,899 - INFO - __init__ - Starting Flask development server...
+2025-07-18 16:32:19,846 - INFO - werkzeug -  * Detected change in 'C:\\Users\\김오성OhsungKim\\Documents\\workspace\\ai-content-marketing-tool\\routes\\content_routes.py', reloading
+2025-07-18 16:32:20,073 - INFO - werkzeug -  * Restarting with stat
+2025-07-18 16:32:21,615 - INFO - services.app_core.app_factory_utils - S3 client initialized and registered successfully.
+2025-07-18 16:32:21,619 - INFO - services.app_core.app_factory_utils - Bedrock (text) client initialized successfully!
+2025-07-18 16:32:21,621 - INFO - services.app_core.app_factory_utils - Bedrock (image) client initialized successfully!
+2025-07-18 16:32:21,622 - INFO - services.ai_rag.pgvector_store - PgVectorStore 초기화 완료. DB 연결 및 모델은 런타임에 이루어집니다.
+2025-07-18 16:32:22,271 - INFO - services.ai_rag.pgvector_store - 'knowledge_base_vectors' 테이블이 이미 존재합니다.
+2025-07-18 16:32:22,336 - INFO - services.ai_rag.pgvector_store - 'idx_knowledge_base_vectors_embedding_hnsw' 벡터 인덱스가 이미 존재합니다.
+2025-07-18 16:32:22,371 - INFO - services.ai_rag.rag_system - PgVector DB에서 FAISS 인덱스로 청크들을 로드합니다.
+2025-07-18 16:32:22,480 - INFO - services.ai_rag.pgvector_store - Retrieved 77 vectors from PgVector DB.
+2025-07-18 16:32:22,502 - INFO - services.ai_rag.faiss_indexer - FAISS index built. Total indexed chunks: 77, Embedding dimension: 1024
+2025-07-18 16:32:22,502 - INFO - services.ai_rag.rag_system - FAISS 인덱스 구축 완료. 총 청크 수: 77
+2025-07-18 16:32:22,502 - INFO - services.ai_rag.rag_system - RAGSystem 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 16:32:22,503 - INFO - services.app_core.app_factory_utils - RAG system initialized.
+2025-07-18 16:32:22,507 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 16:32:22,507 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 16:32:22,508 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 16:32:22,508 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 16:32:22,508 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 16:32:22,508 - INFO - services.ai_rag.embedding_generator - Precomputing industry embeddings...
+2025-07-18 16:32:23,384 - INFO - services.ai_rag.embedding_generator - Finished precomputing 5 industry embeddings.
+2025-07-18 16:32:23,384 - INFO - services.generation.text_generator - TextGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 16:32:23,384 - INFO - services.app_core.app_factory_utils - Text generator initialized.
+2025-07-18 16:32:23,385 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 16:32:23,385 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 16:32:23,385 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 16:32:23,385 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 16:32:23,386 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 16:32:23,386 - INFO - services.generation.translation_generator - TranslationGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 16:32:23,386 - INFO - services.app_core.app_factory_utils - Translation generator initialized.
+2025-07-18 16:32:23,386 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_list from blog_list.md
+2025-07-18 16:32:23,386 - INFO - services.utils.prompt_manager - Loaded prompt template: blog_review from blog_review.md
+2025-07-18 16:32:23,387 - INFO - services.utils.prompt_manager - Loaded prompt template: email_newsletter from email_newsletter.md
+2025-07-18 16:32:23,387 - INFO - services.utils.prompt_manager - Loaded prompt template: email_promotion from email_promotion.md
+2025-07-18 16:32:23,387 - INFO - services.utils.prompt_manager - Loaded prompt template: translate_to_english from translate_to_english.md
+2025-07-18 16:32:23,387 - INFO - services.generation.image_generator - ImageGenerator 인스턴스가 성공적으로 초기화되었습니다.
+2025-07-18 16:32:23,387 - INFO - services.app_core.app_factory_utils - Image generator initialized.
+2025-07-18 16:32:23,387 - INFO - services.app_core.app_factory_utils - All AI services initialized.
+2025-07-18 16:32:23,455 - INFO - services.app_core.app_factory_utils - Blueprints registered.
+2025-07-18 16:32:23,456 - INFO - apscheduler.scheduler - Scheduler started
+2025-07-18 16:32:23,456 - INFO - services.app_core.scheduler - Scheduler started.
+2025-07-18 16:32:24,000 - INFO - apscheduler.scheduler - Added job "scheduled_marketing_crawl" to job store "default"
+2025-07-18 16:32:24,000 - INFO - services.app_core.scheduler - Scheduler: Weekly marketing news crawling job registered with system user ID.
+2025-07-18 16:32:24,000 - INFO - services.app_core.scheduler - Scheduler tasks initialized.
+2025-07-18 16:32:24,001 - INFO - services.app_core.app_factory_utils - Image save directory created at app start: C:\Users\김오성OhsungKim\Documents\workspace\ai-content-marketing-tool\generated_images
+2025-07-18 16:32:24,001 - INFO - __init__ - Flask application fully initialized and ready to serve!
+2025-07-18 16:32:24,001 - INFO - __init__ - Starting Flask development server...
+2025-07-18 16:32:50,951 - INFO - werkzeug - 127.0.0.1 - - [18/Jul/2025 16:32:50] "GET /content/history HTTP/1.1" 200 -
+2025-07-18 16:32:51,025 - INFO - werkzeug - 127.0.0.1 - - [18/Jul/2025 16:32:51] "[36mGET /static/js/history.js HTTP/1.1[0m" 304 -
+2025-07-18 16:32:51,271 - INFO - werkzeug - 127.0.0.1 - - [18/Jul/2025 16:32:51] "GET /content/history-api HTTP/1.1" 200 -
+2025-07-18 16:32:55,288 - INFO - werkzeug - 127.0.0.1 - - [18/Jul/2025 16:32:55] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2025-07-18 16:33:55,731 - INFO - werkzeug - 127.0.0.1 - - [18/Jul/2025 16:33:55] "GET /content/history HTTP/1.1" 200 -
+2025-07-18 16:33:55,763 - INFO - werkzeug - 127.0.0.1 - - [18/Jul/2025 16:33:55] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2025-07-18 16:33:55,765 - INFO - werkzeug - 127.0.0.1 - - [18/Jul/2025 16:33:55] "[36mGET /static/js/history.js HTTP/1.1[0m" 304 -
+2025-07-18 16:33:55,970 - INFO - werkzeug - 127.0.0.1 - - [18/Jul/2025 16:33:55] "GET /content/history-api HTTP/1.1" 200 -
