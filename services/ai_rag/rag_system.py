@@ -175,40 +175,38 @@ class RAGSystem:
             logger.error(f"문서 '{s3_key}' 제거 실패: {e}", exc_info=True)
             raise
 
-    def retrieve(self, query_text: str, k: int = 3, user_id: Optional[int] = None) -> List[Tuple[str, float, dict]]:
+    def retrieve(self, query_text: str, k: int = 3, user_id: Optional[int] = None, industry: Optional[str] = None) -> List[Tuple[str, float, dict]]:
         """
-        쿼리 텍스트에 대해 가장 관련성 높은 문서를 검색합니다.
-        
-        Args:
-            query_text: 검색할 쿼리 텍스트
-            k: 반환할 최대 결과 수
-            user_id: 사용자 ID (필터링용)
-            
-        Returns:
-            (청크_텍스트, 유사도_점수, 메타데이터) 튜플의 리스트
+        쿼리 텍스트에 대해 FAISS → PgVector(user_id → industry → 전체) 순서로 관련 문서를 검색합니다.
         """
         query_embedding = self.get_embedding(query_text)
         if query_embedding is None:
-            logger.warning("쿼리 임베딩 생성 실패. 검색을 수행할 수 없습니다.")
             return []
 
-        # PgVector DB에서 우선 검색
-        logger.info(f"사용자 ID {user_id}에 대해 PgVector DB에서 검색합니다.")
+        # 1. FAISS에서 먼저 검색 (임계값 적용)
+        if hasattr(self.faiss_indexer, 'search_with_distance'):
+            faiss_results = self.faiss_indexer.search_with_distance(query_embedding, k)
+            filtered_faiss = [(chunk, dist, {}) for chunk, dist in faiss_results if dist < 0.5]
+        else:
+            faiss_results = self.faiss_indexer.search(query_embedding, k)
+            filtered_faiss = [(chunk, 0.0, {}) for chunk in faiss_results]
+        if filtered_faiss:
+            return filtered_faiss
+
+        # 2. PgVector DB에서 user_id → industry → 전체 순서로 검색
         pgvector_results = self.pgvector_store.search(query_embedding, k, user_id=user_id)
-        
         if pgvector_results:
-            logger.info(f"PgVector DB에서 {len(pgvector_results)}개 청크를 검색했습니다.")
             return [(chunk, score, metadata) for chunk, score, metadata in pgvector_results]
-        
-        # PgVector DB에 결과가 없으면 FAISS에서 검색
-        logger.warning("PgVector DB에 관련 청크가 없습니다. FAISS에서 검색합니다.")
-        faiss_results = self.faiss_indexer.search(query_embedding, k)
-        
-        if faiss_results:
-            logger.info(f"FAISS에서 {len(faiss_results)}개 청크를 검색했습니다.")
-            return [(chunk, 0.0, {}) for chunk in faiss_results]  # FAISS는 점수를 제공하지 않음
-        
-        logger.warning("FAISS에서도 관련 청크를 찾을 수 없습니다.")
+
+        if industry is not None:
+            pgvector_results = self.pgvector_store.search(query_embedding, k, industry=industry)
+            if pgvector_results:
+                return [(chunk, score, metadata) for chunk, score, metadata in pgvector_results]
+
+        pgvector_results = self.pgvector_store.search(query_embedding, k)
+        if pgvector_results:
+            return [(chunk, score, metadata) for chunk, score, metadata in pgvector_results]
+
         return []
 
 

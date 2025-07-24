@@ -1,23 +1,34 @@
 # app_core/scheduler.py
-
 import logging
 from flask import Flask
 from flask_apscheduler import APScheduler
 from extensions import scheduler
 from models import User
 from services.web_crawling.crawler_tasks import perform_marketing_crawl_task
+from services.ai_rag.rag_system import get_rag_system
 
 logger = logging.getLogger(__name__)
+
+def add_cron_job(job_id, func, trigger_kwargs, description=None):
+    """공통 cron job 등록 함수."""
+    if scheduler.get_job(job_id):
+        scheduler.remove_job(job_id)
+        logger.info(f"Existing job '{job_id}' removed.")
+    scheduler.add_job(
+        id=job_id,
+        func=func,
+        trigger='cron',
+        **trigger_kwargs,
+        timezone='Asia/Seoul',
+        misfire_grace_time=3600
+    )
+    logger.info(f"Scheduler: {description or job_id} job registered.")
 
 def _start_and_clean_scheduler():
     """스케줄러를 시작하고 기존 작업을 정리합니다."""
     if not scheduler.running:
         scheduler.start()
         logger.info("Scheduler started.")
-
-    if scheduler.get_job('scheduled_marketing_crawl'):
-        scheduler.remove_job('scheduled_marketing_crawl')
-        logger.info("Existing 'scheduled_marketing_crawl' job removed.")
 
 def _get_system_crawler_user(app: Flask) -> User | None:
     """시스템 크롤러 사용자를 데이터베이스에서 조회합니다."""
@@ -30,24 +41,18 @@ def _get_system_crawler_user(app: Flask) -> User | None:
     
     return user
 
-def _add_marketing_crawl_job(user_id: int):
-    """주간 마케팅 뉴스 크롤링 작업을 스케줄러에 등록합니다."""
-    # Flask-APScheduler는 scheduler.app을 통해 Flask 앱 컨텍스트에 접근 가능
-    def _perform_task_wrapper(system_user_id: int):
-        with scheduler.app.app_context(): # 스케줄러 인스턴스에 연결된 앱 컨텍스트 사용
-            perform_marketing_crawl_task(system_user_id=system_user_id)
+def _marketing_crawl_job(user_id: int):
+    with scheduler.app.app_context():
+        perform_marketing_crawl_task(system_user_id=user_id)
 
-    scheduler.add_job(
-        id='scheduled_marketing_crawl',
-        func=lambda: _perform_task_wrapper(user_id),
-        trigger='cron',
-        day_of_week='tue',
-        hour=11,
-        minute=20,
-        timezone='Asia/Seoul',
-        misfire_grace_time=3600
-    )
-    logger.info("Scheduler: Weekly marketing news crawling job registered with system user ID.")
+def _faiss_reload_job():
+    with scheduler.app.app_context():
+        rag_system = get_rag_system()
+        if rag_system:
+            rag_system._load_faiss_from_pgvector()
+            logger.info("Scheduler: FAISS 인덱스가 PgVector DB로부터 재로드되었습니다.")
+        else:
+            logger.error("Scheduler: RAGSystem 인스턴스를 가져올 수 없어 FAISS 인덱스 재로드 실패.")
 
 def initialize_scheduler_tasks(app: Flask):
     """
@@ -62,5 +67,23 @@ def initialize_scheduler_tasks(app: Flask):
     if not system_crawler_user:
         return # 사용자 없으면 작업 등록 안 함
 
-    _add_marketing_crawl_job(system_crawler_user.id)
+    add_cron_job(
+        job_id='scheduled_marketing_crawl',
+        func=lambda: _marketing_crawl_job(system_crawler_user.id),
+        trigger_kwargs={
+            'day_of_week': 'thu',
+            'hour': 15,
+            'minute': 4
+        },
+        description='Weekly marketing news crawling'
+    )
+    add_cron_job(
+        job_id='scheduled_faiss_reload',
+        func=_faiss_reload_job,
+        trigger_kwargs={
+            'hour': 3,
+            'minute': 0
+        },
+        description='Daily FAISS reload'
+    )
     logger.info("Scheduler tasks initialized.")

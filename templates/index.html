@@ -4,202 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contento - AI 마케팅 콘텐츠 자동 생성</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
-
-        :root {
-            --primary-color: #0052cc; /* Professional Blue */
-            --secondary-color: #f4f5f7; /* Light Gray */
-            --dark-color: #172b4d; /* Dark Blue-Gray Text */
-            --light-color: #ffffff;
-            --font-family: 'Noto Sans KR', sans-serif;
-        }
-
-        body {
-            margin: 0;
-            font-family: var(--font-family);
-            line-height: 1.6;
-            color: var(--dark-color);
-        }
-
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 30px;
-        }
-
-        header {
-            background: var(--light-color);
-            padding: 20px 0;
-            border-bottom: 1px solid #ddd;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-
-        nav ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            align-items: center; 
-        }
-
-        nav ul li {
-            margin-left: 25px;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: var(--dark-color);
-            font-weight: 700;
-        }
-        
-        nav a:hover {
-            color: var(--primary-color);
-        }
-        
-        .cta-button {
-            display: inline-block;
-            background: var(--primary-color);
-            color: var(--light-color) !important; /* Ensure text is light */
-            padding: 15px 35px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 18px;
-            font-weight: 700;
-            transition: background 0.3s ease;
-        }
-
-        .cta-button:hover {
-            background: #003e99;
-        }
-
-        .hero {
-            background: var(--secondary-color);
-            padding: 80px 0;
-            text-align: center;
-        }
-
-        .hero h1 {
-            font-size: 48px;
-            margin-bottom: 10px;
-            color: var(--dark-color);
-        }
-
-        .hero p {
-            font-size: 20px;
-            max-width: 700px;
-            margin: 0 auto 30px auto;
-        }
-
-        .section {
-            padding: 60px 0;
-            text-align: center;
-        }
-
-        .section-title {
-            font-size: 36px;
-            margin-bottom: 40px;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            text-align: left;
-        }
-
-        .feature-card {
-            background: var(--light-color);
-            padding: 30px;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-        
-        .feature-card .icon {
-            font-size: 40px;
-            margin-bottom: 15px;
-            color: var(--primary-color);
-        }
-
-        .feature-card h3 {
-            font-size: 22px;
-            margin-bottom: 10px;
-        }
-
-        #testimonials {
-            background: var(--secondary-color);
-        }
-        
-        .testimonial-card {
-            max-width: 700px;
-            margin: 0 auto;
-            padding: 30px;
-            background: var(--light-color);
-            border-radius: 8px;
-            border-left: 5px solid var(--primary-color);
-        }
-
-        .testimonial-card p {
-            font-style: italic;
-            font-size: 18px;
-            margin-bottom: 15px;
-        }
-
-        .testimonial-card .author {
-            font-weight: 700;
-            text-align: right;
-        }
-
-        .final-cta {
-            background: var(--dark-color);
-            color: var(--light-color);
-        }
-        
-        .final-cta h2 {
-            color: var(--light-color);
-        }
-
-        .final-cta p {
-            margin-bottom: 30px;
-        }
-
-        footer {
-            background: #222;
-            color: #ccc;
-            padding: 30px 0;
-            text-align: center;
-        }
-        
-        footer p {
-            margin: 0;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_index.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <header>
-        <div class="container">
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
             <div class="logo">Contento</div>
             <nav>
                 <ul>
-                    <li><a href="#features">주요 기능</a></li>
-                    <li><a href="#testimonials">사용 후기</a></li>
-                    
+                    <li><a href="#features">기능</a></li>
+                    <li><a href="#testimonials">후기</a></li>
                     {% if current_user.is_authenticated %}
                         <li><a href="{{ url_for('content_routes.content_page') }}">워크스페이스</a></li>
                         <li><a href="{{ url_for('auth_routes.logout') }}">로그아웃</a></li>
@@ -216,23 +33,24 @@
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 <div class="container">
-                {% for category, message in messages %}
-                    <div class="alert alert-info alert-dismissible fade show my-3" role="alert">
-                        {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                {% endfor %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-info alert-dismissible fade show my-3" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
                 </div>
             {% endif %}
         {% endwith %}
+
         <section class="hero">
-            <div class="container">
-                <h1>클릭 한 번으로, 전문가 수준의 마케팅 콘텐츠를 완성하세요</h1>
-                <p>Contento의 강력한 AI가 블로그, SNS, 광고 문구를 자동으로 생성하여 당신의 비즈니스 성장을 가속화합니다.</p>
+            <div class="container hero-animate">
+                <h1 class="hero-title" id="hero-typing"></h1>
+                <p class="hero-desc">시간은 줄이고, 성과는 높이고.<br>콘텐츠 제작의 모든 과정을 <b>Contento</b>가 대신합니다.</p>
                 {% if current_user.is_authenticated %}
-                    <a href="{{ url_for('content_routes.content_page') }}" class="cta-button">워크스페이스로 이동</a>
+                    <a href="{{ url_for('content_routes.content_page') }}" class="cta-button hero-btn">워크스페이스로 이동</a>
                 {% else %}
-                    <a href="{{ url_for('auth_routes.register') }}" class="cta-button">지금 바로 무료 체험</a>
+                    <a href="{{ url_for('auth_routes.register') }}" class="cta-button hero-btn">지금 무료 체험하기</a>
                 {% endif %}
             </div>
         </section>
@@ -244,40 +62,57 @@
                     <div class="feature-card">
                         <div class="icon">📝</div>
                         <h3>블로그 글 생성</h3>
-                        <p>핵심 키워드 몇 개만 입력하면 SEO에 최적화된 고품질의 블로그 포스트를 몇 분 만에 완성합니다.</p>
+                        <p>키워드 몇 개면, 고품질 블로그 글이 완성됩니다. SEO까지 자동으로.</p>
                     </div>
                     <div class="feature-card">
                         <div class="icon">📱</div>
-                        <h3>SNS 게시물 자동화</h3>
-                        <p>타겟 고객의 참여를 유도하는 인스타그램, 페이스북 콘텐츠를 다양한 톤앤매너로 손쉽게 제작합니다.</p>
+                        <h3>SNS 콘텐츠 제작</h3>
+                        <p>브랜드 톤에 딱 맞는 SNS 글을 빠르게 생성하세요. 타겟별 스타일도 OK.</p>
                     </div>
                     <div class="feature-card">
                         <div class="icon">📧</div>
-                        <h3>이메일 글 제작</h3>
-                        <p>뉴스레터, 프로모션 이메일 등 목적에 맞는 이메일 본문을 AI가 작성하여 고객의 높은 반응률을 이끌어냅니다.</p>
+                        <h3>이메일 마케팅 자동화</h3>
+                        <p>뉴스레터부터 프로모션까지, 클릭 유도형 이메일을 AI가 작성합니다.</p>
                     </div>
                 </div>
             </div>
         </section>
-        
+
         <section id="testimonials" class="section">
             <div class="container">
-                <h2 class="section-title">고객들이 말하는 Contento</h2>
-                <div class="testimonial-card">
-                    <p>"Contento 도입 후 콘텐츠 제작 시간이 1/10로 줄었습니다. 이제 저희 팀은 더 중요한 전략에 집중할 수 있게 되었어요. 정말 혁신적인 서비스입니다."</p>
-                    <p class="author">- 김민준, 스타트업 A사 마케팅 팀장</p>
+                <div class="testimonial-carousel">
+                    <div class="testimonial-card" style="display:block;">
+                        <div class="testimonial-avatar"><span>🧑‍💻</span></div>
+                        <div class="testimonial-quote">“Contento 덕분에 마케팅팀이 야근을 잊었습니다. AI가 우리 브랜드를 정말 잘 이해해줘요!”</div>
+                        <div class="testimonial-author">정다은<span>F&B 스타트업 마케터</span></div>
+                    </div>
+                    <div class="testimonial-card" style="display:none;">
+                        <div class="testimonial-avatar"><span>👩‍🎨</span></div>
+                        <div class="testimonial-quote">“SNS 이미지까지 자동 생성! 디자인팀과 협업이 훨씬 빨라졌어요.”</div>
+                        <div class="testimonial-author">박소현<span>디자인 에이전시 팀장</span></div>
+                    </div>
+                    <div class="testimonial-card" style="display:none;">
+                        <div class="testimonial-avatar"><span>👨‍🏫</span></div>
+                        <div class="testimonial-quote">“블로그 글이 매번 상위 노출! 교육업계에서 입소문이 자자합니다.”</div>
+                        <div class.testimonial-author">이재훈<span>온라인 교육 대표</span></div>
+                    </div>
+                    <div class="testimonial-card" style="display:none;">
+                        <div class="testimonial-avatar"><span>🧑‍🔬</span></div>
+                        <div class="testimonial-quote">“이메일 캠페인 자동화로 신규 고객 전환율이 2배! 진짜 혁신이에요.”</div>
+                        <div class="testimonial-author">최윤호<span>헬스케어 마케팅 매니저</span></div>
+                    </div>
                 </div>
             </div>
         </section>
 
         <section class="section final-cta">
             <div class="container">
-                <h2 class="section-title">이제 마케팅 콘텐츠 고민은 AI에게 맡기세요</h2>
-                <p>지금 Contento와 함께 마케팅의 미래를 경험하세요.</p>
-                 {% if current_user.is_authenticated %}
+                <h2 class="section-title">이제 콘텐츠는 AI에게 맡기세요</h2>
+                <p>단 3분이면, 당신의 마케팅이 달라집니다. Contento와 함께 시작해보세요.</p>
+                {% if current_user.is_authenticated %}
                     <a href="{{ url_for('content_routes.content_page') }}" class="cta-button">워크스페이스로 이동</a>
                 {% else %}
-                    <a href="{{ url_for('auth_routes.register') }}" class="cta-button">가입하고 콘텐츠 만들기</a>
+                    <a href="{{ url_for('auth_routes.register') }}" class="cta-button">가입하고 시작하기</a>
                 {% endif %}
             </div>
         </section>
@@ -290,6 +125,6 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 </body>
 </html>

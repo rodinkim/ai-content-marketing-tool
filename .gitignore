@@ -47,3 +47,6 @@ Thumbs.db
 
 # VSCode
 .vscode/
+
+# system_user
+create_system_user.py

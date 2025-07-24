@@ -16,23 +16,27 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentAdminTarget = null;
     let currentPage = 1;
 
-    // 사용자에게 메시지를 표시하는 함수
-    function showMessage(message, type = 'success') {
-        const alertDiv = document.createElement('div');
-        alertDiv.className = `alert alert-${type} alert-dismissible fade show m-3`;
-        alertDiv.setAttribute('role', 'alert');
-        alertDiv.innerHTML = `${message}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
-        alertContainer.prepend(alertDiv);
-        setTimeout(() => bootstrap.Alert.getOrCreateInstance(alertDiv)?.close(), 5000);
+    // 공통 알림 함수(utils.js의 showAlert 사용)
+    function showAlert(message, type = 'success') {
+        if (window.showAlert) {
+            window.showAlert(message, type);
+        } else {
+            // fallback
+            alert(message);
+        }
     }
 
     // 산업 분야 목록을 가져와 드롭다운을 채우는 함수
     async function fetchAndPopulateIndustries() {
         if (!industrySelect) return;
         try {
-            const response = await fetch(flaskIndustriesListUrl);
-            if (!response.ok) throw new Error('Failed to fetch industries');
-            const data = await response.json();
+            let data;
+            if (window.fetchJson) {
+                data = await window.fetchJson(flaskIndustriesListUrl);
+            } else {
+                const response = await fetch(flaskIndustriesListUrl);
+                data = await response.json();
+            }
             industrySelect.innerHTML = '<option value="">-- 산업 분야 --</option>';
             (data.industries || []).forEach(industry => {
                 const option = document.createElement('option');
@@ -50,18 +54,20 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!userListDiv) return;
         userListDiv.innerHTML = '<h5>관리 대상</h5>';
         try {
-            const [usersRes, industriesRes] = await Promise.all([fetch(flaskUsersListUrl), fetch(flaskIndustriesListUrl)]);
-            if (!usersRes.ok || !industriesRes.ok) throw new Error('Failed to fetch admin data');
-
-            const usersData = await usersRes.json();
-            const industriesData = await industriesRes.json();
-
+            let usersData, industriesData;
+            if (window.fetchJson) {
+                usersData = await window.fetchJson(flaskUsersListUrl);
+                industriesData = await window.fetchJson(flaskIndustriesListUrl);
+            } else {
+                const [usersRes, industriesRes] = await Promise.all([fetch(flaskUsersListUrl), fetch(flaskIndustriesListUrl)]);
+                usersData = await usersRes.json();
+                industriesData = await industriesRes.json();
+            }
             const industryHeader = document.createElement('h5');
             industryHeader.className = 'mt-4';
             industryHeader.textContent = '산업별 공용';
             userListDiv.appendChild(industryHeader);
             industriesData.industries.forEach(industry => userListDiv.appendChild(createSidebarItem('industry', industry, '🏢')));
-
             const userHeader = document.createElement('h5');
             userHeader.className = 'mt-4';
             userHeader.textContent = '사용자별';
@@ -96,10 +102,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // 파일 목록을 서버에서 가져와 렌더링하는 함수 (페이지네이션 적용)
     async function fetchAndRenderFiles(type = null, name = null, page = 1) {
         if (!fileListDiv) return;
-        
-        currentPage = page; // 현재 페이지 상태 업데이트
+        currentPage = page;
         fileListDiv.innerHTML = '<div class="d-flex justify-content-center p-5"><div class="spinner-border text-primary" role="status"></div></div>';
-        
         let url = new URL(isAdminUser ? flaskAdminTargetFilesUrlBase : flaskKnowledgeBaseFilesUrl, window.location.origin);
         if (isAdminUser && type && name) {
             url.searchParams.set('target_type', type);
@@ -107,13 +111,15 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('fileListHeader').textContent = `[${name}] 파일 목록`;
         }
         url.searchParams.set('page', page);
-
         try {
-            const response = await fetch(url);
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            const data = await response.json();
+            let data;
+            if (window.fetchJson) {
+                data = await window.fetchJson(url);
+            } else {
+                const response = await fetch(url);
+                data = await response.json();
+            }
             const files = data.files || [];
-            
             fileListDiv.innerHTML = '';
             if (files.length === 0) {
                 fileListDiv.innerHTML = `<p class="text-muted text-center p-5">표시할 파일이 없습니다.</p>`;
@@ -143,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch (error) {
             console.error('Error fetching files:', error);
             fileListDiv.innerHTML = '<p class="text-danger text-center">파일 목록을 불러오는 데 실패했습니다.</p>';
-            renderPagination(null); // 실패 시 페이지네이션도 클리어
+            renderPagination(null);
         }
     }
 
@@ -216,26 +222,25 @@ document.addEventListener('DOMContentLoaded', function() {
         event.preventDefault();
         const url = urlInput.value;
         const industry = industrySelect.value;
-        if (!industry) { showMessage('산업 분야를 선택해주세요.', 'warning'); return; }
-
+        if (!industry) { showAlert('산업 분야를 선택해주세요.', 'warning'); return; }
         addUrlSpinner.style.display = 'inline-block';
         addUrlIcon.style.display = 'none';
         addUrlBtn.disabled = true;
-
         try {
-            const response = await fetch(flaskAddUrlUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url, industry }) });
-            const result = await response.json();
-            if (response.ok) {
-                showMessage(result.message, 'success');
-                urlInput.value = '';
-                const { type, name } = currentAdminTarget || {};
-                fetchAndRenderFiles(type, name, 1);
+            let result;
+            if (window.fetchJson) {
+                result = await window.fetchJson(flaskAddUrlUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url, industry }) });
             } else {
-                showMessage(result.error || 'URL 추가 실패', 'danger');
+                const response = await fetch(flaskAddUrlUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url, industry }) });
+                result = await response.json();
             }
+            showAlert(result.message, 'success');
+            urlInput.value = '';
+            const { type, name } = currentAdminTarget || {};
+            fetchAndRenderFiles(type, name, 1);
         } catch (error) {
             console.error('Error adding URL:', error);
-            showMessage('네트워크 오류: 지식 추가 중 오류 발생', 'danger');
+            showAlert('네트워크 오류: 지식 추가 중 오류 발생', 'danger');
         } finally {
             addUrlSpinner.style.display = 'none';
             addUrlIcon.style.display = 'block';
@@ -250,18 +255,19 @@ document.addEventListener('DOMContentLoaded', function() {
             const s3Key = deleteButton.dataset.s3Key;
             if (confirm(`'${s3Key.split('/').pop()}' 파일을 정말로 삭제하시겠습니까?`)) {
                 try {
-                    const response = await fetch(`${flaskDeleteFileUrlBase}${s3Key}`, { method: 'DELETE' });
-                    const result = await response.json();
-                    if (response.ok) {
-                        showMessage(result.message, 'success');
-                        const { type, name } = currentAdminTarget || {};
-                        fetchAndRenderFiles(type, name, currentPage);
+                    let result;
+                    if (window.fetchJson) {
+                        result = await window.fetchJson(`${flaskDeleteFileUrlBase}${s3Key}`, { method: 'DELETE' });
                     } else {
-                        showMessage(result.error || '파일 삭제 실패', 'danger');
+                        const response = await fetch(`${flaskDeleteFileUrlBase}${s3Key}`, { method: 'DELETE' });
+                        result = await response.json();
                     }
+                    showAlert(result.message, 'success');
+                    const { type, name } = currentAdminTarget || {};
+                    fetchAndRenderFiles(type, name, currentPage);
                 } catch (error) {
                     console.error('Error deleting file:', error);
-                    showMessage('파일 삭제 중 오류 발생', 'danger');
+                    showAlert('파일 삭제 중 오류 발생', 'danger');
                 }
             }
         }

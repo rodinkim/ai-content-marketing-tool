@@ -1,28 +1,23 @@
 document.addEventListener('DOMContentLoaded', function() {
     const historyList = document.getElementById('historyList');
     const noHistoryMessage = document.getElementById('noHistoryMessage');
-    const contentDetailModal = new bootstrap.Modal(document.getElementById('contentDetailModal'));
     const searchInput = document.getElementById('searchInput');
     const resetFiltersBtn = document.getElementById('resetFiltersBtn');
     let allHistoryData = [];
 
-    function showDynamicAlert(message, category = 'success') {
-        const alertContainer = document.querySelector('.page-header');
-        if (!alertContainer) return;
-        
-        const alertDiv = document.createElement('div');
-        alertDiv.className = `alert alert-${category} alert-dismissible fade show mt-3`;
-        alertDiv.setAttribute('role', 'alert');
-        alertDiv.innerHTML = `${message}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
-        alertContainer.after(alertDiv);
-
-        setTimeout(() => bootstrap.Alert.getOrCreateInstance(alertDiv)?.close(), 5000);
+    // 공통 알림 함수(utils.js의 showAlert 사용)
+    function showAlert(message, type = 'success') {
+        if (window.showAlert) {
+            window.showAlert(message, type);
+        } else {
+            // fallback
+            alert(message);
+        }
     }
 
     function displayHistoryList(data) {
         historyList.innerHTML = '';
         noHistoryMessage.style.display = 'none';
-
         if (data.length === 0) {
             if (searchInput.value) {
                 historyList.innerHTML = '<p class="text-muted text-center p-4">검색 결과가 없습니다.</p>';
@@ -34,14 +29,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 const historyItem = document.createElement('div');
                 historyItem.className = 'history-item';
                 historyItem.setAttribute('data-id', item.id);
-
                 let iconChar = '📄';
                 if (item.content_type.includes('SNS')) iconChar = '📱';
                 if (item.content_type.includes('이메일')) iconChar = '✉️';
-                
                 const date = new Date(item.timestamp);
                 const formattedDate = `${date.getFullYear()}. ${String(date.getMonth() + 1).padStart(2, '0')}. ${String(date.getDate()).padStart(2, '0')}.`;
-
                 historyItem.innerHTML = `
                     <div class="icon"><span>${iconChar}</span></div>
                     <div class="content">
@@ -69,54 +61,38 @@ document.addEventListener('DOMContentLoaded', function() {
         displayHistoryList(filteredData);
     }
 
+    // fetchHistory, deleteContent 등 fetchJson 사용
     async function fetchHistory() {
         try {
-            const response = await fetch(flaskHistoryApiUrl);
-            if (!response.ok) throw new Error('Network response was not ok');
-            allHistoryData = await response.json();
+            if (window.fetchJson) {
+                allHistoryData = await window.fetchJson(flaskHistoryApiUrl);
+            } else {
+                const response = await fetch(flaskHistoryApiUrl);
+                allHistoryData = await response.json();
+            }
             displayHistoryList(allHistoryData);
         } catch (error) {
             console.error('Fetch error:', error);
             historyList.innerHTML = '<p class="text-danger text-center">기록을 불러오는 데 실패했습니다.</p>';
         }
     }
-    
-    function populateModal(item) {
-        document.getElementById('modalTopic').textContent = item.topic;
-        document.getElementById('modalIndustry').textContent = item.industry;
-        document.getElementById('modalContentType').textContent = item.content_type;
-        document.getElementById('modalTone').textContent = item.tone;
-        document.getElementById('modalLength').textContent = item.length_option;
-        document.getElementById('modalSeoKeywords').textContent = item.seo_keywords || '없음';
-        
-        const emailSubjectArea = document.getElementById('modalEmailSubjectArea');
-        if (item.content_type === '이메일 뉴스레터' && item.email_subject) {
-            document.getElementById('modalEmailSubject').textContent = item.email_subject;
-            emailSubjectArea.style.display = 'block';
-        } else {
-            emailSubjectArea.style.display = 'none';
-        }
-        document.getElementById('modalGeneratedContent').innerHTML = marked.parse(item.content);
-        document.getElementById('modalLoadForEditBtn').setAttribute('data-id', item.id);
-    }
+
+    // 상세 콘텐츠 모달 관련 함수, 이벤트 리스너, 변수 등 모두 삭제
+    // (populateModal, modalGeneratedContent, modalLoadForEditBtn, modalCopyBtn 등)
 
     historyList.addEventListener('click', function(e) {
         const itemElement = e.target.closest('.history-item');
         if (!itemElement) return;
-
         const contentId = itemElement.getAttribute('data-id');
-        
         if (e.target.closest('.delete-btn')) {
             if (confirm('정말로 이 기록을 삭제하시겠습니까?')) {
                 deleteContent(contentId);
             }
             return;
         }
-
-        const itemData = allHistoryData.find(item => item.id == contentId);
-        if (itemData) {
-            populateModal(itemData);
-            contentDetailModal.show();
+        // 상세 페이지로 이동
+        if (contentId) {
+            window.location.href = `/history/${contentId}`;
         }
     });
 
@@ -128,36 +104,43 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function deleteContent(contentId) {
         try {
-            const response = await fetch(`${flaskDeleteContentUrlBase}${contentId}`, { method: 'DELETE' });
-            const responseData = await response.json();
-            if (response.ok) {
-                showDynamicAlert(responseData.message || '콘텐츠가 성공적으로 삭제되었습니다.');
+            let responseData;
+            if (window.fetchJson) {
+                responseData = await window.fetchJson(`${flaskDeleteContentUrlBase}${contentId}`, { method: 'DELETE' });
+                showAlert(responseData.message || '콘텐츠가 성공적으로 삭제되었습니다.');
                 fetchHistory();
             } else {
-                showDynamicAlert(responseData.error || '삭제에 실패했습니다.', 'danger');
+                const response = await fetch(`${flaskDeleteContentUrlBase}${contentId}`, { method: 'DELETE' });
+                responseData = await response.json();
+                if (response.ok) {
+                    showAlert(responseData.message || '콘텐츠가 성공적으로 삭제되었습니다.');
+                    fetchHistory();
+                } else {
+                    showAlert(responseData.error || '삭제에 실패했습니다.', 'danger');
+                }
             }
         } catch (error) {
             console.error('Delete error:', error);
-            showDynamicAlert('삭제 중 오류가 발생했습니다.', 'danger');
+            showAlert('삭제 중 오류가 발생했습니다.', 'danger');
         }
     }
-    
-    document.getElementById('modalCopyBtn').addEventListener('click', function() {
-        const content = document.getElementById('modalGeneratedContent').innerText;
-        navigator.clipboard.writeText(content).then(() => {
-            this.textContent = '복사 완료!';
-            setTimeout(() => { this.textContent = '클립보드에 복사'; }, 2000);
-        }).catch(err => console.error('Copy failed:', err));
-    });
 
-    document.getElementById('modalLoadForEditBtn').addEventListener('click', function() {
-        const contentId = this.getAttribute('data-id');
-        const itemToEdit = allHistoryData.find(item => item.id == contentId);
-        if (itemToEdit) {
-            localStorage.setItem('editContentData', JSON.stringify(itemToEdit));
-            window.location.href = flaskIndexUrl;
-        }
-    });
+    // document.getElementById('modalCopyBtn').addEventListener('click', function() { // 삭제됨
+    //     const content = document.getElementById('modalGeneratedContent').innerText;
+    //     navigator.clipboard.writeText(content).then(() => {
+    //         this.textContent = '복사 완료!';
+    //         setTimeout(() => { this.textContent = '클립보드에 복사'; }, 2000);
+    //     }).catch(err => console.error('Copy failed:', err));
+    // }); // 삭제됨
+
+    // document.getElementById('modalLoadForEditBtn').addEventListener('click', function() { // 삭제됨
+    //     const contentId = this.getAttribute('data-id');
+    //     const itemToEdit = allHistoryData.find(item => item.id == contentId);
+    //     if (itemToEdit) {
+    //         localStorage.setItem('editContentData', JSON.stringify(itemToEdit));
+    //         window.location.href = flaskIndexUrl;
+    //     }
+    // }); // 삭제됨
 
     fetchHistory();
 });

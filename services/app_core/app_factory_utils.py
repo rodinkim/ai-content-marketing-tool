@@ -185,9 +185,11 @@ def register_app_blueprints(app: Flask):
     from routes.auth_routes import auth_bp
     from routes.content_routes import content_bp
     from routes.knowledge_base_routes import knowledge_base_bp
+    from routes.history_routes import history_bp
     app.register_blueprint(auth_bp)
     app.register_blueprint(content_bp, url_prefix='/content')
     app.register_blueprint(knowledge_base_bp, url_prefix='/knowledge_base')
+    app.register_blueprint(history_bp)
     logger.info("Blueprints registered.")
 
 def create_image_dir_at_app_start(app: Flask):

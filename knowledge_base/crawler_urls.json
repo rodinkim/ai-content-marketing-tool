@@ -1,18 +1,32 @@
 {
     "IT": [
-        "https://www.itworld.co.kr/artificial-intelligence/"
+        "https://www.itworld.co.kr/artificial-intelligence/",
+        "https://www.itworld.co.kr/generative-ai/",
+        "https://www.itworld.co.kr/mobile/",
+        "https://www.itworld.co.kr/apple/",
+        "https://www.itworld.co.kr/cloud-computing/"
     ],
     "Fashion": [
-        "https://fashionbiz.co.kr/search/%EC%97%AC%EC%84%B1%EB%B3%B5?type=3&tagId=1"
-    ],
-    "Food": [
-        "https://www.10000recipe.com/ranking/home_new.html"
+        "https://fashionbiz.co.kr/search/%EC%97%AC%EC%84%B1%EB%B3%B5?type=3&tagId=1",
+        "https://fashionbiz.co.kr/search/%EB%82%A8%EC%84%B1%EB%B3%B5?type=3&tagId=2",
+        "https://fashionbiz.co.kr/search/%ED%85%8C%ED%81%AC,%20%EC%86%8C%EC%9E%AC?type=3&tagId=8",
+        "https://fashionbiz.co.kr/search/%EC%95%A1%EC%84%B8%EC%84%9C%EB%A6%AC?type=3&tagId=6",
+        "https://fashionbiz.co.kr/search/%EC%95%84%EC%9B%83%EB%8F%84%EC%96%B4?type=3&tagId=5"
+
     ],
     "Healthcare": [ 
-        "https://news.hidoc.co.kr/news/articleList.html?sc_section_code=S1N1&view_type=sm"
+        "https://news.hidoc.co.kr/news/articleList.html?sc_section_code=S1N1&view_type=sm",
+        "https://news.hidoc.co.kr/news/articleList.html?sc_section_code=S1N3&view_type=sm",
+        "https://news.hidoc.co.kr/news/articleList.html?sc_section_code=S1N4&view_type=sm",
+        "https://news.hidoc.co.kr/news/articleList.html?sc_section_code=S1N5&view_type=sm",
+        "https://news.hidoc.co.kr/news/articleList.html?sc_section_code=S1N6&view_type=sm"
     ],
     "Travel": [
-        "https://www.tlnews.co.kr/news/articleList.html?sc_sub_section_code=S2N38&view_type=sm"
+        "https://www.tlnews.co.kr/news/articleList.html?sc_sub_section_code=S2N38&view_type=sm",
+        "https://www.tlnews.co.kr/news/articleList.html?sc_sub_section_code=S2N39&view_type=sm",
+        "https://www.tlnews.co.kr/news/articleList.html?sc_sub_section_code=S2N42&view_type=sm",
+        "https://www.tlnews.co.kr/news/articleList.html?sc_sub_section_code=S2N43&view_type=sm",
+        "https://www.tlnews.co.kr/news/articleList.html?sc_sub_section_code=S2N44&view_type=sm"
     ],
     "Beauty": [
         "https://www.beautynury.com/news/lists/cat/10/page/"

@@ -1,0 +1,33 @@
+/* history.html 전용 스타일 */
+.page-wrapper { max-width: 960px; margin: 50px auto; padding: 0; }
+.page-header { text-align: left; margin-bottom: 30px; }
+.page-header h1 { font-size: 32px; font-weight: 700; color: var(--dark-color); }
+.page-header p { font-size: 16px; color: var(--gray-color); margin-top: 5px; }
+.history-container { background-color: var(--light-color); border-radius: 12px; border: 1px solid #dee2e6; box-shadow: 0 4px 15px rgba(0,0,0,0.04); overflow: hidden; }
+.action-bar { padding: 20px; background-color: #fafbfc; border-bottom: 1px solid var(--border-color); }
+.form-control { border-radius: 8px; border-color: #dfe1e6; font-size: 14px; }
+.form-control:focus { border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0, 82, 204, 0.15); }
+.cta-button { display: inline-flex; align-items: center; gap: 8px; background: var(--primary-color); color: var(--light-color) !important; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-size: 15px; font-weight: 700; transition: all 0.2s ease; border: none; cursor: pointer; }
+.cta-button:hover { background: #003e99; transform: translateY(-1px); }
+.history-list { padding: 8px; }
+.history-item { display: flex; align-items: center; padding: 15px; border-radius: 8px; transition: background-color 0.2s ease; cursor: pointer; }
+.history-item:hover { background-color: var(--secondary-color); }
+.history-item .icon { flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background-color: var(--secondary-color); display: inline-flex; align-items: center; justify-content: center; margin-right: 15px; color: var(--gray-color); }
+.history-item .content { flex-grow: 1; }
+.history-item .topic { font-size: 16px; font-weight: 700; color: var(--dark-color); margin: 0; }
+.history-item .meta { font-size: 13px; color: var(--gray-color); margin: 2px 0 0; }
+.history-item .timestamp { flex-shrink: 0; font-size: 14px; color: var(--gray-color); margin-left: 20px; }
+.history-item .actions { opacity: 0; transition: opacity 0.2s ease; display: flex; gap: 15px; margin-left: 20px; }
+.history-item:hover .actions { opacity: 1; }
+.history-item:hover .timestamp { opacity: 0; }
+.delete-btn { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: none; background: none; border-radius: 50%; cursor: pointer; opacity: 0.6; transition: all 0.2s ease; flex-shrink: 0; }
+.delete-btn:hover { opacity: 1; background-color: var(--danger-bg-hover); color: var(--danger-color); }
+.delete-btn svg { width: 16px; height: 16px; }
+#noHistoryMessage { padding: 80px 40px; text-align: center; }
+#noHistoryMessage .icon { font-size: 48px; margin-bottom: 20px; color: var(--primary-color); }
+#noHistoryMessage h3 { font-size: 22px; font-weight: 700; }
+#noHistoryMessage p { font-size: 16px; color: var(--gray-color); margin-bottom: 25px; }
+.modal-content { border-radius: 12px; border: none; }
+.modal-header { background-color: var(--primary-color); color: var(--light-color); }
+.modal-header .btn-close { filter: invert(1) grayscale(100%) brightness(200%); }
+.modal-body .content-full { background-color: var(--secondary-color); border-radius: 8px; } 
