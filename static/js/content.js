@@ -1,7 +1,8 @@
-// content.js - 콘텐츠 생성 관련 로직만 분리
-
+// content.js - 최종 수정본
 document.addEventListener('DOMContentLoaded', function() {
-    // --- 1. DOM 요소 캐싱 (콘텐츠 생성 관련만) ---
+    
+    // --- 1. DOM 요소 캐싱 ---
+    // 필요한 모든 DOM 요소를 여기서 한 번에 찾습니다.
     const contentForm = document.getElementById('contentForm');
     const generateBtn = document.getElementById('generateBtn');
     const spinner = document.getElementById('generateSpinner');
@@ -10,21 +11,62 @@ document.addEventListener('DOMContentLoaded', function() {
     const copyBtn = document.getElementById('copyBtn');
     const generatedImage = document.getElementById('generatedImage');
     const contentTypeSelect = document.getElementById('contentType');
+    
+    // 고급 옵션 관련 DOM 요소들
+    const advancedOptions = document.getElementById('advancedOptions');
+    const blogStyleGroup = document.getElementById('blogStyleGroup');
+    const emailOptions = document.getElementById('emailOptions');
+    const snsOptions = document.getElementById('snsOptions');
+    const advancedTextOnly = document.querySelectorAll('.advanced-text-only');
 
-    // --- 2. 콘텐츠 생성 폼 제출 이벤트 ---
+    // --- 2. 고급 옵션 표시/숨김 이벤트 리스너 ---
+    // 이 코드는 페이지가 로드되자마자 바로 설정되어야 합니다.
+    if (contentTypeSelect) {
+        contentTypeSelect.addEventListener('change', function() {
+            const selectedType = this.value;
+
+            // 일단 모든 고급 옵션을 숨깁니다.
+            if (advancedOptions) advancedOptions.style.display = 'none';
+            if (blogStyleGroup) blogStyleGroup.style.display = 'none';
+            if (emailOptions) emailOptions.style.display = 'none';
+            if (snsOptions) snsOptions.style.display = 'none';
+            advancedTextOnly.forEach(el => el.style.display = 'none');
+
+            // 선택된 값에 따라 필요한 옵션을 보여줍니다.
+            if (selectedType === 'blog' || selectedType === 'email' || selectedType === 'sns') {
+                if (advancedOptions) advancedOptions.style.display = 'block';
+            }
+
+            if (selectedType === 'blog') {
+                if (blogStyleGroup) blogStyleGroup.style.display = 'block';
+                advancedTextOnly.forEach(el => el.style.display = 'block');
+            } else if (selectedType === 'email') {
+                if (emailOptions) emailOptions.style.display = 'block';
+                advancedTextOnly.forEach(el => el.style.display = 'block');
+            } else if (selectedType === 'sns') {
+                if (snsOptions) snsOptions.style.display = 'block';
+            }
+        });
+    }
+
+    // --- 3. 콘텐츠 생성 폼 제출 이벤트 ---
     if (contentForm) {
         contentForm.addEventListener('submit', async function(event) {
             event.preventDefault();
-            // [유효성 검사] SNS 이미지 생성 시 주제(프롬프트)가 비어있는지 확인
+            
+            // [유효성 검사]
             const selectedContentTypeValue = contentTypeSelect.value;
             const topicValue = document.getElementById('topic').value;
             if (selectedContentTypeValue === 'sns' && !topicValue.trim()) {
-            alert('SNS 콘텐츠를 생성하려면 핵심 주제(이미지 프롬프트)를 반드시 입력해야 합니다.');
-            return;
+                alert('SNS 콘텐츠를 생성하려면 핵심 주제(이미지 프롬프트)를 반드시 입력해야 합니다.');
+                return;
             }
-            // 버튼/스피너/결과 초기화 (null 체크 추가)
+
+            // 버튼/스피너/결과 초기화
             if (generateBtn) generateBtn.disabled = true;
             if (spinner) spinner.style.display = 'inline-block';
+            // ... (이하 submit 이벤트 내의 코드는 기존과 동일합니다) ...
+            
             if (resultPlaceholder) resultPlaceholder.style.display = 'none';
             if (generatedContentDiv) generatedContentDiv.style.display = 'none';
             if (generatedImage) generatedImage.style.display = 'none';
@@ -38,13 +80,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 `;
                 generatedContentDiv.style.display = 'block';
             }
-            // 폼 데이터 → payload 변환
+            
             const formData = new FormData(event.target);
             const payload = Object.fromEntries(formData.entries());
             for (const key in payload) {
                 if (payload[key] === '') payload[key] = null;
             }
-            // SNS 고급 입력값 개수 체크 (프론트 안내)
+
             if (payload.content_type === 'sns') {
                 const advancedFields = ["brand_style_tone", "product_category", "target_audience", "ad_purpose", "key_points"];
                 const filled = advancedFields.filter(field => payload[field] !== null && payload[field] !== undefined && String(payload[field]).trim() !== "").length;
@@ -63,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     return;
                 }
             }
-            // API URL/필드 분기
+            
             let apiUrl = '';
             if (payload.content_type === 'blog' || payload.content_type === 'email') {
                 apiUrl = '/content/generate_content';
@@ -87,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (resultPlaceholder) resultPlaceholder.style.display = 'flex';
                 return;
             }
-            // 서버 요청
+            
             try {
                 const response = await fetch(apiUrl, {
                     method: 'POST',
@@ -145,18 +187,20 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // --- 3. 클립보드 복사 버튼 이벤트 ---
+    // --- 4. 클립보드 복사 버튼 이벤트 ---
     if (copyBtn) {
         copyBtn.addEventListener('click', function() {
             if (!generatedContentDiv) return;
             const contentToCopy = generatedContentDiv.innerText;
             navigator.clipboard.writeText(contentToCopy).then(() => {
-                const originalText = this.textContent;
-                this.textContent = '복사 완료!';
-                this.style.backgroundColor = '#198754';
+                const originalText = this.innerHTML; // 아이콘 포함 복사
+                this.innerHTML = '✅ 복사 완료!';
+                this.classList.add('btn-success');
+                this.classList.remove('btn-outline-secondary');
                 setTimeout(() => {
-                    this.textContent = originalText;
-                    this.style.backgroundColor = 'var(--gray-color)';
+                    this.innerHTML = originalText;
+                    this.classList.remove('btn-success');
+                    this.classList.add('btn-outline-secondary');
                 }, 2000);
             }).catch(err => {
                 console.error('Copy failed:', err);
@@ -166,27 +210,22 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// --- 4. 안내 메시지(가이드) 모달 함수 ---
+// --- 5. 안내 메시지(가이드) 모달 함수 ---
 function showGuideMessage(message) {
     const modalBody = document.getElementById('guideModalBody');
-    modalBody.innerHTML = message;
+    if (modalBody) {
+        modalBody.innerHTML = message;
+    }
     const guideModalEl = document.getElementById('guideModal');
-    const guideModal = new bootstrap.Modal(guideModalEl);
-    guideModal.show();
-    guideModalEl.addEventListener('hidden.bs.modal', function handler() {
-        // 함수 내에서 다시 DOM 요소 캐싱
-        const generatedContentDiv = document.getElementById('generatedContent');
-        const generatedImage = document.getElementById('generatedImage');
-        const copyBtn = document.getElementById('copyBtn');
-        const spinner = document.getElementById('generateSpinner');
-        const resultPlaceholder = document.getElementById('result-placeholder');
-        const generateBtn = document.getElementById('generateBtn');
-        generatedContentDiv.style.display = 'none';
-        generatedImage.style.display = 'none';
-        copyBtn.style.display = 'none';
-        spinner.style.display = 'none';
-        resultPlaceholder.style.display = 'flex';
-        generateBtn.disabled = false;
-        guideModalEl.removeEventListener('hidden.bs.modal', handler);
-    });
-} 
+    if (guideModalEl) {
+        const guideModal = new bootstrap.Modal(guideModalEl);
+        guideModal.show();
+        guideModalEl.addEventListener('hidden.bs.modal', function handler() {
+            const resultPlaceholder = document.getElementById('result-placeholder');
+            const generateBtn = document.getElementById('generateBtn');
+            if (resultPlaceholder) resultPlaceholder.style.display = 'flex';
+            if (generateBtn) generateBtn.disabled = false;
+            guideModalEl.removeEventListener('hidden.bs.modal', handler);
+        });
+    }
+}
