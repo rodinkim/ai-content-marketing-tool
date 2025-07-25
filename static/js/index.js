@@ -12,41 +12,54 @@ document.addEventListener('DOMContentLoaded', function() {
     // Hero 타이틀 타이핑 애니메이션
     const typingEl = document.getElementById('hero-typing');
     if (typingEl) {
-        const text1 = 'AI가 만드는 ';
-        const text2 = '당신만의 마케팅 콘텐츠';
+        typingEl.textContent = ''; // 시작 전 내용 비우기
+
+        // 텍스트를 세 부분으로 나눔
+        const parts = [
+            { text: 'AI가 만드는 ', class: 'part1' },
+            { text: '당신만의 ', class: 'part2' },
+            { text: '마케팅 콘텐츠', class: 'part3' }
+        ];
         const typingSpeed = 70;
-        let idx1 = 0; // 변수 이름 충돌 방지를 위해 idx1으로 변경
-        let idx2 = 0;
+        let partIndex = 0;
+        let charIndex = 0;
 
-        typingEl.textContent = '';
+        function type() {
+            // 모든 파트 타이핑 완료 시 종료
+            if (partIndex >= parts.length) return;
 
-        function typeFirst() {
-            if (idx1 < text1.length) {
-                typingEl.textContent += text1[idx1];
-                idx1++;
-                setTimeout(typeFirst, typingSpeed);
+            const currentPart = parts[partIndex];
+            const currentText = currentPart.text;
+
+            // 현재 파트에 해당하는 span 태그를 찾거나 새로 만듦
+            let span = typingEl.querySelector('.' + currentPart.class);
+            if (!span) {
+                span = document.createElement('span');
+                span.className = currentPart.class;
+                typingEl.appendChild(span);
+            }
+
+            // 글자 타이핑
+            if (charIndex < currentText.length) {
+                span.textContent += currentText[charIndex];
+                charIndex++;
+                setTimeout(type, typingSpeed);
             } else {
-                const highlight = document.createElement('span');
-                highlight.className = 'highlight';
-                typingEl.appendChild(highlight);
-                setTimeout(() => typeSecond(highlight), 100);
+                // 다음 파트로 이동
+                partIndex++;
+                charIndex = 0;
+                setTimeout(type, typingSpeed + 100); // 파트 사이에 약간의 딜레이
             }
         }
 
-        function typeSecond(highlight) {
-            if (idx2 < text2.length) {
-                highlight.textContent += text2[idx2];
-                idx2++;
-                setTimeout(() => typeSecond(highlight), typingSpeed);
-            }
-        }
-        setTimeout(typeFirst, 400);
+        // 0.4초 후 애니메이션 시작
+        setTimeout(type, 400);
     }
 
     // --- 2. 후기(Testimonials) 자동 캐러셀 애니메이션 ---
     const cards = document.querySelectorAll('.testimonial-carousel .testimonial-card');
     if (cards.length > 0) {
-        let cardIdx = 0; // 변수 이름 충돌 방지를 위해 cardIdx로 변경
+        let cardIdx = 0;
         
         function showCard(i) {
             cards.forEach((card, j) => {

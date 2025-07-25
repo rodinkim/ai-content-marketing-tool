@@ -229,6 +229,17 @@ nav ul li a:hover, nav ul li a.active {
     box-shadow: 0 4px 24px rgba(0,82,204,0.13);
     border-color: #dbeafe;
 }
+.testimonial-avatar {
+    background-color: #f0f0f0; /* 모든 아바타 배경색을 연한 회색으로 통일 */
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
 .testimonial-quote {
     font-size: 1.08rem;
     font-weight: 500;
@@ -372,10 +383,25 @@ nav a {
     font-weight: 800;
     letter-spacing: -1.5px;
     line-height: 1.2;
-    background: linear-gradient(90deg, #0077cc 30%, #00aaff 100%);
+}
+.hero-title span {
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
     background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+/* 파트 1: AI가 만드는 */
+.hero-title .part1 {
+    background-image: linear-gradient(90deg, #000000, #000000); /* 밝은 회색 -> 중간 회색 */
+}
+
+/* 파트 2: 당신만의 */
+.hero-title .part2 {
+    background-image: linear-gradient(90deg, #000000, #000000); /* 중간 회색 -> 어두운 회색 */
+}
+
+/* 파트 3: 마케팅 콘텐츠 */
+.hero-title .part3 {
+    background-image: linear-gradient(90deg, #000000, #000000); /* 어두운 회색 -> 검정 */
 }
 .hero-title .highlight {
     background: none;
@@ -494,3 +520,19 @@ footer {
     border-radius: 8px;
     padding: 1rem;
 }
+.brand-highlight {
+    display: inline-block;
+    font-size: 1.1em;
+    font-weight: 900;
+    color: #0077cc;
+    animation: float 3s infinite ease-in-out;
+  }
+  
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
