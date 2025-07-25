@@ -21,25 +21,27 @@ def index():
 def register():
     """
     회원가입 페이지 렌더링 및 가입 처리
-    Returns:
-        Response: 회원가입 폼 또는 처리 결과
     """
     if current_user.is_authenticated:
         return redirect(url_for('content_routes.content_page'))
     form = RegistrationForm()
+    error = None  # 에러 메시지를 담을 변수
     if form.validate_on_submit():
-        new_user = User(username=form.username.data, email=form.email.data)
-        new_user.set_password(form.password.data)
         try:
+            new_user = User(username=form.username.data, email=form.email.data)
+            new_user.set_password(form.password.data)
             db.session.add(new_user)
             db.session.commit()
+            
             flash('성공적으로 가입되었습니다! 로그인해주세요.', 'success')
             return redirect(url_for('auth_routes.login'))
+        
         except Exception as e:
             db.session.rollback()
-            flash(f'회원가입 중 오류가 발생했습니다: {e}', 'danger')
-            logger.error(f"회원가입 오류: {e}", exc_info=True)
-    return render_template('register.html', form=form)
+            logger.error(f"회원가입 DB 오류: {e}", exc_info=True)
+            error = "회원가입 중 오류가 발생했습니다. 다시 시도해주세요."
+
+    return render_template('register.html', form=form, error=error)
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -51,16 +53,16 @@ def login():
     if current_user.is_authenticated:
         return redirect(url_for('content_routes.content_page'))
     form = LoginForm()
+    error = None
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
-            flash('성공적으로 로그인되었습니다.', 'success')
             next_page = request.args.get('next')
             return redirect(next_page or url_for('content_routes.content_page'))
         else:
-            flash('로그인 실패. 이메일 또는 비밀번호를 확인해주세요.', 'danger')
-    return render_template('login.html', form=form)
+            error = '로그인 실패. 이메일 또는 비밀번호를 확인해주세요.'
+    return render_template('login.html', form=form, error=error)
 
 @auth_bp.route('/logout')
 @login_required
