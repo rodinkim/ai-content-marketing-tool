@@ -369,11 +369,6 @@ terraform apply
 - [FAISS](https://github.com/facebookresearch/faiss) - 벡터 검색
 - [Flask](https://flask.palletsprojects.com/) - 웹 프레임워크
 
-## 📞 연락처
-
-- **프로젝트 관리자**: [Your Name](mailto:your.email@example.com)
-- **GitHub**: [@yourusername](https://github.com/yourusername)
-- **이슈 리포트**: [GitHub Issues](https://github.com/yourusername/ai-content-marketing-tool/issues)
 
 ---
 
