@@ -50,7 +50,7 @@ AI 콘텐츠 마케팅 도구는 **RAG(Retrieval-Augmented Generation)** 기술�
 
 ### 🕷️ 지능형 웹 크롤링
 - **도메인별 특화 추출기**: ITWorld, Fashionbiz, Hidoc, Beautynury, TLNews
-- **자동 스케줄링**: 주간 자동 업데이트 (매주 목요일 오후 3시)
+- **자동 스케줄링**: 주간 자동 업데이트 (매주 월요일 오전 9시)
 - **콘텐츠 정제**: HTML 디코딩 및 품질 관리
 
 ### 🧠 RAG 시스템
