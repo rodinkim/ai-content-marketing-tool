@@ -42,9 +42,6 @@
         .form-footer a { color: var(--primary-color); font-weight: 700; text-decoration: none; }
         .form-footer a:hover { text-decoration: underline; }
 
-        .toast-container { z-index: 1100; }
-        .toast-header .me-auto { font-weight: 700; }
-
         @media (max-width: 992px) {
             .auth-wrapper { grid-template-columns: 1fr; }
             .promo-panel { display: none; }
@@ -52,18 +49,6 @@
     </style>
 </head>
 <body>
-    <div class="toast-container position-fixed bottom-0 end-0 p-3">
-        <div id="flashToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header">
-                <svg class="rounded me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#198754"></rect></svg>
-                <strong class="me-auto">알림</strong>
-                <small>just now</small>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <div class="toast-body">
-                </div>
-        </div>
-    </div>
     <div class="auth-wrapper">
         <div class="promo-panel">
             <a class="logo" href="{{ url_for('auth_routes.index') }}">Contento</a>
@@ -86,15 +71,16 @@
                     <p>로그인하고 콘텐츠 생성을 바로 시작해보세요.</p>
                 </div>
 
-                <div id="flash-messages" style="display: none;">
-                    {% with messages = get_flashed_messages(with_categories=true) %}
-                        {% if messages %}
-                            {% for category, message in messages %}
-                                <div data-category="{{ category }}">{{ message }}</div>
-                            {% endfor %}
-                        {% endif %}
-                    {% endwith %}
-                </div>
+                {% if error %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {% endif %}
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
                 <form method="POST" action="{{ url_for('auth_routes.login') }}">
                     {{ form.hidden_tag() }}
                     <div class="mb-3">
@@ -122,34 +108,5 @@
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const flashMessagesDiv = document.getElementById('flash-messages');
-            const messages = flashMessagesDiv.querySelectorAll('div[data-category]');
-            
-            if (messages.length > 0) {
-                const toastElement = document.getElementById('flashToast');
-                const toastBody = toastElement.querySelector('.toast-body');
-                const toastBootstrap = new bootstrap.Toast(toastElement);
-
-                const firstMessage = messages[0];
-                const messageText = firstMessage.textContent;
-                const category = firstMessage.dataset.category;
-
-                const toastHeaderRect = toastElement.querySelector('.toast-header rect');
-                if (category === 'success') {
-                    toastHeaderRect.setAttribute('fill', '#198754'); // 성공: 초록색
-                } else if (category === 'danger') {
-                    toastHeaderRect.setAttribute('fill', '#dc3545'); // 실패: 빨간색
-                } else {
-                    toastHeaderRect.setAttribute('fill', '#0d6efd'); // 정보: 파란색
-                }
-                
-                toastBody.textContent = messageText;
-                toastBootstrap.show();
-            }
-        });
-    </script>
-    </body>
+</body>
 </html>

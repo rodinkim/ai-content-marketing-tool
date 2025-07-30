@@ -182,32 +182,53 @@
                     <h1>계정 생성하기</h1>
                 </div>
 
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages %}
-                        {% for category, message in messages %}
-                            <div class="alert alert-danger">{{ message }}</div>
-                        {% endfor %}
-                    {% endif %}
-                {% endwith %}
+                {% if error %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {% endif %}
 
                 <form method="POST" action="{{ url_for('auth_routes.register') }}">
                     {{ form.hidden_tag() }}
+
                     <div class="mb-3">
                         <label for="username" class="form-label">사용자 이름</label>
-                        {{ form.username(class="form-control", placeholder="사용할 이름을 입력하세요") }}
+                        {{ form.username(class="form-control" + (" is-invalid" if form.username.errors else ""), placeholder="사용할 이름을 입력하세요") }}
+                        {% if form.username.errors %}
+                            <div class="invalid-feedback">
+                                {% for e in form.username.errors %}<span>{{ e }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
                     </div>
+
                     <div class="mb-3">
                         <label for="email" class="form-label">이메일 주소</label>
-                        {{ form.email(class="form-control", placeholder="email@example.com") }}
+                        {{ form.email(class="form-control" + (" is-invalid" if form.email.errors else ""), placeholder="email@example.com") }}
+                        {% if form.email.errors %}
+                            <div class="invalid-feedback">
+                                {% for e in form.email.errors %}<span>{{ e }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
                     </div>
+
                     <div class="mb-3">
                         <label for="password" class="form-label">비밀번호</label>
-                        {{ form.password(class="form-control", placeholder="6자 이상 입력하세요") }}
+                        {{ form.password(class="form-control" + (" is-invalid" if form.password.errors else ""), placeholder="6자 이상 입력하세요") }}
+                        {% if form.password.errors %}
+                            <div class="invalid-feedback">
+                                {% for e in form.password.errors %}<span>{{ e }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
                     </div>
+
                     <div class="mb-3">
                         <label for="confirm_password" class="form-label">비밀번호 확인</label>
-                        {{ form.confirm_password(class="form-control", placeholder="비밀번호를 다시 한번 입력하세요") }}
+                        {{ form.confirm_password(class="form-control" + (" is-invalid" if form.confirm_password.errors else ""), placeholder="비밀번호를 다시 한번 입력하세요") }}
+                        {% if form.confirm_password.errors %}
+                            <div class="invalid-feedback">
+                                {% for e in form.confirm_password.errors %}<span>{{ e }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
                     </div>
+                    
                     <div class="mt-4">
                         <button type="submit" class="cta-button">무료로 시작하기</button>
                     </div>

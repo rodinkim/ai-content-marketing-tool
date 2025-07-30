@@ -36,6 +36,7 @@ override.tf.json
 # 환경변수 및 비밀 키 #
 # API 키, 데이터베이스 암호 등 민감한 정보
 .env
+migrate.sh
 
 # 운영체제 및 에디터 #
 # macOS
@@ -46,3 +47,6 @@ Thumbs.db
 
 # VSCode
 .vscode/
+
+# system_user
+create_system_user.py

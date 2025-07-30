@@ -1,103 +1,86 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // --- DOM 요소 캐싱 ---
-    const contentForm = document.getElementById('contentForm');
-    const generateBtn = document.getElementById('generateBtn');
-    const spinner = document.getElementById('generateSpinner');
     
-    const contentTypeSelect = document.getElementById('contentType');
-    const emailSubjectField = document.getElementById('emailSubjectField');
-    
-    const resultPlaceholder = document.getElementById('result-placeholder');
-    const generatedContentDiv = document.getElementById('generatedContent');
-    const copyBtn = document.getElementById('copyBtn');
-
-    // --- 초기 UI 설정 ---
-    function setupInitialUI() {
-        emailSubjectField.style.display = contentTypeSelect.value === '이메일 뉴스레터' ? 'block' : 'none';
-        
-        const editContentData = localStorage.getItem('editContentData');
-        if (editContentData) {
-            const item = JSON.parse(editContentData);
-            document.getElementById('topic').value = item.topic || '';
-            document.getElementById('industry').value = item.industry || '';
-            document.getElementById('contentType').value = item.content_type || '';
-            document.getElementById('tone').value = item.tone || '';
-            document.getElementById('length').value = item.length || '';
-            document.getElementById('seoKeywords').value = item.seo_keywords || '';
-            
-            if (item.content_type === '이메일 뉴스레터') {
-                emailSubjectField.style.display = 'block';
-                document.getElementById('emailSubject').value = item.email_subject || '';
-            }
-            
-            resultPlaceholder.style.display = 'none';
-            generatedContentDiv.innerHTML = marked.parse(item.content);
-            generatedContentDiv.style.display = 'block';
-            copyBtn.style.display = 'inline-block';
-
-            localStorage.removeItem('editContentData');
-        }
+    // --- 1. Hero 섹션 애니메이션 ---
+    const heroAnimate = document.querySelector('.hero-animate');
+    if (heroAnimate) {
+        // 0.1초 후 'show' 클래스를 추가하여 fade-in 애니메이션 시작
+        setTimeout(() => {
+            heroAnimate.classList.add('show');
+        }, 100);
     }
-    
-    // --- 이벤트 리스너 ---
-    contentTypeSelect.addEventListener('change', function() {
-        emailSubjectField.style.display = this.value === '이메일 뉴스레터' ? 'block' : 'none';
-    });
 
-    contentForm.addEventListener('submit', async function(event) {
-        event.preventDefault();
+    // Hero 타이틀 타이핑 애니메이션
+    const typingEl = document.getElementById('hero-typing');
+    if (typingEl) {
+        typingEl.textContent = ''; // 시작 전 내용 비우기
 
-        generateBtn.disabled = true;
-        spinner.style.display = 'inline-block';
-        
-        resultPlaceholder.style.display = 'none';
-        generatedContentDiv.style.display = 'block';
-        generatedContentDiv.innerHTML = '<div class="d-flex justify-content-center align-items-center" style="height: 200px;"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>';
-        copyBtn.style.display = 'none';
+        // 텍스트를 세 부분으로 나눔
+        const parts = [
+            { text: 'AI가 만드는 ', class: 'part1' },
+            { text: '당신만의 ', class: 'part2' },
+            { text: '마케팅 콘텐츠', class: 'part3' }
+        ];
+        const typingSpeed = 70;
+        let partIndex = 0;
+        let charIndex = 0;
 
-        const formData = new FormData(event.target);
-        const data = Object.fromEntries(formData.entries());
-        
-        if (data.content_type !== '이메일 뉴스레터') {
-            delete data.email_subject;
-        }
+        function type() {
+            // 모든 파트 타이핑 완료 시 종료
+            if (partIndex >= parts.length) return;
 
-        try {
-            const response = await fetch('/content/generate_content', { 
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            });
+            const currentPart = parts[partIndex];
+            const currentText = currentPart.text;
 
-            const responseData = await response.json();
-
-            if (response.ok) {
-                generatedContentDiv.innerHTML = marked.parse(responseData.content);
-                copyBtn.style.display = 'inline-block';
-            } else {
-                generatedContentDiv.innerHTML = `<div class="alert alert-danger">오류: ${responseData.error}</div>`;
+            // 현재 파트에 해당하는 span 태그를 찾거나 새로 만듦
+            let span = typingEl.querySelector('.' + currentPart.class);
+            if (!span) {
+                span = document.createElement('span');
+                span.className = currentPart.class;
+                typingEl.appendChild(span);
             }
-        } catch (error) {
-            console.error('Fetch error:', error);
-            generatedContentDiv.innerHTML = '<div class="alert alert-danger">네트워크 오류가 발생했습니다.</div>';
-        } finally {
-            generateBtn.disabled = false;
-            spinner.style.display = 'none';
+
+            // 글자 타이핑
+            if (charIndex < currentText.length) {
+                span.textContent += currentText[charIndex];
+                charIndex++;
+                setTimeout(type, typingSpeed);
+            } else {
+                // 다음 파트로 이동
+                partIndex++;
+                charIndex = 0;
+                setTimeout(type, typingSpeed + 100); // 파트 사이에 약간의 딜레이
+            }
         }
-    });
 
-    copyBtn.addEventListener('click', function() {
-        const contentToCopy = generatedContentDiv.innerText;
-        navigator.clipboard.writeText(contentToCopy).then(() => {
-            const originalText = this.textContent;
-            this.textContent = '복사 완료!';
-            setTimeout(() => { this.textContent = originalText; }, 2000);
-        }).catch(err => {
-            console.error('Copy failed:', err);
-            alert('복사에 실패했습니다.');
-        });
-    });
+        // 0.4초 후 애니메이션 시작
+        setTimeout(type, 400);
+    }
 
-    // --- 페이지 로드 시 실행 ---
-    setupInitialUI();
+    // --- 2. 후기(Testimonials) 자동 캐러셀 애니메이션 ---
+    const cards = document.querySelectorAll('.testimonial-carousel .testimonial-card');
+    if (cards.length > 0) {
+        let cardIdx = 0;
+        
+        function showCard(i) {
+            cards.forEach((card, j) => {
+                if (i === j) {
+                    card.style.display = 'block';
+                    card.classList.add('fade-in');
+                } else {
+                    card.style.display = 'none';
+                    card.classList.remove('fade-in');
+                }
+            });
+        }
+
+        showCard(cardIdx);
+
+        setInterval(() => {
+            if (cards[cardIdx]) {
+                cards[cardIdx].classList.remove('fade-in');
+            }
+            cardIdx = (cardIdx + 1) % cards.length;
+            showCard(cardIdx);
+        }, 3500);
+    }
 });

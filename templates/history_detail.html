@@ -1,0 +1,120 @@
+<!-- templates/history_detail.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_content.css') }}">
+    <meta charset="UTF-8">
+    <title>콘텐츠 상세 보기</title>
+    <style>
+        body { font-family: 'Noto Sans KR', Arial, sans-serif; margin: 2rem; }
+        .content-detail { max-width: 700px; margin: 0 auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #eee; padding: 2rem; }
+        .content-title { font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem; }
+        .content-meta { color: #888; font-size: 0.95rem; margin-bottom: 1.5rem; }
+        .content-body { white-space: pre-line; font-size: 1.1rem; line-height: 1.7; }
+        .header-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .content-title {
+            flex: 1;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0;
+            word-break: break-all;
+        }
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.3em;
+            background: #f4f8ff;
+            color: #007bff;
+            border: none;
+            border-radius: 6px;
+            padding: 0.35em 0.9em 0.35em 0.7em;
+            font-size: 1rem;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.15s;
+            box-shadow: 0 1px 4px rgba(0,82,204,0.06);
+        }
+        .back-btn:hover {
+            background: #e6f0ff;
+            color: #0052cc;
+        }
+    </style>
+</head>
+<body>
+    <div class="content-detail">
+        <div class="header-row">
+            <button class="back-btn" onclick="window.history.back()" title="목록으로">
+                <span style="font-size:1.2em;">🏠</span>
+                <span>목록</span>
+            </button>
+            <div class="content-title" id="content-title"></div>
+        </div>
+        <div class="content-meta" id="content-meta"></div>
+        <div class="content-body" id="content-body">
+            <div id="generatedContent"></div>
+            <div id="generatedImage" style="display:none; text-align:center; margin-top:2rem;"></div>
+        </div>
+    </div>
+    <script>
+        // content_id는 URL에서 추출하거나 서버에서 템플릿 변수로 전달
+        const contentId = {{ content_id|tojson }};
+        // marked.js CDN 동적 로드 후 마크다운 렌더링
+        function loadScript(src, callback) {
+            const script = document.createElement('script');
+            script.src = src;
+            script.onload = callback;
+            document.head.appendChild(script);
+        }
+
+        loadScript('https://cdn.jsdelivr.net/npm/marked/marked.min.js', function() {
+            fetch(`/history-api/${contentId}`)
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('content-title').textContent = data.topic || '제목 없음';
+                    document.getElementById('content-meta').textContent = data.timestamp ? `생성일: ${formatDate(data.timestamp)}` : '';
+                    const contentDiv = document.getElementById('generatedContent');
+                    const imageDiv = document.getElementById('generatedImage');
+                    imageDiv.style.display = 'none';
+                    if (data.content_type && data.content_type.toLowerCase().includes('sns') && data.generated_image_url) {
+                        // SNS: 이미지만 표시 (텍스트 div 숨김)
+                        contentDiv.style.display = 'none';
+                        imageDiv.innerHTML = `<img src="${data.generated_image_url}" alt="SNS 이미지" style="max-width:100%; border-radius:12px; box-shadow:0 2px 12px #eee;">`;
+                        imageDiv.style.display = 'block';
+                    } else {
+                        // 그 외: 마크다운 텍스트 표시
+                        contentDiv.style.display = '';
+                        if (window.marked) {
+                            contentDiv.innerHTML = window.marked.parse(data.generated_text || '');
+                        } else {
+                            contentDiv.textContent = data.generated_text || '';
+                        }
+                        imageDiv.innerHTML = '';
+                        imageDiv.style.display = 'none';
+                    }
+                })
+                .catch(() => {
+                    document.getElementById('generatedContent').textContent = '콘텐츠를 불러오는 데 실패했습니다.';
+                    document.getElementById('generatedImage').style.display = 'none';
+                });
+        });
+
+        function formatDate(isoString) {
+            if (!isoString) return '';
+            const date = new Date(isoString);
+            if (isNaN(date)) return isoString;
+            const y = date.getFullYear();
+            const m = String(date.getMonth() + 1).padStart(2, '0');
+            const d = String(date.getDate()).padStart(2, '0');
+            const h = String(date.getHours()).padStart(2, '0');
+            const min = String(date.getMinutes()).padStart(2, '0');
+            return `${y}.${m}.${d} ${h}:${min}`;
+        }
+    </script>
+</body>
+</html>

@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // DOM 요소 변수
     const addUrlForm = document.getElementById('addUrlForm');
     const urlInput = document.getElementById('urlInput');
     const industrySelect = document.getElementById('industrySelect');
@@ -8,23 +9,34 @@ document.addEventListener('DOMContentLoaded', function() {
     const alertContainer = document.getElementById('alert-container');
     const fileListDiv = document.getElementById('fileList');
     const userListDiv = document.getElementById('userList');
-    let currentAdminTarget = null;
+    const paginationContainerAdmin = document.getElementById('pagination-container-admin');
+    const paginationContainerUser = document.getElementById('pagination-container-user');
 
-    function showMessage(message, type = 'success') {
-        const alertDiv = document.createElement('div');
-        alertDiv.className = `alert alert-${type} alert-dismissible fade show m-3`;
-        alertDiv.setAttribute('role', 'alert');
-        alertDiv.innerHTML = `${message}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
-        alertContainer.prepend(alertDiv);
-        setTimeout(() => bootstrap.Alert.getOrCreateInstance(alertDiv)?.close(), 5000);
+    // 상태 변수
+    let currentAdminTarget = null;
+    let currentPage = 1;
+
+    // 공통 알림 함수(utils.js의 showAlert 사용)
+    function showAlert(message, type = 'success') {
+        if (window.showAlert) {
+            window.showAlert(message, type);
+        } else {
+            // fallback
+            alert(message);
+        }
     }
 
+    // 산업 분야 목록을 가져와 드롭다운을 채우는 함수
     async function fetchAndPopulateIndustries() {
         if (!industrySelect) return;
         try {
-            const response = await fetch(flaskIndustriesListUrl);
-            if (!response.ok) throw new Error('Failed to fetch industries');
-            const data = await response.json();
+            let data;
+            if (window.fetchJson) {
+                data = await window.fetchJson(flaskIndustriesListUrl);
+            } else {
+                const response = await fetch(flaskIndustriesListUrl);
+                data = await response.json();
+            }
             industrySelect.innerHTML = '<option value="">-- 산업 분야 --</option>';
             (data.industries || []).forEach(industry => {
                 const option = document.createElement('option');
@@ -32,25 +44,30 @@ document.addEventListener('DOMContentLoaded', function() {
                 option.textContent = industry;
                 industrySelect.appendChild(option);
             });
-        } catch (error) { console.error('Error fetching industries:', error); }
+        } catch (error) {
+            console.error('Error fetching industries:', error);
+        }
     }
 
+    // 관리자용 사이드바를 렌더링하는 함수
     async function fetchAndRenderAdminSidebar() {
         if (!userListDiv) return;
         userListDiv.innerHTML = '<h5>관리 대상</h5>';
         try {
-            const [usersRes, industriesRes] = await Promise.all([fetch(flaskUsersListUrl), fetch(flaskIndustriesListUrl)]);
-            if (!usersRes.ok || !industriesRes.ok) throw new Error('Failed to fetch admin data');
-
-            const usersData = await usersRes.json();
-            const industriesData = await industriesRes.json();
-
+            let usersData, industriesData;
+            if (window.fetchJson) {
+                usersData = await window.fetchJson(flaskUsersListUrl);
+                industriesData = await window.fetchJson(flaskIndustriesListUrl);
+            } else {
+                const [usersRes, industriesRes] = await Promise.all([fetch(flaskUsersListUrl), fetch(flaskIndustriesListUrl)]);
+                usersData = await usersRes.json();
+                industriesData = await industriesRes.json();
+            }
             const industryHeader = document.createElement('h5');
             industryHeader.className = 'mt-4';
             industryHeader.textContent = '산업별 공용';
             userListDiv.appendChild(industryHeader);
             industriesData.industries.forEach(industry => userListDiv.appendChild(createSidebarItem('industry', industry, '🏢')));
-
             const userHeader = document.createElement('h5');
             userHeader.className = 'mt-4';
             userHeader.textContent = '사용자별';
@@ -62,6 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // 사이드바 아이템을 생성하는 함수
     function createSidebarItem(type, name, icon) {
         const item = document.createElement('button');
         item.className = 'sidebar-item';
@@ -72,60 +90,70 @@ document.addEventListener('DOMContentLoaded', function() {
         return item;
     }
 
+    // 관리자가 사이드바에서 대상을 선택했을 때 처리하는 함수
     function handleSelectAdminTarget(event) {
         const selectedBtn = event.currentTarget;
         currentAdminTarget = { type: selectedBtn.dataset.targetType, name: selectedBtn.dataset.targetName };
         document.querySelectorAll('.sidebar-item').forEach(btn => btn.classList.remove('active'));
         selectedBtn.classList.add('active');
-        fetchAndRenderFiles(currentAdminTarget.type, currentAdminTarget.name);
+        fetchAndRenderFiles(currentAdminTarget.type, currentAdminTarget.name, 1);
     }
-
-    async function fetchAndRenderFiles(type = null, name = null) {
+    
+    // 파일 목록을 서버에서 가져와 렌더링하는 함수 (페이지네이션 적용)
+    async function fetchAndRenderFiles(type = null, name = null, page = 1) {
         if (!fileListDiv) return;
+        currentPage = page;
         fileListDiv.innerHTML = '<div class="d-flex justify-content-center p-5"><div class="spinner-border text-primary" role="status"></div></div>';
-        let url = flaskKnowledgeBaseFilesUrl;
+        let url = new URL(isAdminUser ? flaskAdminTargetFilesUrlBase : flaskKnowledgeBaseFilesUrl, window.location.origin);
         if (isAdminUser && type && name) {
-            url = `${flaskAdminTargetFilesUrlBase.split('?')[0]}?target_type=${type}&target_username=${name}`;
+            url.searchParams.set('target_type', type);
+            url.searchParams.set('target_username', name);
             document.getElementById('fileListHeader').textContent = `[${name}] 파일 목록`;
         }
-
+        url.searchParams.set('page', page);
         try {
-            const response = await fetch(url);
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            const data = await response.json();
+            let data;
+            if (window.fetchJson) {
+                data = await window.fetchJson(url);
+            } else {
+                const response = await fetch(url);
+                data = await response.json();
+            }
             const files = data.files || [];
             fileListDiv.innerHTML = '';
             if (files.length === 0) {
                 fileListDiv.innerHTML = `<p class="text-muted text-center p-5">표시할 파일이 없습니다.</p>`;
-                return;
-            }
-
-            if (isAdminUser) {
-                files.forEach(fileData => fileListDiv.appendChild(createFileItem(fileData)));
             } else {
-                const groupedFiles = {};
-                files.forEach(fileData => {
-                    const groupName = fileData.s3_key.split('/')[0];
-                    if (!groupedFiles[groupName]) groupedFiles[groupName] = [];
-                    groupedFiles[groupName].push(fileData);
-                });
-                Object.keys(groupedFiles).sort().forEach(groupName => {
-                    const groupTitle = document.createElement('h4');
-                    groupTitle.className = 'kb-group-title';
-                    groupTitle.textContent = groupName;
-                    fileListDiv.appendChild(groupTitle);
-                    const listContainer = document.createElement('div');
-                    listContainer.className = 'list-container';
-                    groupedFiles[groupName].forEach(fileData => listContainer.appendChild(createFileItem(fileData)));
-                    fileListDiv.appendChild(listContainer);
-                });
+                if (isAdminUser) {
+                    files.forEach(fileData => fileListDiv.appendChild(createFileItem(fileData)));
+                } else {
+                    const groupedFiles = {};
+                    files.forEach(fileData => {
+                        const groupName = fileData.s3_key.split('/')[0];
+                        if (!groupedFiles[groupName]) groupedFiles[groupName] = [];
+                        groupedFiles[groupName].push(fileData);
+                    });
+                    Object.keys(groupedFiles).sort().forEach(groupName => {
+                        const groupTitle = document.createElement('h4');
+                        groupTitle.className = 'kb-group-title';
+                        groupTitle.textContent = groupName;
+                        fileListDiv.appendChild(groupTitle);
+                        const listContainer = document.createElement('div');
+                        listContainer.className = 'list-container';
+                        groupedFiles[groupName].forEach(fileData => listContainer.appendChild(createFileItem(fileData)));
+                        fileListDiv.appendChild(listContainer);
+                    });
+                }
             }
+            renderPagination(data.pagination);
         } catch (error) {
             console.error('Error fetching files:', error);
             fileListDiv.innerHTML = '<p class="text-danger text-center">파일 목록을 불러오는 데 실패했습니다.</p>';
+            renderPagination(null);
         }
     }
 
+    // 파일 아이템 DOM 요소를 생성하는 함수
     function createFileItem(fileData) {
         const item = document.createElement('div');
         item.className = 'kb-file-item';
@@ -139,49 +167,118 @@ document.addEventListener('DOMContentLoaded', function() {
         return item;
     }
 
+    // 페이지네이션 UI를 생성하는 함수
+    function renderPagination(pagination) {
+        const container = isAdminUser ? paginationContainerAdmin : paginationContainerUser;
+        if (!container) return;
+        container.innerHTML = '';
+
+        if (!pagination || pagination.total_pages <= 1) {
+            return;
+        }
+
+        const { page, total_pages } = pagination;
+        const ul = document.createElement('ul');
+        ul.className = 'pagination';
+
+        const prevLi = document.createElement('li');
+        prevLi.className = `page-item ${page === 1 ? 'disabled' : ''}`;
+        prevLi.innerHTML = `<a class="page-link" href="#" data-page="${page - 1}">이전</a>`;
+        ul.appendChild(prevLi);
+
+        for (let i = 1; i <= total_pages; i++) {
+            const pageLi = document.createElement('li');
+            pageLi.className = `page-item ${i === page ? 'active' : ''}`;
+            pageLi.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i}</a>`;
+            ul.appendChild(pageLi);
+        }
+
+        const nextLi = document.createElement('li');
+        nextLi.className = `page-item ${page === total_pages ? 'disabled' : ''}`;
+        nextLi.innerHTML = `<a class="page-link" href="#" data-page="${page + 1}">다음</a>`;
+        ul.appendChild(nextLi);
+
+        container.appendChild(ul);
+    }
+    
+    // 페이지네이션 클릭 이벤트를 처리하는 함수 (이벤트 위임)
+    function setupPaginationListener() {
+        const container = isAdminUser ? paginationContainerAdmin : paginationContainerUser;
+        if(container) {
+            container.addEventListener('click', function(event) {
+                event.preventDefault();
+                const target = event.target;
+                if (target.tagName === 'A' && !target.closest('.disabled') && !target.closest('.active')) {
+                    const page = parseInt(target.dataset.page, 10);
+                    const { type, name } = currentAdminTarget || {};
+                    fetchAndRenderFiles(type, name, page);
+                }
+            });
+        }
+    }
+
+    // URL 추가 폼 제출 이벤트 리스너
     addUrlForm.addEventListener('submit', async (event) => {
         event.preventDefault();
         const url = urlInput.value;
         const industry = industrySelect.value;
-        if (!industry) { showMessage('산업 분야를 선택해주세요.', 'warning'); return; }
+        if (!industry) { showAlert('산업 분야를 선택해주세요.', 'warning'); return; }
         addUrlSpinner.style.display = 'inline-block';
         addUrlIcon.style.display = 'none';
         addUrlBtn.disabled = true;
         try {
-            const response = await fetch(flaskAddUrlUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url, industry }) });
-            const result = await response.json();
-            if (response.ok) {
-                showMessage(result.message, 'success');
-                urlInput.value = '';
-                const { type, name } = currentAdminTarget || {};
-                fetchAndRenderFiles(type, name);
-            } else { showMessage(result.error || 'URL 추가 실패', 'danger'); }
-        } catch (error) { console.error('Error adding URL:', error); showMessage('네트워크 오류: 지식 추가 중 오류 발생', 'danger'); } 
-        finally { addUrlSpinner.style.display = 'none'; addUrlIcon.style.display = 'block'; addUrlBtn.disabled = false; }
+            let result;
+            if (window.fetchJson) {
+                result = await window.fetchJson(flaskAddUrlUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url, industry }) });
+            } else {
+                const response = await fetch(flaskAddUrlUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url, industry }) });
+                result = await response.json();
+            }
+            showAlert(result.message, 'success');
+            urlInput.value = '';
+            const { type, name } = currentAdminTarget || {};
+            fetchAndRenderFiles(type, name, 1);
+        } catch (error) {
+            console.error('Error adding URL:', error);
+            showAlert('네트워크 오류: 지식 추가 중 오류 발생', 'danger');
+        } finally {
+            addUrlSpinner.style.display = 'none';
+            addUrlIcon.style.display = 'block';
+            addUrlBtn.disabled = false;
+        }
     });
 
+    // 파일 목록에서 삭제 버튼 클릭 이벤트 리스너 (이벤트 위임)
     fileListDiv.addEventListener('click', async function(event) {
         const deleteButton = event.target.closest('.delete-btn');
         if (deleteButton) {
             const s3Key = deleteButton.dataset.s3Key;
             if (confirm(`'${s3Key.split('/').pop()}' 파일을 정말로 삭제하시겠습니까?`)) {
                 try {
-                    const response = await fetch(`${flaskDeleteFileUrlBase}${s3Key}`, { method: 'DELETE' });
-                    const result = await response.json();
-                    if (response.ok) {
-                        showMessage(result.message, 'success');
-                        const { type, name } = currentAdminTarget || {};
-                        fetchAndRenderFiles(type, name);
-                    } else { showMessage(result.error || '파일 삭제 실패', 'danger'); }
-                } catch (error) { console.error('Error deleting file:', error); showMessage('파일 삭제 중 오류 발생', 'danger'); }
+                    let result;
+                    if (window.fetchJson) {
+                        result = await window.fetchJson(`${flaskDeleteFileUrlBase}${s3Key}`, { method: 'DELETE' });
+                    } else {
+                        const response = await fetch(`${flaskDeleteFileUrlBase}${s3Key}`, { method: 'DELETE' });
+                        result = await response.json();
+                    }
+                    showAlert(result.message, 'success');
+                    const { type, name } = currentAdminTarget || {};
+                    fetchAndRenderFiles(type, name, currentPage);
+                } catch (error) {
+                    console.error('Error deleting file:', error);
+                    showAlert('파일 삭제 중 오류 발생', 'danger');
+                }
             }
         }
     });
 
+    // --- 최초 실행 ---
     fetchAndPopulateIndustries();
+    setupPaginationListener();
     if (isAdminUser) {
         fetchAndRenderAdminSidebar();
     } else {
-        fetchAndRenderFiles();
+        fetchAndRenderFiles(null, null, 1);
     }
 });
