@@ -354,22 +354,6 @@ terraform apply
 - 테스트 커버리지: 80% 이상 유지
 - 커밋 메시지: Conventional Commits 형식 사용
 
-### 이슈 리포트
-
-버그 리포트나 기능 요청은 [GitHub Issues](https://github.com/yourusername/ai-content-marketing-tool/issues)를 이용해주세요.
-
-## 📄 라이선스
-
-이 프로젝트는 MIT 라이선스 하에 배포됩니다. 자세한 내용은 [LICENSE](LICENSE) 파일을 참조하세요.
-
-## 🙏 감사의 말
-
-- [AWS Bedrock](https://aws.amazon.com/bedrock/) - AI 모델 제공
-- [LangChain](https://langchain.com/) - RAG 프레임워크
-- [FAISS](https://github.com/facebookresearch/faiss) - 벡터 검색
-- [Flask](https://flask.palletsprojects.com/) - 웹 프레임워크
-
-
 ---
 
 ⭐ 이 프로젝트가 도움이 되었다면 스타를 눌러주세요! 
