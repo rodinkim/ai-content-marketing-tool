@@ -85,7 +85,7 @@ AI 콘텐츠 마케팅 도구는 **RAG(Retrieval-Augmented Generation)** 기술�
 - **Template Engine**: Jinja2
 - **Styling**: CSS3
 - **JavaScript**: Vanilla JS
-- **UI Framework**: Bootstrap (추정)
+- **UI Framework**: Bootstrap
 
 ### Testing & Quality
 - **Testing Framework**: pytest
