@@ -111,28 +111,7 @@
                             <input type="text" class="form-control" id="emailSubject" name="email_subject" placeholder="이메일 제목 (AI 추천 가능)">
                         </div>
                     </div>
-                    
-                    <div class="mb-3 input-with-icon">
-                        <span class="icon">👥</span>
-                        <input type="text" class="form-control" id="targetAudience" name="target_audience" placeholder="타겟 고객 (예: 20-30대 개발자, 여행을 좋아하는 커플)">
-                    </div>
-                    <div class="mb-3 input-with-icon">
-                        <span class="icon">✨</span>
-                        <input type="text" class="form-control" id="brandStyleTone" name="brand_style_tone" placeholder="브랜드 스타일/톤 (예: 고급, 감성, 트렌디, 미니멀)">
-                    </div>
-                    <div class="mb-3 input-with-icon">
-                        <span class="icon">🛍️</span>
-                        <input type="text" class="form-control" id="productCategory" name="product_category" placeholder="제품 카테고리 (예: 화장품, SaaS, 패션)">
-                    </div>
-                    <div class="mb-3 input-with-icon">
-                        <span class="icon">🎯</span>
-                        <input type="text" class="form-control" id="adPurpose" name="ad_purpose" placeholder="광고 목적 (예: 제품 판매, 브랜드 인지도)">
-                    </div>
-                    <div class="mb-3 input-with-icon">
-                        <span class="icon">🔑</span>
-                        <textarea class="form-control" id="keyPoints" name="key_points" rows="2" placeholder="콘텐츠에 강조하고 싶은 핵심 내용/메시지"></textarea>
-                    </div>
-                    
+
                     <div class="advanced-text-only" style="display: none;">
                         <div class="mb-3 input-with-icon">
                             <span class="icon">🎨</span>
@@ -163,30 +142,56 @@
                             <input type="url" class="form-control" id="landingPageUrl" name="landing_page_url" placeholder="CTA 랜딩 페이지 URL">
                         </div>
                     </div>
+
+                    <div class="mb-3 input-with-icon">
+                        <span class="icon">👥</span>
+                        <input type="text" class="form-control" id="targetAudience" name="target_audience" placeholder="타겟 고객 (예: 20-30대 개발자, 여행을 좋아하는 커플)">
+                    </div>
+                    <div class="mb-3 input-with-icon">
+                        <span class="icon">✨</span>
+                        <input type="text" class="form-control" id="brandStyleTone" name="brand_style_tone" placeholder="브랜드 스타일/톤 (예: 고급, 감성, 트렌디, 미니멀)">
+                    </div>
+                    <div class="mb-3 input-with-icon">
+                        <span class="icon">🛍️</span>
+                        <input type="text" class="form-control" id="productCategory" name="product_category" placeholder="제품 카테고리 (예: 화장품, SaaS, 패션)">
+                    </div>
+                    <div class="mb-3 input-with-icon">
+                        <span class="icon">🎯</span>
+                        <input type="text" class="form-control" id="adPurpose" name="ad_purpose" placeholder="광고 목적 (예: 제품 판매, 브랜드 인지도)">
+                    </div>
+                    <div class="mb-3 input-with-icon">
+                        <span class="icon">🔑</span>
+                        <input type="text" class="form-control" id="keyPoints" name="key_points" placeholder="콘텐츠에 강조하고 싶은 핵심 내용/메시지">
+                    </div>
                     
-                    <div id="snsOptions" style="display: none;" class="row">
-                        <div class="col-md-6 mb-3 input-with-icon">
-                            <span class="icon">🖼️</span>
-                            <select class="form-select" id="cutCount" name="cut_count">
-                                <option value="">생성할 이미지 컷 수</option>
-                                <option value="1" selected>1컷</option>
-                                <option value="3">3컷</option>
-                                <option value="5">5컷</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 mb-3 input-with-icon">
-                            <span class="icon">📏</span>
-                            <select class="form-select" id="aspectRatioSns" name="aspect_ratio_sns">
-                                <option value="1:1" selected>1:1 (정사각형)</option>
-                                <option value="16:9">16:9 (와이드스크린)</option>
-                                <option value="9:16">9:16 (세로)</option>
-                                <option value="4:3">4:3 (표준)</option>
-                                <option value="3:2">3:2</option>
-                            </select>
-                        </div>
-                        <div class="col-md-12 mb-3 input-with-icon">
+                    <div id="snsOptions" style="display: none;">
+    
+                        <div class="mb-3 input-with-icon">
                             <span class="icon">📌</span>
-                            <textarea class="form-control" id="otherRequirements" name="other_requirements" rows="2" placeholder="기타 이미지 생성 요구사항 (예: 인물 제외, 특정 색상 등)"></textarea>
+                            <input type="text" class="form-control" id="keyPoints" name="key_points" placeholder="기타 이미지 생성 요구사항 (예: 인물 제외, 특정 색상 등)">
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6 mb-3 input-with-icon">
+                                <span class="icon">🖼️</span>
+                                <select class="form-select" id="cutCount" name="cut_count">
+                                    <option value="">생성할 이미지 컷 수</option>
+                                    <option value="1" selected>1컷</option>
+                                    <option value="3">3컷</option>
+                                    <option value="5">5컷</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-6 mb-3 input-with-icon">
+                                <span class="icon">📏</span>
+                                <select class="form-select" id="aspectRatioSns" name="aspect_ratio_sns">
+                                    <option value="1:1" selected>1:1 (정사각형)</option>
+                                    <option value="16:9">16:9 (와이드스크린)</option>
+                                    <option value="9:16">9:16 (세로)</option>
+                                    <option value="4:3">4:3 (표준)</option>
+                                    <option value="3:2">3:2</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>

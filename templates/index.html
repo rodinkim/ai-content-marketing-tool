@@ -48,9 +48,9 @@
                 <h1 class="hero-title" id="hero-typing"></h1>
                 <p class="hero-desc">시간은 줄이고, 성과는 높이고.<br>콘텐츠 제작의 모든 과정을 <b class="brand-highlight">Contento</b>가 대신합니다.</p>
                 {% if current_user.is_authenticated %}
-                    <a href="{{ url_for('content_routes.content_page') }}" class="cta-button hero-btn">워크스페이스로 이동</a>
+                    <a href="{{ url_for('content_routes.content_page') }}" class="cta-text-link">워크스페이스로 이동</a>
                 {% else %}
-                    <a href="{{ url_for('auth_routes.register') }}" class="cta-button hero-btn">지금 무료 체험하기</a>
+                    <a href="{{ url_for('auth_routes.register') }}" class="cta-text-link">지금 무료 체험하기</a>
                 {% endif %}
             </div>
         </section>
@@ -67,7 +67,7 @@
                     <div class="feature-card">
                         <div class="icon">📱</div>
                         <h3>SNS 콘텐츠 제작</h3>
-                        <p>브랜드 톤에 딱 맞는 SNS 글을 빠르게 생성하세요. 타겟별 스타일도 OK.</p>
+                        <p>브랜드 톤에 딱 맞는 SNS 이미지를 빠르게 생성하세요. 타겟별 스타일도 OK.</p>
                     </div>
                     <div class="feature-card">
                         <div class="icon">📧</div>
@@ -110,9 +110,9 @@
                 <h2 class="section-title">이제 콘텐츠는 AI에게 맡기세요</h2>
                 <p>단 3분이면, 당신의 마케팅이 달라집니다. Contento와 함께 시작해보세요.</p>
                 {% if current_user.is_authenticated %}
-                    <a href="{{ url_for('content_routes.content_page') }}" class="cta-button">워크스페이스로 이동</a>
+                    <a href="{{ url_for('content_routes.content_page') }}" class="cta-text-link">워크스페이스로 이동</a>
                 {% else %}
-                    <a href="{{ url_for('auth_routes.register') }}" class="cta-button">가입하고 시작하기</a>
+                    <a href="{{ url_for('auth_routes.register') }}" class="cta-text-link">가입하고 시작하기</a>
                 {% endif %}
             </div>
         </section>

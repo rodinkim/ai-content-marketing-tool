@@ -35,7 +35,7 @@ header .container {
 .logo {
     font-size: 1.7rem;
     font-weight: 800;
-    color: #0077cc;
+    color: #585858;
     letter-spacing: -1.5px;
     padding: 0 8px;
     text-shadow: 0 2px 12px #b6e0ff33;
@@ -63,7 +63,7 @@ nav ul li a {
 }
 nav ul li a:hover, nav ul li a.active {
     background: linear-gradient(90deg, #e3f1ff 60%, #fafdff 100%);
-    color: #0077cc;
+    color: #535353;
     box-shadow: 0 2px 8px #b6e0ff33;
 }
 @media (max-width: 600px) {
@@ -130,8 +130,8 @@ nav ul li a:hover, nav ul li a.active {
 }
 .hero-title .highlight {
     background: none;
-    -webkit-text-fill-color: #0052cc;
-    color: #0052cc;
+    -webkit-text-fill-color: #808080;
+    color: #616161;
     text-shadow: 0 2px 12px #b6e0ff33;
 }
 .hero-desc {
@@ -167,29 +167,7 @@ nav ul li a:hover, nav ul li a.active {
     0% { opacity: 0; transform: translateY(30px); }
     100% { opacity: 1; transform: translateY(0); }
 }
-.cta-button {
-    background: linear-gradient(90deg, #0077cc, #00aaff);
-    padding: 0.8rem 1.8rem;
-    color: white;
-    border-radius: 999px;
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 1.13rem;
-    box-shadow: 0 2px 16px #0077cc22;
-    transition: transform 0.18s, box-shadow 0.18s, background 0.18s, opacity 0.18s;
-    display: inline-block;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    position: relative;
-    z-index: 2;
-}
-.cta-button:hover {
-    opacity: 0.92;
-    transform: scale(1.05) translateY(-1px);
-    box-shadow: 0 6px 24px #0077cc33;
-    background: linear-gradient(90deg, #00aaff, #0077cc);
-}
+
 @media (max-width: 600px) {
     .hero {
         padding: 5.2rem 0.5rem 2.5rem;
@@ -214,9 +192,9 @@ nav ul li a:hover, nav ul li a.active {
 .testimonial-card {
     min-width: 320px;
     max-width: 340px;
-    background: #fff;
+    background: #1b0e55;
     border-radius: 14px;
-    box-shadow: 0 2px 16px rgba(0,82,204,0.07);
+    box-shadow: 0 2px 16px rgba(15, 15, 15, 0.07);
     padding: 2rem 1.5rem 1.5rem 1.5rem;
     display: flex;
     flex-direction: column;
@@ -252,7 +230,7 @@ nav ul li a:hover, nav ul li a.active {
 .testimonial-quote:before {
     content: '“';
     font-size: 2.2em;
-    color: #b6d0ff;
+    color: #dedeff;
     position: absolute;
     left: 0;
     top: -0.2em;
@@ -260,7 +238,7 @@ nav ul li a:hover, nav ul li a.active {
 .testimonial-author {
     font-size: 1rem;
     font-weight: 600;
-    color: #0052cc;
+    color: #383838;
 }
 .testimonial-author span {
     display: block;
@@ -287,7 +265,7 @@ header .container {
 .logo {
     font-size: 1.25rem;
     font-weight: 700;
-    color: #0052cc;
+    color: #646464;
     letter-spacing: -1px;
     padding: 0 8px;
 }
@@ -312,7 +290,7 @@ nav ul li a {
 }
 nav ul li a:hover, nav ul li a.active {
     background: #f4f8ff;
-    color: #0052cc;
+    color: #9c9c9c;
 }
 @media (max-width: 600px) {
     header .container { flex-direction: column; gap: 0.5rem; padding: 0 8px; }
@@ -344,7 +322,7 @@ header {
 .logo {
     font-size: 1.8rem;
     font-weight: 700;
-    color: #0077cc;
+    color: #494949;
 }
 
 nav ul {
@@ -426,18 +404,36 @@ nav a {
     100% { opacity: 1; transform: translateY(0); }
 }
 
-.cta-button {
-    background: linear-gradient(90deg, #0077cc, #00aaff);
-    padding: 0.8rem 1.8rem;
-    color: white;
-    border-radius: 999px;
-    text-decoration: none;
+.cta-text-link {
+    display: inline-block;
+    color: #808080;
     font-weight: 600;
-    transition: 0.3s;
+    font-size: 1.1rem;
+    letter-spacing: 0.03em;
+    position: relative;
+    text-decoration: none;
+    transition: color 0.3s ease;
 }
 
-.cta-button:hover {
-    opacity: 0.85;
+.cta-text-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 100%;
+    height: 2px;
+    background-color: #616161;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+}
+
+.cta-text-link:hover {
+    color: #000000;
+}
+
+.cta-text-link:hover::after {
+    transform: scaleX(1);
 }
 
 
