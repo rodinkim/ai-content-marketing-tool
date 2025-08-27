@@ -336,22 +336,6 @@ terraform apply
 - **테스트 환경**: `FLASK_ENV=testing`
 - **운영 환경**: `FLASK_ENV=production`
 
-## 🤝 기여하기
-
-### 개발 환경 설정
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-### 코드 스타일
-
-- Python: PEP 8 준수
-- 테스트 커버리지: 80% 이상 유지
-- 커밋 메시지: Conventional Commits 형식 사용
-
 ---
 
 ⭐ 이 프로젝트가 도움이 되었다면 스타를 눌러주세요! 
