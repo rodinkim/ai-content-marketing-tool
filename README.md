@@ -97,7 +97,7 @@ AI 콘텐츠 마케팅 도구는 **RAG(Retrieval-Augmented Generation)** 기술�
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   Frontend      │    │   Flask API     │    │   RAG System    │
-│   (HTML/CSS/JS) │◄──►│   (Python)      │◄──►│   (FAISS+pgvector)│
+│   (HTML/CSS/JS) │◄──►│   (Python)      │◄──►│ (FAISS+pgvector)│
 └─────────────────┘    └─────────────────┘    └─────────────────┘
                                 │
                                 ▼
