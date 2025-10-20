@@ -275,7 +275,6 @@ POST /knowledge_base/upload
 DELETE /knowledge_base/delete/<s3_key>
 ```
 
-자세한 API 문서는 [API_SPECIFICATION.md](docs/API_SPECIFICATION.md)를 참조하세요.
 
 ## 🧪 테스트
 
